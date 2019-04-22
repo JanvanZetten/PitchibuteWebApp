@@ -5,6 +5,6 @@ export interface Item {
     // Admins: User[] 
 }
 
-export enum type {
+enum type {
     group, event, folder, file, link
 }
