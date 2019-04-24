@@ -1,0 +1,13 @@
+<h2>Registrer as a new user</h2>
+<form [formGroup]="registrerForm">
+  <label>Email</label>
+  <input type="text" placeholder="email" formControlName="email">
+
+  <label>Password</label>
+  <input type="password" placeholder="password" formControlName="password">
+
+  <label>Confirm password</label>
+  <input type="password" placeholder="password" formControlName="ConfirmPassword">
+
+  <input (click)="registrer()" class="" type="submit" value="Registrer">
+</form>

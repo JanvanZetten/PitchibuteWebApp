@@ -1,3 +1,15 @@
-<p>
-  login works!
-</p>
+<h2>Login:</h2>
+
+<form [formGroup]="loginForm">
+  <label>Email</label>
+  <input type="text" placeholder="email" formControlName="email">
+
+  <label>Password</label>
+  <input type="password" placeholder="password" formControlName="password">
+
+  <input (click)="loginWithFormData()" class="" type="submit" value="Login">
+</form>
+
+<button (click)="loginWithGoogle()">Sign in with Google</button>
+
+<button (click)="registerNewUser()">Registrer</button>
