@@ -1,4 +1,7 @@
 <!-- File Upload Component -->
-<p>
-  file-upload works!
-</p>
+<h1>Upload file</h1>
+<form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+  <input type="file" (change)="fileChanged($event)">
+
+  <button type="submit">Upload</button>
+</form>
