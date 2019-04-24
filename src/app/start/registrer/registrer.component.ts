@@ -15,13 +15,17 @@ export class RegistrerComponent implements OnInit {
     comfirmPassword: new FormControl()
   })
 
-  constructor() { }
+  constructor(private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
   }
 
   registrer() {
-    // TODO Registrer the user form the form
+    if (this.registrerForm.value.password === this.registrerForm.value.comfirmPassword) {
+      let promiseUserCredential = this.afAuth.auth.createUserWithEmailAndPassword(this.registrerForm.value.email, this.registrerForm.value.password)
+      // TODO Act on what the promise returns.
+    }
+    // TODO If the passwords where not equal then tell the user.
+    // TODO Add some requirements for the passwords like min. length.
   }
-
 }

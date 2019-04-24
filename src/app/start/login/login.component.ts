@@ -14,6 +14,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl('')
   })
 
+  showModal = false;
+
   constructor(private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
@@ -31,6 +33,10 @@ export class LoginComponent implements OnInit {
   }
 
   registerNewUser() {
-    // TODO open restrer popup where the user can sign in
+    this.showModal = true;
+  }
+
+  removeModal() {
+    this.showModal = false;
   }
 }

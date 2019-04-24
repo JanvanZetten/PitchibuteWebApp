@@ -13,3 +13,11 @@
 <button (click)="loginWithGoogle()">Sign in with Google</button>
 
 <button (click)="registerNewUser()">Registrer</button>
+
+<!-- Custom modal setup -->
+<div *ngIf="showModal">
+  <div id="modal-container">
+    <app-registrer></app-registrer>
+  </div>
+  <div id="overlay" (click)="removeModal()"></div>
+</div>
