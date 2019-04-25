@@ -1,9 +1,15 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
 import { Input } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { RegistrerComponent } from '../registrer/registrer.component';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -11,7 +17,14 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginComponent]
+      declarations: [LoginComponent, RegistrerComponent]
+      ,
+      imports: [
+        ReactiveFormsModule,
+        RouterTestingModule.withRoutes([]),
+        AngularFireAuthModule,
+        AngularFireModule.initializeApp(environment.firebase)
+      ]
     })
       .compileComponents();
   }));
@@ -25,18 +38,4 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should have field for entering username', () => {
-    fixture.detectChanges
-    const input = fixture.debugElement.queryAll(By.css('input')) // tr is Table row
-    fail('implement test')
-    // expect(input[0]).toBeTruthy //TODO better test of if it is correct 
-  });
-
-  it('should have field for entering password', () => {
-    fixture.detectChanges
-    const input = fixture.debugElement.queryAll(By.css('input')) // tr is Table row
-    fail('implement test')
-    // expect(input[1]).toBeTruthy // TODO better test of if it is correct
-  })
 });
