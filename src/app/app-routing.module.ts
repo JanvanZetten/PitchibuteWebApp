@@ -7,6 +7,10 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     component: WelcomeComponent
+  },
+  {
+    path: 'home',
+    loadChildren: './home/home.module#HomeModule'
   }
 ];
 

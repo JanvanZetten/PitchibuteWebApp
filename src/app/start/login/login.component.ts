@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   emailPasswordError: string
   googleloginError: string
 
-  constructor(private afAuth: AngularFireAuth) { }
+  constructor(private afAuth: AngularFireAuth, private router: Router) { }
 
   ngOnInit() {
   }
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
   loginWithGoogle() {
     this.resetErrors()
     let userPromise = this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
-      .then(UserCred => /* Redirect to the users main site */ { })
+      .then(UserCred => this.routeToHome())
       .catch(reason => this.googleloginError = "Did not login with Google")
   }
 
@@ -35,24 +36,28 @@ export class LoginComponent implements OnInit {
     this.resetErrors()
     let userPromise = this.afAuth.auth.signInWithEmailAndPassword(
       this.loginForm.value.email, this.loginForm.value.password)
-      .then(UserCred => /* Redirect to the users main site */ { })
+      .then(UserCred => this.routeToHome())
       .catch(reason => this.emailPasswordError = "Email or password is invalid")
   }
 
   registerNewUser() {
-    this.showModal = true;
+    this.showModal = true
   }
 
   removeModal() {
-    this.showModal = false;
+    this.showModal = false
   }
 
   userRegistred(user) {
-    this.removeModal();
+    this.removeModal()
   }
 
   resetErrors() {
-    this.emailPasswordError = null;
-    this.googleloginError = null;
+    this.emailPasswordError = null
+    this.googleloginError = null
+  }
+
+  routeToHome() {
+    this.router.navigate(['home'])
   }
 }
