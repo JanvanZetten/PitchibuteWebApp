@@ -9,12 +9,14 @@ import { LoginComponent } from './start/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrerComponent } from './start/registrer/registrer.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { WelcomeComponent } from './start/welcome/welcome.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegistrerComponent
+    RegistrerComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
