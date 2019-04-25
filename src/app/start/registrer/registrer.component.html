@@ -19,5 +19,7 @@
 
     <input class="btn btn-red btn-press single-item-on-line center t-margin-l" (click)="registrer()" type="submit"
       value="Registrer">
+
+    <h3 class="redText" *ngIf="errorMessage">{{errorMessage}}</h3>
   </form>
 </div>

@@ -9,10 +9,12 @@
     <input class="single-item-on-line center form-field b-margin-s" type="password" placeholder="Password..."
       formControlName="password">
 
+    <p class="red-text center-text" *ngIf="emailPasswordError">{{emailPasswordError}}</p>
     <input class="btn btn-green btn-press single-item-on-line center" (click)="loginWithFormData()" type="submit"
       value="Login">
   </form>
 
+  <p class="red-text center-text" *ngIf="googleloginError">{{googleloginError}}</p>
   <button class="btn btn-blue btn-press single-item-on-line center b-margin-l" (click)="loginWithGoogle()">Login with
     Google</button>
 
@@ -25,7 +27,7 @@
 <!-- Custom modal setup -->
 <div *ngIf="showModal">
   <div id="modal-container">
-    <app-registrer></app-registrer>
+    <app-registrer (succes)="userRegistred($event)"></app-registrer>
   </div>
   <div id="overlay" (click)="removeModal()"></div>
 </div>

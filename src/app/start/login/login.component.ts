@@ -16,20 +16,27 @@ export class LoginComponent implements OnInit {
 
   showModal = false;
 
+  emailPasswordError: string
+  googleloginError: string
+
   constructor(private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
   }
 
   loginWithGoogle() {
-    let userPromise = this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
-    // TODO wait for promise and if succesful redirect to the users site
+    this.resetErrors()
+    let userPromise = this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
+      .then(UserCred => /* Redirect to the users main site */ { })
+      .catch(reason => this.googleloginError = "Did not login with Google")
   }
 
   loginWithFormData() {
+    this.resetErrors()
     let userPromise = this.afAuth.auth.signInWithEmailAndPassword(
-      this.loginForm.value.email, this.loginForm.value.password);
-    // TODO wait for promise and if succesful redirect to the users site
+      this.loginForm.value.email, this.loginForm.value.password)
+      .then(UserCred => /* Redirect to the users main site */ { })
+      .catch(reason => this.emailPasswordError = "Email or password is invalid")
   }
 
   registerNewUser() {
@@ -38,5 +45,14 @@ export class LoginComponent implements OnInit {
 
   removeModal() {
     this.showModal = false;
+  }
+
+  userRegistred(user) {
+    this.removeModal();
+  }
+
+  resetErrors() {
+    this.emailPasswordError = null;
+    this.googleloginError = null;
   }
 }
