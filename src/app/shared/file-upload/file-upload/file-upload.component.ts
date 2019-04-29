@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { timer } from 'rxjs';
 import { FileUploadService } from '../file-upload-service/file-upload.service';
-import { IFile } from '../../../Entities/file';
 
 /*
  * Component logic for uploading files.
@@ -13,32 +11,49 @@ import { IFile } from '../../../Entities/file';
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements OnInit {
+  @Output() // Emits event with success message.
+  onSuccessEvent = new EventEmitter<string>();
+  @Output() // Emits event with error message.
+  onErrorEvent = new EventEmitter<string>();
+
   isLoading: boolean = false;
   hasFailed: boolean = false;
   hasSucceeded: boolean = false;
 
-  constructor(private fileUploadService: FileUploadService) { }
+  constructor(private fileUploadService: FileUploadService) {}
 
   ngOnInit() {
   }
 
-  // Call upload in FileUploadService in case the an file is chosen.
+  // Call upload in FileUploadService in case a file is chosen.
   uploadFile(files: File[]) {
     files.forEach(file => {
       this.isLoading = true;
       this.fileUploadService.upload(file).subscribe(next => {
-        this.isLoading = false;
-        this.hasSucceeded = true;
-        this.startTimer();
-      },
-      err => {
-        this.isLoading = false;
-        this.hasFailed = true;
-        this.startTimer();
-      });
+          this.onUpload(`Successfully transferred: ${file.name}`, true);
+        },
+        err => {
+          this.onUpload(err.message, false);
+        });
     });
   }
 
+  // Handles upload results.
+  private onUpload(message: string, succeeded: boolean) {
+    this.isLoading = false;
+
+    if (succeeded) {
+      this.hasSucceeded = true;
+      this.onSuccessEvent.emit(message);
+    } else {
+      this.hasFailed = true;
+      this.onErrorEvent.emit(message);
+    }
+
+    this.startTimer();
+  }
+
+  // Timer for check and cross icon on top of dropzone.
   private startTimer() {
     const source = timer(3000, 1000);
     const abc = source.subscribe(() => {
