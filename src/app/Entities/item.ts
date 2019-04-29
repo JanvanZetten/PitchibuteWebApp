@@ -1,10 +1,10 @@
 export interface Item {
-    id?: string
-    name: string
-    type: type
-    // Admins: User[] 
+    id?: string;
+    name: string;
+    type: type;
+    // Admins: User[]
 }
 
-enum type {
+export enum type {
     group, event, folder, file, link
 }

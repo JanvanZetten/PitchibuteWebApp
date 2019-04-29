@@ -16,7 +16,7 @@ import { WelcomeComponent } from './start/welcome/welcome.component';
     AppComponent,
     LoginComponent,
     RegistrerComponent,
-    WelcomeComponent
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,
