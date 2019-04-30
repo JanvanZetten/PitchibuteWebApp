@@ -120,13 +120,16 @@ describe('FileUploadComponent', () => {
 
   it('should update states on UploadFile()', () => {
     let fileUploadComponent = fixture.componentInstance;
-
-    // Spy on component.
-    let onUploadSpy = spyOn(fileUploadComponent, 'onUpload').and.callThrough();
+    
+    // Overwrite OnUpload so that it does not change the state.
+    let onUploadSpy = spyOn<any>(fileUploadComponent, 'onUpload').and.callFake(function () {
+      return undefined;
+    });
     expect(onUploadSpy).toHaveBeenCalledTimes(0);
 
     // Check state before.
     expect(!fileUploadComponent.isLoading).toBeTruthy();
+
 
     // Call uploadFile().
     fileUploadComponent.uploadFile([new File(new Array<Blob>(), 'testFile')]);
