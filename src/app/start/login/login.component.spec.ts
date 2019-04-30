@@ -12,6 +12,8 @@ import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { resolve } from 'path';
+import * as firebase from 'firebase';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -102,4 +104,96 @@ describe('LoginComponent', () => {
         { skipLocationChange: false });
   })
 
+  it('should call signInWithEmailAndPassword when loginWithFormData is called', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(Promise.resolve(null))
+
+    component.loginWithFormData()
+
+    expect(afAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledTimes(1)
+  })
+
+  it('should call signInWithEmailAndPassword with the data form the form when loginWithFormData', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+
+    var promise = new Promise((resolve, reject) => {
+    });
+
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise)
+    var email = "test@mail.com"
+    var password = "SuperSecretPassword1234"
+
+    setInputValue("#emailInput", email)
+    setInputValue("#passwordInput", password)
+    fixture.detectChanges();
+
+    component.loginWithFormData()
+
+    expect(afAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledWith(email, password)
+  })
+
+  it('should call signInWithPopup when loginWithGoogle() is calles', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+
+    var promise = new Promise((resolve, reject) => {
+    });
+
+    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+
+    component.loginWithGoogle()
+
+    expect(afAuth.auth.signInWithPopup).toHaveBeenCalledTimes(1)
+  })
+
+  it('should call route to home when login with Google is Sucssesful', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var working = true;
+    var promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(null), 1000);
+    });
+
+    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+
+    spyOn(component, "routeToHome")
+
+    component.loginWithGoogle()
+
+    setTimeout(() => expect(component.routeToHome).toHaveBeenCalledTimes(1), 1000);
+  })
+
+  it('should not call route to home when login with google fails', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var promise = new Promise((resolve, reject) => {
+      reject(null);
+    });
+
+    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+    spyOn(component, "routeToHome")
+
+    component.loginWithGoogle()
+
+    expect(component.routeToHome).toHaveBeenCalledTimes(0)
+  })
+
+  it('should make error message when login with google fails', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var promise = new Promise((resolve, reject) => {
+      setTimeout(() => reject({}), 1000);
+    });
+
+    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+
+    component.loginWithGoogle()
+
+    var alert = fixture.debugElement.queryAll(By.css(".red-text"))
+    setTimeout(() => expect(alert.length).toBe(1), 1000);
+  })
+
+  function setInputValue(selector: string, value: string) {
+    fixture.detectChanges();
+    let input = fixture.debugElement.query(By.css(selector)).nativeElement;
+    input.value = value;
+    input.dispatchEvent(new Event('input'));
+  }
 });
