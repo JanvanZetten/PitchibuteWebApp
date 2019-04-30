@@ -2,7 +2,7 @@ export interface Item {
     id?: string
     name: string
     type: type
-    // Admins: User[] 
+    // Admins: User[]
 }
 
 enum type {

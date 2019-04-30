@@ -15,6 +15,10 @@ const routes: Routes = [
   {
     path: 'uploadfile',
     loadChildren: './shared/file-upload/file-upload.module#FileUploadModule'
+  },
+  {
+    path: 'hierachy',
+    loadChildren: './shared/hierachy/hierachy.module#HierachyModule'
   }
 ];
 
