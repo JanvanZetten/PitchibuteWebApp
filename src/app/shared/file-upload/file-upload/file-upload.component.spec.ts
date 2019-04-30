@@ -82,7 +82,7 @@ describe('FileUploadComponent', () => {
     expect(onUploadSpy).toHaveBeenCalledWith(jasmine.any(String), true);
   });
 
-  it('should call onUpload(), once, on uploadFile() passing a list with a length of one, but and error occured', () => {
+  it('should call onUpload(), once, on uploadFile() passing a list with a length of one, but an error occured', () => {
     isFaulty = true;
     // Spy on component.
     let onUploadSpy = spyOn<any>(fixture.componentInstance, 'onUpload').and.callThrough();
