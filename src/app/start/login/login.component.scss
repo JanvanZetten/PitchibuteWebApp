@@ -1,0 +1,77 @@
+#modal-container {
+    position:  fixed;
+    top: 15%;
+    left: 50%;
+    width: 400px;
+    background: white;
+    margin-left: -187.5px;
+    text-align: center;
+    box-shadow: 0px 0px 2px 1px black;
+    z-index: 100;
+    border-radius: 10px;
+}
+
+#overlay {
+    position: absolute;
+    top: 0px;
+    left:  0px;
+    z-index:  99;
+    background:  rgba(0,0,0,0.8);
+    width:  100%;
+    height: 100%;
+}
+
+.single-item-on-line{
+    display: block;
+}
+
+.center {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.form-label {
+    color: rgb(87, 87, 87);
+}
+
+.form-field {
+    font-size: 14px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(197, 197, 197);
+    border-radius: 2px;
+    width: 250px
+}
+
+#login-container {
+    display: inline-block;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    background-color: rgba(0, 0, 0, 0.034);
+    border-radius: 5px;
+}
+
+.b-margin-s {
+    margin-bottom: 10px;
+}
+
+.b-margin-m {
+    margin-bottom: 20px;
+}
+
+.b-margin-l {
+    margin-bottom: 35px;
+}
+
+.red-text {
+    color: red;
+}
