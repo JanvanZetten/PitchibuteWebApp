@@ -1,7 +1,7 @@
 import { Resource } from "./resource";
 
-export interface File extends Resource{
-    url: string
-    lastmodified?: Date 
-    size: number
+export interface IFile extends Resource{
+    url: string,
+    lastModified?: Date,
+    size: number,
 }

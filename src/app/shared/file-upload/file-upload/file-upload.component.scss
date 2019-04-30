@@ -1,0 +1,64 @@
+.dropzone_container {
+  position: relative;
+  height: 180px;
+}
+
+ngx-dropzone {
+  &.actual_dropzone {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background: #eee;
+    border: 1px dashed gray;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+  &.hovered {
+    background: green;
+    border-style: solid;
+  }
+
+  &.hovered + i {
+    animation: blinker 1s linear infinite;
+  }
+}
+
+ngx-dropzone:hover {
+  background: #fff;
+  border-style: solid;
+}
+
+.dropzone_fa {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.fa-spin-custom {
+  animation: fa-spin-custom 2s infinite linear;
+}
+
+@keyframes fa-spin-custom {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
