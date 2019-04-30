@@ -1,8 +1,8 @@
-import { Item } from "./item";
-import { Resource } from "./resource";
+import { Item } from './item';
+import { Resource } from './resource';
 
 export interface Event extends Item {
-    start: Date
-    end: Date
-    resources: Resource[]
+    start: Date;
+    end: Date;
+    resources: Resource[];
 }

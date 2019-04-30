@@ -1,6 +1,6 @@
-import { Item } from "./item";
+import { Item } from './item';
 
 export interface Group extends Item {
-    items: Item[]
-    //owner: User
+    items: Item[];
+    // owner: User
 }
