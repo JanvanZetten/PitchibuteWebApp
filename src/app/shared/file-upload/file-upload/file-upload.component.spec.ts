@@ -61,7 +61,7 @@ describe('FileUploadComponent', () => {
 
   it('should not call onUpload() on uploadFile() with empty list', () => {
     // Spy on component.
-    let onUploadSpy = spyOn(fixture.componentInstance, 'onUpload').and.callThrough();
+    let onUploadSpy = spyOn<any>(fixture.componentInstance, 'onUpload').and.callThrough();
     expect(onUploadSpy).toHaveBeenCalledTimes(0);
 
     // Call uploadFile().
@@ -72,7 +72,7 @@ describe('FileUploadComponent', () => {
 
   it('should call onUpload(), once, on uploadFile() passing a list with a length of one', () => {
     // Spy on component.
-    let onUploadSpy = spyOn(fixture.componentInstance, 'onUpload').and.callThrough();
+    let onUploadSpy = spyOn<any>(fixture.componentInstance, 'onUpload').and.callThrough();
     expect(onUploadSpy).toHaveBeenCalledTimes(0);
 
     // Call uploadFile().
@@ -85,7 +85,7 @@ describe('FileUploadComponent', () => {
   it('should call onUpload(), once, on uploadFile() passing a list with a length of one, but and error occured', () => {
     isFaulty = true;
     // Spy on component.
-    let onUploadSpy = spyOn(fixture.componentInstance, 'onUpload').and.callThrough();
+    let onUploadSpy = spyOn<any>(fixture.componentInstance, 'onUpload').and.callThrough();
     expect(onUploadSpy).toHaveBeenCalledTimes(0);
 
     // Call uploadFile().
@@ -97,7 +97,7 @@ describe('FileUploadComponent', () => {
 
   it('should call onUpload() on uploadFile() passing a list with a length of ten', () => {
     // Spy on component.
-    let onUploadSpy = spyOn(fixture.componentInstance, 'onUpload').and.callThrough();
+    let onUploadSpy = spyOn<any>(fixture.componentInstance, 'onUpload').and.callThrough();
     expect(onUploadSpy).toHaveBeenCalledTimes(0);
 
     // Call uploadFile().
@@ -144,7 +144,7 @@ describe('FileUploadComponent', () => {
     let fileUploadComponent = fixture.componentInstance;
 
     // Spy on start timer.
-    let startTimerSpy = spyOn(fileUploadComponent, 'startTimer').and.callThrough();
+    let startTimerSpy = spyOn<any>(fileUploadComponent, 'startTimer').and.callThrough();
     expect(startTimerSpy).toHaveBeenCalledTimes(0);
 
     // Simulate state
@@ -155,8 +155,8 @@ describe('FileUploadComponent', () => {
     expect(!fileUploadComponent.hasSucceeded).toBeTruthy();
     expect(fileUploadComponent.isLoading).toBeTruthy();
 
-    // Call onUpload().
-    fileUploadComponent.onUpload('test message', true);
+    // Call uploadFile().
+    fixture.componentInstance.uploadFile([new File(new Array<Blob>(), 'testFile')]);
 
     // Check state after
     expect(!fileUploadComponent.hasFailed).toBeTruthy();
@@ -167,10 +167,11 @@ describe('FileUploadComponent', () => {
   });
 
   it('should update states and call startTimer() on onUpload() calls with false', () => {
+    isFaulty = true;
     let fileUploadComponent = fixture.componentInstance;
 
     // Spy on start timer.
-    let startTimerSpy = spyOn(fileUploadComponent, 'startTimer').and.callThrough();
+    let startTimerSpy = spyOn<any>(fileUploadComponent, 'startTimer').and.callThrough();
     expect(startTimerSpy).toHaveBeenCalledTimes(0);
 
     // Simulate state
@@ -180,9 +181,9 @@ describe('FileUploadComponent', () => {
     expect(!fileUploadComponent.hasFailed).toBeTruthy();
     expect(!fileUploadComponent.hasSucceeded).toBeTruthy();
     expect(fileUploadComponent.isLoading).toBeTruthy();
-
-    // Call onUpload().
-    fileUploadComponent.onUpload('test message', false);
+    
+    // Call uploadFile().
+    fixture.componentInstance.uploadFile([new File(new Array<Blob>(), 'testFile')]);
 
     // Check state after
     expect(fileUploadComponent.hasFailed).toBeTruthy();
