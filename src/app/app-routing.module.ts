@@ -11,7 +11,15 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: './home/home.module#HomeModule'
-  }
+  },
+  {
+    path: 'download',
+    loadChildren: './download/download.module#DownloadModule'
+  },
+  {
+    path: 'uploadfile',
+    loadChildren: './shared/file-upload/file-upload.module#FileUploadModule'
+  },
 ];
 
 @NgModule({

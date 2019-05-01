@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
+import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './start/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrerComponent } from './start/registrer/registrer.component';
@@ -16,9 +17,10 @@ import { WelcomeComponent } from './start/welcome/welcome.component';
     AppComponent,
     LoginComponent,
     RegistrerComponent,
-    WelcomeComponent
+    WelcomeComponent,
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
