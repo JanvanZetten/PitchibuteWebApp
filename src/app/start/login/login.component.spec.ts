@@ -131,7 +131,7 @@ describe('LoginComponent', () => {
     expect(afAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledWith(email, password)
   })
 
-  it('should call signInWithPopup when loginWithGoogle() is calles', () => {
+  it('should call signInWithPopup when loginWithGoogle() is called', () => {
     const afAuth = TestBed.get(AngularFireAuth)
 
     var promise = new Promise((resolve, reject) => {
@@ -144,7 +144,7 @@ describe('LoginComponent', () => {
     expect(afAuth.auth.signInWithPopup).toHaveBeenCalledTimes(1)
   })
 
-  it('should call route to home when login with Google is Sucssesful', () => {
+  it('should call route to home when login with Google is succsessful', () => {
     const afAuth = TestBed.get(AngularFireAuth)
     var working = true;
     var promise = new Promise((resolve, reject) => {
@@ -192,7 +192,7 @@ describe('LoginComponent', () => {
       , 1000);
   })
 
-  it('should route to home when login with email and password is succesful', () => {
+  it('should route to home when login with email and password is successful', () => {
     const afAuth = TestBed.get(AngularFireAuth)
     var working = true;
     var promise = new Promise((resolve, reject) => {
