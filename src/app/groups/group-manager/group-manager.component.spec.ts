@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupManagerComponent } from './group-manager.component';
+import {GroupService} from '../../shared/groups/group-service/group.service';
+import {of} from 'rxjs';
 
 describe('GroupManagerComponent', () => {
   let component: GroupManagerComponent;
@@ -8,7 +10,10 @@ describe('GroupManagerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupManagerComponent ]
+      declarations: [ GroupManagerComponent ],
+      providers: [
+      {provide: GroupService, useClass: GroupServiceStub}
+      ]
     })
     .compileComponents();
   }));
@@ -23,3 +28,7 @@ describe('GroupManagerComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+export class GroupServiceStub {
+   addUserToGroup() {return of('123'); }
+}
