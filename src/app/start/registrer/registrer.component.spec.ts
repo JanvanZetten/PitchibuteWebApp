@@ -1,3 +1,4 @@
+import { auth } from 'firebase/app';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegistrerComponent } from './registrer.component';
@@ -90,6 +91,34 @@ describe('RegistrerComponent', () => {
     component.registrer()
 
     expect(afAuth.auth.createUserWithEmailAndPassword).toHaveBeenCalledWith(email, pass)
+  });
+
+  it('should emit succesful when register is succesful', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(null), 1000);
+    });
+    spyOn(component.succes, 'emit')
+    spyOn(afAuth.auth, 'createUserWithEmailAndPassword').and.returnValue(promise)
+
+    setTimeout(() =>
+      expect(component.succes).toHaveBeenCalledTimes(1),
+      1000
+    );
+  });
+
+  it('should emit error when register has failed', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var promise = new Promise((resolve, reject) => {
+      setTimeout(() => reject(), 1000);
+    });
+    spyOn(component.error, 'emit')
+    spyOn(afAuth.auth, 'createUserWithEmailAndPassword').and.returnValue(promise)
+
+    setTimeout(() =>
+      expect(component.error).toHaveBeenCalledTimes(1),
+      1000
+    );
   });
 
   function setInputValue(selector: string, value: string) {

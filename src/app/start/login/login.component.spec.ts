@@ -12,8 +12,6 @@ import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { resolve } from 'path';
-import * as firebase from 'firebase';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -179,7 +177,9 @@ describe('LoginComponent', () => {
   it('should make error message when login with google fails', () => {
     const afAuth = TestBed.get(AngularFireAuth)
     var promise = new Promise((resolve, reject) => {
-      setTimeout(() => reject({}), 1000);
+      setTimeout(() =>
+        reject({})
+        , 1000);
     });
 
     spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
@@ -187,8 +187,48 @@ describe('LoginComponent', () => {
     component.loginWithGoogle()
 
     var alert = fixture.debugElement.queryAll(By.css(".red-text"))
-    setTimeout(() => expect(alert.length).toBe(1), 1000);
+    setTimeout(() =>
+      expect(alert.length).toBe(1)
+      , 1000);
   })
+
+  it('should route to home when login with email and password is succesful', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var working = true;
+    var promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(null), 1000);
+    });
+
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise)
+
+    spyOn(component, "routeToHome")
+
+    component.loginWithFormData()
+
+    setTimeout(() => expect(component.routeToHome).toHaveBeenCalledTimes(1), 1000);
+  })
+
+  it('should make error message when login with email and password fails', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var promise = new Promise((resolve, reject) => {
+      setTimeout(() =>
+        reject({})
+        , 1000);
+    });
+
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise)
+
+    component.loginWithFormData();
+
+    setTimeout(() => {
+      var alert = fixture.debugElement.queryAll(By.css(".red-text"));
+      expect(alert.length).toBe(1)
+      expect(component.emailPasswordError).toBe("Email or password is invalid")
+    }
+      , 1000);
+  })
+
+
 
   function setInputValue(selector: string, value: string) {
     fixture.detectChanges();
