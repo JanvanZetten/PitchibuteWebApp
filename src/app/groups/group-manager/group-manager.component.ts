@@ -15,20 +15,14 @@ export class GroupManagerComponent implements OnInit {
   constructor(private groupService: GroupService) { }
 
   ngOnInit() {
+    // Midlertidig hardcoded.
     const group = <Group> {
       name: 'files/',
-      type: type.folder
+      type: type.folder,
+      id: 'uOIbfh63rY27JezVCgWa'
     };
-    this.addUserToGroup(group, '123');
-
-  }
-
-  addUserToGroup(group: Group, username: string) {
-    this.groupService.addUserToGroup(group, username)
-      .then(url => {console.log('I' +
-      've done it');
+    this.groupService.addUserToGroup(group, '.....').subscribe(user => {
+      console.log(user);
     });
-
   }
-
 }
