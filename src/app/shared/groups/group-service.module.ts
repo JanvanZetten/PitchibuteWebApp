@@ -7,10 +7,10 @@ import {HttpClientModule} from '@angular/common/http';
   declarations: [],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFirestoreModule
   ],
   exports: [
-    AngularFirestoreModule,
   ]
 })
 export class GroupServiceModule { }
