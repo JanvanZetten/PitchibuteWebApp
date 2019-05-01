@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'uploadfile',
     loadChildren: './shared/file-upload/file-upload.module#FileUploadModule'
   },
+  {
+    path: 'groupmanager',
+    loadChildren: './groups/groups.module#GroupsModule'
+  },
 ];
 
 @NgModule({

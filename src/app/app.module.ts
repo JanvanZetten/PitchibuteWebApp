@@ -18,6 +18,7 @@ import { WelcomeComponent } from './start/welcome/welcome.component';
     LoginComponent,
     RegistrerComponent,
     WelcomeComponent,
+
   ],
   imports: [
     SharedModule,
