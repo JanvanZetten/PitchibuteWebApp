@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared.module';
 import { HierachyComponent } from './hierachy/hierachy.component';
+import {HierachyServiceModule} from './hierachy-service/hierachy-service.module';
 
 @NgModule({
   declarations: [
     HierachyComponent
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    HierachyServiceModule
   ],
   exports: [
     HierachyComponent
