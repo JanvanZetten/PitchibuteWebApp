@@ -4,7 +4,7 @@ import { defer, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { IFile } from '../../../Entities/file';
+import { IFile } from '../../../entities/file';
 
 /*
  * FileUploadService used to upload files.
