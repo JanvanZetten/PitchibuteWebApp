@@ -41,7 +41,7 @@ export class FileUploadService {
   private getParentPath(parentStructure: Item[]): string {
     var path: string
     parentStructure.forEach(item => {
-      if (item.id !== null && item.id === '' && (item.type === type.group || item.type === type.folder || item.type === type.event)) {
+      if (item.id !== null && item.id !== '' && (item.type === type.group || item.type === type.folder || item.type === type.event)) {
         path = path + item.id + '/'
       } else {
         throw new Error("Can't place a file here, check the structure and id's")
