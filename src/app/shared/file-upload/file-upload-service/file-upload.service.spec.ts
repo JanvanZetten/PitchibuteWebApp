@@ -7,6 +7,7 @@ import { AngularFireStorageModule, AngularFireStorage, AngularFireStorageReferen
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { first } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 
 describe('FileUploadService', () => {
@@ -57,13 +58,12 @@ describe('FileUploadService', () => {
 
     spyOn(firestore, 'createId').and.returnValue(uniqueId)
     spyOn(fireStorage, 'ref').and.returnValue(fireStorageRefrence)
-    spyOn(fireStorageRefrence, 'put')
+    spyOn(fireStorageRefrence, 'put').and.returnValue(of({}).toPromise())
+
+    const meta = { originalName: fileName, path: exspectetPathOutput }
 
     const observable = service.upload(itemArray, theFile).pipe(first()).subscribe(() => {
-      expect(fireStorageRefrence.put).toHaveBeenCalledWith(theFile, {
-        fileName,
-        exspectetPathOutput
-      })
+      expect(fireStorageRefrence.put).toHaveBeenCalledWith(theFile, { customMetadata: meta })
       observable.unsubscribe()
     })
   })
