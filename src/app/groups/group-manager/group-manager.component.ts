@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Group} from '../../Entities/group';
-import {User} from 'firebase';
 import {GroupService} from '../../shared/groups/group-service/group.service';
 import {type} from '../../Entities/item';
 
@@ -12,17 +11,22 @@ import {type} from '../../Entities/item';
 })
 export class GroupManagerComponent implements OnInit {
 
-  constructor(private groupService: GroupService) { }
+  errorMessage: string;
+  responseMessage: string;
+  title =  'This is still under construction.';
+  groupForTest: Group = {id: '123', type: type.file, name: '123', items:null};
+
+  constructor(private groupService: GroupService) {
+  }
 
   ngOnInit() {
-    // Midlertidig hardcoded.
-    const group = <Group> {
-      name: 'files/',
-      type: type.folder,
-      id: 'uOIbfh63rY27JezVCgWa'
-    };
-    this.groupService.addUserToGroup(group, '.....').subscribe(user => {
-      console.log(user);
+  }
+
+  addUserToGroup(email: string) {
+    this.groupService.addUserToGroup(this.groupForTest, email).subscribe(rspMsg => {
+      this.responseMessage = rspMsg;
+    }, error => {
+      this.errorMessage = error.message;
     });
   }
 }
