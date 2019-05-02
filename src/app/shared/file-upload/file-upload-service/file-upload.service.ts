@@ -19,11 +19,10 @@ export class FileUploadService {
     private firestorage: AngularFireStorage) { }
 
   upload(parentStructure: Item[], file: File): Observable<IFile> {
-    debugger;
     const path = this.getParentPath(parentStructure);
     const uid = this.firestore.createId();
     return defer(() =>
-      this.firestorage.ref('file/' + uid)
+      this.firestorage.ref('files/' + uid)
         .put(file, {
           customMetadata: {
             originalName: file.name,
@@ -41,6 +40,9 @@ export class FileUploadService {
 
   private getParentPath(parentStructure: Item[]): string {
     var path: string = ''
+    if (parentStructure === undefined || parentStructure === null || parentStructure.length === 0) {
+      return path;
+    }
     parentStructure.forEach(item => {
       if (item.id !== null && item.id !== '' && (item.type === type.group || item.type === type.folder || item.type === type.event)) {
         path = path + item.id + '/'
