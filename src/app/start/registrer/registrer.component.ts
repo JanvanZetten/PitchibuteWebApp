@@ -34,7 +34,7 @@ export class RegistrerComponent implements OnInit {
     this.errorMessage = null;
     this.checkPasswordMatch() // To tell the user if the passwords match
 
-    // TODO Add some requirements for the passwords like min. length other then those firebase gives.
+    // TODO Add some requirements for the password (like min. length) other then those firebase gives.
 
     if (this.registrerForm.value.password === this.registrerForm.value.comfirmPassword) {
 
