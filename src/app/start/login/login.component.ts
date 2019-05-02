@@ -27,14 +27,14 @@ export class LoginComponent implements OnInit {
 
   loginWithGoogle() {
     this.resetErrors()
-    let userPromise = this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
-      .then(UserCred => this.routeToHome())
+    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
+      .then(() => this.routeToHome())
       .catch(reason => this.googleloginError = "Did not login with Google")
   }
 
   loginWithFormData() {
     this.resetErrors()
-    let userPromise = this.afAuth.auth.signInWithEmailAndPassword(
+    this.afAuth.auth.signInWithEmailAndPassword(
       this.loginForm.value.email, this.loginForm.value.password)
       .then(UserCred => this.routeToHome())
       .catch(reason => this.emailPasswordError = "Email or password is invalid")
