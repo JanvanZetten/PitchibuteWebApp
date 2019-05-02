@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {GroupServiceModule} from '../group-service.module';
-import {Group} from '../../../Entities/group';
+import {Group} from '../../../entities/group';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';

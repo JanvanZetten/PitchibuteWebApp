@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Group} from '../../Entities/group';
+import {Group} from '../../entities/group';
 import {GroupService} from '../../shared/groups/group-service/group.service';
-import {type} from '../../Entities/item';
+import {type} from '../../entities/item';
 
 
 @Component({

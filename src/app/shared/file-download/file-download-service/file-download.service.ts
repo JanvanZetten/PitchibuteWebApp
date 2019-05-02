@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Group} from '../../../Entities/group';
+import {Group} from '../../../entities/group';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {FileDownloadServiceModule} from '../file-download-service.module';
 import {Observable} from 'rxjs';

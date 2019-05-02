@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Group} from '../../Entities/group';
-import {type} from '../../Entities/item';
+import {Group} from '../../entities/group';
+import {type} from '../../entities/item';
 import {FileDownloadService} from '../../shared/file-download/file-download-service/file-download.service';
 
 

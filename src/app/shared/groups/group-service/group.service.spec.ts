@@ -1,8 +1,8 @@
 import {TestBed} from '@angular/core/testing';
 
 import {GroupService} from './group.service';
-import {Group} from '../../../Entities/group';
-import {type} from '../../../Entities/item';
+import {Group} from '../../../entities/group';
+import {type} from '../../../entities/item';
 import {of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AngularFirestore} from '@angular/fire/firestore';
