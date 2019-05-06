@@ -17,6 +17,7 @@ export class AuthenticationService {
     return this.afAuth.auth.signOut();
   }
 
+  // Google.
   loginWithGoogle(): Promise<UserCredential> {
     return this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
   }
