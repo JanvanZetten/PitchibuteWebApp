@@ -1,6 +1,8 @@
+import { AuthGuardService } from './auth-guard.service';
 import { WelcomeComponent } from './start/welcome/welcome.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuardService as AuthGuard } from './auth-guard.service';
 
 const routes: Routes = [
   {
@@ -10,19 +12,23 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: './home/home.module#HomeModule'
+    loadChildren: './home/home.module#HomeModule',
+    canActivate: [AuthGuard]
   },
   {
     path: 'download',
-    loadChildren: './download/download.module#DownloadModule'
+    loadChildren: './download/download.module#DownloadModule',
+    canActivate: [AuthGuard]
   },
   {
     path: 'uploadfile',
-    loadChildren: './shared/file-upload/file-upload.module#FileUploadModule'
+    loadChildren: './shared/file-upload/file-upload.module#FileUploadModule',
+    canActivate: [AuthGuard]
   },
   {
     path: 'groupmanager',
-    loadChildren: './groups/groups.module#GroupsModule'
+    loadChildren: './groups/groups.module#GroupsModule',
+    canActivate: [AuthGuard]
   },
 ];
 

@@ -1,11 +1,18 @@
-import {ReactiveFormsModule} from '@angular/forms';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { auth } from 'firebase/app';
+import { ReactiveFormsModule } from '@angular/forms';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LoginComponent} from './login.component';
-import {By} from '@angular/platform-browser';
-import {RouterTestingModule} from '@angular/router/testing';
-import {RegistrerComponent} from '../registrer/registrer.component';
-import {Router} from '@angular/router';
+import { LoginComponent } from './login.component';
+import { $ } from 'protractor';
+import { By } from '@angular/platform-browser';
+import { Input } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { RegistrerComponent } from '../registrer/registrer.component';
+import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import {AuthenticationService} from '../../shared/authentication/authentication-service/authentication.service';
 
 describe('LoginComponent', () => {
@@ -22,6 +29,8 @@ describe('LoginComponent', () => {
       imports: [
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([]),
+        AngularFireAuthModule,
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [{provide: AuthenticationService, useValue: authStub}]
     })
@@ -130,11 +139,25 @@ describe('LoginComponent', () => {
   });
 
   it('should call route to home when login with Google is succsessful', () => {
-    spyOn(component, 'routeToHome');
-    component.loginWithGoogle();
+    const afAuth = TestBed.get(AngularFireAuth)
+    var working = true;
+    var sub = new Subject();
+    var promise = new Promise((resolve, reject) => {
+      resolve(null);
+      sub.next()
+    });
 
-    setTimeout(() => expect(component.routeToHome).toHaveBeenCalledTimes(1), 1000);
-  });
+    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+
+    spyOn(component, "routeToHome")
+
+    component.loginWithGoogle()
+
+    let subscription = sub.subscribe(() => {
+      expect(component.routeToHome).toHaveBeenCalledTimes(1)
+      subscription.unsubscribe()
+    })
+  })
 
   it('should not call route to home when login with google fails', () => {
     spyOn(component, 'routeToHome');
@@ -144,29 +167,65 @@ describe('LoginComponent', () => {
   });
 
   it('should make error message when login with google fails', () => {
-    component.loginWithGoogle();
+    const afAuth = TestBed.get(AngularFireAuth)
+    var sub = new Subject();
+    var promise = new Promise((resolve, reject) => {
+      reject({})
+      sub.next()
+    });
 
-    const alert = fixture.debugElement.queryAll(By.css('.red-text'));
-    setTimeout(() =>
-        expect(alert.length).toBe(1), 1000);
-  });
+    const spy = spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+
+    component.loginWithGoogle()
+
+    let subscription = sub.subscribe(() => {
+      var alert = fixture.debugElement.queryAll(By.css(".red-text"))
+
+      expect(alert.length).toBe(1)
+      subscription.unsubscribe()
+    })
+  })
 
   it('should route to home when login with email and password is successful', () => {
-    spyOn(component, 'routeToHome');
-    component.loginWithFormData();
+    const afAuth = TestBed.get(AngularFireAuth)
+    var working = true;
+    var sub = new Subject();
+    var promise = new Promise((resolve, reject) => {
+      resolve(null)
+      sub.next()
+    });
 
-    setTimeout(() => expect(component.routeToHome).toHaveBeenCalledTimes(1), 1000);
-  });
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise)
+
+    spyOn(component, "routeToHome")
+
+    component.loginWithFormData()
+
+    let subscription = sub.subscribe(() => {
+      expect(component.routeToHome).toHaveBeenCalledTimes(1)
+      subscription.unsubscribe()
+    })
+  })
 
   it('should make error message when login with email and password fails', () => {
+    const afAuth = TestBed.get(AngularFireAuth)
+    var sub = new Subject();
+    var promise = new Promise((resolve, reject) => {
+      reject({})
+      sub.next()
+    });
+
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise)
+
     component.loginWithFormData();
 
-    setTimeout(() => {
-        const alert = fixture.debugElement.queryAll(By.css('.red-text'));
-        expect(alert.length).toBe(1);
-        expect(component.emailPasswordError).toBe('Email or password is invalid');
-      }, 1000);
-  });
+    let subscription = sub.subscribe(() => {
+      var alert = fixture.debugElement.queryAll(By.css(".red-text"));
+      expect(alert.length).toBe(1)
+      expect(component.emailPasswordError).toBe("Email or password is invalid")
+      subscription.unsubscribe()
+    })
+  })
 
   function setInputValue(selector: string, value: string) {
     fixture.detectChanges();
