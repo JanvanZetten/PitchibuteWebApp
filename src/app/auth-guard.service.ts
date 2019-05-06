@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-
-import { Observable } from 'rxjs';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +21,6 @@ export class AuthGuardService implements CanActivate {
   }
 
   getLoggedInUser(): Promise<firebase.User> {
-    const obse = this.afAuth.authState.pipe(first()).toPromise()
-    debugger
-    return obse;
+    return this.afAuth.authState.pipe(first()).toPromise()
   }
 }
