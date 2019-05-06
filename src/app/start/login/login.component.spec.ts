@@ -88,15 +88,15 @@ describe('LoginComponent', () => {
     expect(component.googleloginError).toBe(googleLoginErrTestMsg);
 
     component.resetErrors();
-    expect(component.emailPasswordError).toBeNull;
-    expect(component.googleloginError).toBeNull;
+    expect(component.emailPasswordError).toBe(null);
+    expect(component.googleloginError).toBe(null);
 
     component.emailPasswordError = null;
     component.googleloginError = null;
 
     component.resetErrors();
-    expect(component.emailPasswordError).toBeNull;
-    expect(component.googleloginError).toBeNull;
+    expect(component.emailPasswordError).toBe(null);
+    expect(component.googleloginError).toBe(null);
   });
 
   it('should route to /home when routeToHome() is called', () => {
