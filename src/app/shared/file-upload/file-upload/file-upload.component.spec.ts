@@ -202,6 +202,7 @@ describe('FileUploadComponent', () => {
     @Input() label: string;
     @Output() filesAdded = new EventEmitter<File[]>();
     @Input() disabled: boolean;
+    @Input() preserveFiles: boolean;
   }
 
   // Mock Dropzone module.

@@ -15,7 +15,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
   declarations: [],
   imports: [
     CommonModule,
-    AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireStorageModule
   ]

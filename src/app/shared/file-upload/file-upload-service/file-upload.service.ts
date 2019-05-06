@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { IFile } from '../../../entities/file';
+import { Item, type } from 'src/app/entities/item';
 
 /*
  * FileUploadService used to upload files.
@@ -15,23 +16,40 @@ import { IFile } from '../../../entities/file';
 export class FileUploadService {
 
   constructor(private firestore: AngularFirestore,
-              private firestorage: AngularFireStorage) { }
+    private firestorage: AngularFireStorage) { }
 
-  upload(file: File): Observable<IFile> {
+  upload(parentStructure: Item[], file: File): Observable<IFile> {
+    const path = this.getParentPath(parentStructure);
     const uid = this.firestore.createId();
     return defer(() =>
       this.firestorage.ref('files/' + uid)
-      .put(file, {
-        customMetadata: {
-          originalName: file.name
-        }
-      })
-      .then()
+        .put(file, {
+          customMetadata: {
+            originalName: file.name,
+            path: path
+          }
+        })
+        .then()
     ).pipe(
       map(fileRef => {
         fileRef.id = uid;
         return fileRef;
       })
     );
+  }
+
+  private getParentPath(parentStructure: Item[]): string {
+    var path: string = ''
+    if (parentStructure === undefined || parentStructure === null || parentStructure.length === 0) {
+      return path;
+    }
+    parentStructure.forEach(item => {
+      if (item.id !== null && item.id !== '' && (item.type === type.group || item.type === type.folder || item.type === type.event)) {
+        path = path + item.id + '/'
+      } else {
+        throw new Error("Can't place a file here, check the structure and id's")
+      }
+    })
+    return path
   }
 }
