@@ -25,6 +25,10 @@ const routes: Routes = [
     loadChildren: './shared/file-upload/file-upload.module#FileUploadModule',
     canActivate: [AuthGuard]
   },
+  {
+    path: 'groupmanager',
+    loadChildren: './groups/groups.module#GroupsModule'
+  },
 ];
 
 @NgModule({
