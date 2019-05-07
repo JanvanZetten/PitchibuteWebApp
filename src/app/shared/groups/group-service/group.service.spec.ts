@@ -3,64 +3,73 @@ import {TestBed} from '@angular/core/testing';
 import {GroupService} from './group.service';
 import {Group} from '../../../entities/group';
 import {type} from '../../../entities/item';
-import {of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {environment} from '../../../../environments/environment';
+import {AuthenticationService} from '../../authentication/authentication-service/authentication.service';
+import {Subject} from 'rxjs';
 
 
-const responseMessage = of('Successfully added user to group');
+const responseMessage = 'Successfully added user to group';
 const group: Group[] = [{type: type.event, name: 'EnGruppe', id: 'id123', items: null}];
-const data = of(group);
-
 
 
 describe('GroupService', () => {
   let service: GroupService;
-  let angularFirestore: AngularFirestore;
-  let angularFireStoreStubSpy: any;
-  let documentStub: any;
-  let getStub: any;
-  let pipeStub: any;
-  let subscribeStub: any;
+  let thenStub: any;
+  let catchStub: any;
+  let authServiceStub: any;
+  let authenticationService: AuthenticationService;
   beforeEach(() => {
 
-    angularFireStoreStubSpy = jasmine.createSpyObj('AngularFireStore', ['collection']);
-    documentStub = jasmine.createSpyObj('Document', ['doc']);
-    getStub = jasmine.createSpyObj('Get', ['get']);
-    pipeStub = jasmine.createSpyObj('pipe', ['pipe']);
-    subscribeStub = jasmine.createSpyObj('Subscribe', ['subscribe']);
-    angularFireStoreStubSpy.collection.and.returnValue(documentStub);
-    documentStub.doc.and.returnValue(getStub);
-    getStub.get.and.returnValue(pipeStub);
-    pipeStub.pipe.and.returnValue(subscribeStub);
+    authServiceStub = jasmine.createSpyObj('AuthService', ['getToken']);
+    thenStub = jasmine.createSpyObj('Then', ['then']);
+    catchStub = jasmine.createSpyObj('Catch', ['catch']);
+    authServiceStub.getToken.and.returnValue(thenStub);
 
     TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [GroupService,
-      {provide: AngularFirestore, useValue: angularFireStoreStubSpy},
-    ],
-  });
+      imports: [HttpClientTestingModule],
+      providers: [GroupService,
+        {provide: AuthenticationService, useValue: authServiceStub}
+      ],
+    });
     service = TestBed.get(GroupService);
-    angularFirestore = TestBed.get(AngularFirestore);
+    authenticationService = TestBed.get(AuthenticationService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('Should call Get Http Options and thereafter the getToken from auth service', () => {
+    spyOn(service, 'getHttpOptions');
+    service.getHttpOptions();
+    expect(service.getHttpOptions).toHaveBeenCalled();
   });
 
-  it('should get users and then "add user" and get a response message back', () => {
+  it('Should call GetToken from the service', () => {
+    thenStub.then.and.returnValue(catchStub);
+    service.getHttpOptions();
+    expect(authenticationService.getToken).toHaveBeenCalled();
+  });
 
-
-     service.addUserToGroup(group[0], '123@easv.dk').subscribe( response => {
-        expect(response).toEqual('Successfully added user to group');
+  it('Should get Token value from response', () => {
+    const sub = new Subject();
+    thenStub.then.and.returnValue(new Promise(resolve => {
+      sub.next();
+      return '123';
+    }));
+    spyOn(service.httpOptions.headers, 'set');
+    service.getHttpOptions();
+    const subscription = sub.subscribe( next => {
+      expect(service.httpOptions.headers.set).toHaveBeenCalled();
+      subscription.unsubscribe();
     });
-     expect(angularFirestore.collection).toHaveBeenCalled();
-
-    spyOn(service, 'addUserToGroup').and.returnValue(responseMessage);
-    service.addUserToGroup(group[0], '123@easv.dk').subscribe( response => {
-      expect(response).toEqual('Successfully added user to group');
-    });
-     expect(service.addUserToGroup).toHaveBeenCalled();
   });
+
+  it('Should return a promise from AddUserToGroup', () => {
+    const promiseEmpty = new Promise((resolve, reject) => {
+    });
+
+    spyOn(service, 'addUserToGroup').and.returnValue(promiseEmpty);
+    const promise = service.addUserToGroup(group[0], '123@easv.dk');
+    expect(promise).toEqual(promiseEmpty);
+    expect(service.addUserToGroup).toHaveBeenCalled();
+  });
+
+
 });
