@@ -67,4 +67,78 @@ describe('FileUploadService', () => {
       observable.unsubscribe()
     })
   })
+
+  it('should throw error if one of the parantpath items is a file', () => {
+    const itemArray: Item[] = [
+      { id: 'outermostId', name: 'someName', type: type.group },
+      { id: 'secondId', name: 'someName', type: type.event },
+      { id: 'secondToLastId', name: 'someName', type: type.folder },
+      { id: 'lastId', name: 'someName', type: type.file },
+    ]
+
+    const service: FileUploadService = TestBed.get(FileUploadService);
+
+    try {
+      service.upload(itemArray, null)
+      fail("Did not throw expectet error")
+    } catch (error) {
+      expect(error.message).toBe("Can't place a file here, check the structure and id's")
+    }
+  })
+
+  it('should throw error if one of the parantpath items is a link', () => {
+    const itemArray: Item[] = [
+      { id: 'outermostId', name: 'someName', type: type.group },
+      { id: 'secondId', name: 'someName', type: type.event },
+      { id: 'secondToLastId', name: 'someName', type: type.folder },
+      { id: 'lastId', name: 'someName', type: type.link },
+    ]
+
+    const service: FileUploadService = TestBed.get(FileUploadService);
+
+    try {
+      service.upload(itemArray, null)
+      fail("Did not throw expectet error")
+    } catch (error) {
+      expect(error.message).toBe("Can't place a file here, check the structure and id's")
+    }
+  })
+
+  it('should call put on the firestorage refrence when a file should be uploaded', () => {
+    const itemArray: Item[] = [
+      { id: 'outermostId', name: 'someName', type: type.group },
+      { id: 'secondId', name: 'someName', type: type.event },
+      { id: 'secondToLastId', name: 'someName', type: type.folder },
+      { id: 'lastId', name: 'someName', type: type.folder },
+    ]
+
+    const service: FileUploadService = TestBed.get(FileUploadService);
+    const theFile = { name: '', size: 1, slice: null, lastModified: null, type: null }
+
+    const fireStorage = TestBed.get(AngularFireStorage)
+    const firestore = TestBed.get(AngularFirestore)
+    const fireStorageRefrence: AngularFireStorageReference =
+    {
+      getDownloadURL: null,
+      getMetadata: null,
+      delete: null,
+      child: null,
+      updateMetatdata: null,
+      put: (data, meteData) => { return null },
+      putString: null
+    }
+
+    spyOn(firestore, 'createId').and.returnValue('uniqueId')
+    spyOn(fireStorage, 'ref').and.returnValue(fireStorageRefrence)
+    spyOn(fireStorageRefrence, 'put').and.returnValue(of({}).toPromise())
+
+    const observable = service.upload(itemArray, theFile).pipe(first()).subscribe(() => {
+      expect(fireStorageRefrence.put).toHaveBeenCalledTimes(1)
+      observable.unsubscribe()
+    })
+  })
+
+  it('should return a file refrence with an id', () => {
+    fail("Test not implemented")
+  })
 });
