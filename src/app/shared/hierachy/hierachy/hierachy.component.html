@@ -1,5 +1,7 @@
 <ul>
-  <li *ngFor="let item of items | async">
+  <li *ngFor="let item of (items | async)" (click)="clickPath(item.id, item.type)">
     {{item.name}} {{item.type}}
   </li>
 </ul>
+
+<button (click)="testBTN()">click to refresh the file path</button>

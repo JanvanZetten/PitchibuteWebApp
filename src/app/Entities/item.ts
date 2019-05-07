@@ -1,7 +1,7 @@
 export interface Item {
-    id?: string
-    name: string
-    type: type
+    id?: string;
+    name: string;
+    type: type;
     // Admins: User[]
 }
 
