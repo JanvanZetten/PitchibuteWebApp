@@ -139,6 +139,37 @@ describe('FileUploadService', () => {
   })
 
   it('should return a file refrence with an id', () => {
-    fail("Test not implemented")
+    const itemArray: Item[] = [
+      { id: 'outermostId', name: 'someName', type: type.group },
+      { id: 'secondId', name: 'someName', type: type.event },
+      { id: 'secondToLastId', name: 'someName', type: type.folder },
+      { id: 'lastId', name: 'someName', type: type.folder },
+    ]
+    const theId = 'uniqueId'
+    const service: FileUploadService = TestBed.get(FileUploadService)
+    const theFile = { name: 'SomeName', size: 1, slice: null, lastModified: null, type: null }
+
+    const fireStorage = TestBed.get(AngularFireStorage)
+    const firestore = TestBed.get(AngularFirestore)
+    const fireStorageRefrence: AngularFireStorageReference =
+    {
+      getDownloadURL: null,
+      getMetadata: null,
+      delete: null,
+      child: null,
+      updateMetatdata: null,
+      put: (data, meteData) => { return null },
+      putString: null
+    }
+
+    spyOn(firestore, 'createId').and.returnValue(theId)
+    spyOn(fireStorage, 'ref').and.returnValue(fireStorageRefrence)
+    spyOn(fireStorageRefrence, 'put').and.returnValue(of({}).toPromise())
+
+    const observable = service.upload(itemArray, theFile).pipe(first()).subscribe(output => {
+      expect(output).toBeDefined()
+      expect(output.id).toBe(theId)
+      observable.unsubscribe()
+    })
   })
 });
