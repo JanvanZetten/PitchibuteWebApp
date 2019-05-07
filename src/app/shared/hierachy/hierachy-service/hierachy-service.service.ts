@@ -17,7 +17,9 @@ export class HierachyServiceService {
               private http: HttpClient,
               private auth: AngularFireAuth) { }
 
-  displayGroups(path: string): Observable<any> {
+  // THIS CLASS IS A MESS
+
+  displayItems(path: string): Observable<any> {
     /*this.currentUserUID.subscribe(next => {if (next) {
 
       const headers = {
