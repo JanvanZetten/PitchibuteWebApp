@@ -22,6 +22,10 @@ export class AuthenticationService {
     return this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
   }
 
+  getToken(): Promise<string> {
+    return this.afAuth.auth.currentUser.getIdToken();
+  }
+
   // Email & Password.
   loginWithFormData(email: string, password: string): Promise<UserCredential> {
     return this.afAuth.auth.signInWithEmailAndPassword(
