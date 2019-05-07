@@ -4,7 +4,7 @@ import { NgModule, Component, Input, Output, EventEmitter } from '@angular/core'
 import { By } from '@angular/platform-browser';
 
 import { FileUploadComponent } from './file-upload.component';
-import { IFile } from '../../../Entities/file';
+import { IFile } from '../../../entities/file';
 import { FileUploadService } from '../file-upload-service/file-upload.service';
 
 describe('FileUploadComponent', () => {
@@ -33,7 +33,7 @@ describe('FileUploadComponent', () => {
         { provide: FileUploadService, useValue: fileUploadServiceStub }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -120,7 +120,7 @@ describe('FileUploadComponent', () => {
 
   it('should update states on UploadFile()', () => {
     let fileUploadComponent = fixture.componentInstance;
-    
+
     // Overwrite OnUpload so that it does not change the state.
     let onUploadSpy = spyOn<any>(fileUploadComponent, 'onUpload').and.callFake(function () {
       return undefined;
@@ -181,7 +181,7 @@ describe('FileUploadComponent', () => {
     expect(!fileUploadComponent.hasFailed).toBeTruthy();
     expect(!fileUploadComponent.hasSucceeded).toBeTruthy();
     expect(fileUploadComponent.isLoading).toBeTruthy();
-    
+
     // Call uploadFile().
     fixture.componentInstance.uploadFile([new File(new Array<Blob>(), 'testFile')]);
 
@@ -202,6 +202,7 @@ describe('FileUploadComponent', () => {
     @Input() label: string;
     @Output() filesAdded = new EventEmitter<File[]>();
     @Input() disabled: boolean;
+    @Input() preserveFiles: boolean;
   }
 
   // Mock Dropzone module.
@@ -213,5 +214,5 @@ describe('FileUploadComponent', () => {
       NgxDropzoneComponent,
     ]
   })
-  class NgxDropzoneModule {}
+  class NgxDropzoneModule { }
 });

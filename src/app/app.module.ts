@@ -9,16 +9,18 @@ import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './start/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrerComponent } from './start/registrer/registrer.component';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { WelcomeComponent } from './start/welcome/welcome.component';
-import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
+import {AuthenticationServiceModule} from './shared/authentication/authentication-service.module';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFirestoreModule, FirestoreSettingsToken} from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrerComponent,
-    WelcomeComponent
+    WelcomeComponent,
+
   ],
   imports: [
     SharedModule,
@@ -26,6 +28,7 @@ import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/fi
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     ReactiveFormsModule,
+    AuthenticationServiceModule,
     AngularFireAuthModule,
     AngularFirestoreModule
   ],

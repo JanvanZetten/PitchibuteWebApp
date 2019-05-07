@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Item } from './../../../entities/item';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { timer } from 'rxjs';
 import { FileUploadService } from '../file-upload-service/file-upload.service';
 
@@ -15,12 +16,14 @@ export class FileUploadComponent implements OnInit {
   onSuccessEvent = new EventEmitter<string>();
   @Output() // Emits event with error message.
   onErrorEvent = new EventEmitter<string>();
+  @Input()
+  parentStructure: Item[];
 
   isLoading: boolean = false;
   hasFailed: boolean = false;
   hasSucceeded: boolean = false;
 
-  constructor(private fileUploadService: FileUploadService) {}
+  constructor(private fileUploadService: FileUploadService) { }
 
   ngOnInit() {
   }
@@ -29,9 +32,9 @@ export class FileUploadComponent implements OnInit {
   uploadFile(files: File[]) {
     files.forEach(file => {
       this.isLoading = true;
-      this.fileUploadService.upload(file).subscribe(next => {
-          this.onUpload(`Successfully transferred: ${file.name}`, true);
-        },
+      this.fileUploadService.upload(this.parentStructure, file).subscribe(next => {
+        this.onUpload(`Successfully transferred: ${file.name}`, true);
+      },
         err => {
           this.onUpload(err.message, false);
         });

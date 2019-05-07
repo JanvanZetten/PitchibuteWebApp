@@ -3,11 +3,11 @@
   <form class="center b-margin-m" [formGroup]="loginForm">
     <label class="single-item-on-line center center-text form-label">Email</label>
     <input class="single-item-on-line center form-field b-margin-s" type="text" placeholder="Email..."
-      formControlName="email">
+      formControlName="email" id="emailInput">
 
     <label class="single-item-on-line center center-text form-label">Password</label>
     <input class="single-item-on-line center form-field b-margin-s" type="password" placeholder="Password..."
-      formControlName="password">
+      formControlName="password" id="passwordInput">
 
     <p class="red-text center-text" *ngIf="emailPasswordError">{{emailPasswordError}}</p>
     <input class="btn btn-green btn-press single-item-on-line center" (click)="loginWithFormData()" type="submit"
