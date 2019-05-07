@@ -18,7 +18,7 @@ const httpOptions = {
 
 export class GroupService {
 
-  constructor(private database: AngularFirestore, private http: HttpClient,
+  constructor(private http: HttpClient,
               private authService: AuthenticationService) {
   }
 

@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupManagerComponent } from './group-manager.component';
 import {GroupService} from '../../shared/groups/group-service/group.service';
-import {of} from 'rxjs';
 import {By} from '@angular/platform-browser';
 import {DebugElement} from '@angular/core';
+import {AuthenticationService} from '../../shared/authentication/authentication-service/authentication.service';
 
 describe('GroupManagerComponent', () => {
   let component: GroupManagerComponent;
@@ -12,12 +12,13 @@ describe('GroupManagerComponent', () => {
   let debugElement: DebugElement;
   let service: GroupService;
   let groupServiceStub: any;
+  let authServiceStub: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupManagerComponent ],
       providers: [
-      {provide: GroupService, useValue: groupServiceStub}
+      {provide: GroupService, useValue: groupServiceStub},
       ]
     })
     .compileComponents();
@@ -25,7 +26,7 @@ describe('GroupManagerComponent', () => {
 
   beforeEach(() => {
     groupServiceStub = jasmine.createSpyObj('GroupService', ['addUserToGroup']);
-    groupServiceStub.addUserToGroup.and.returnValue(of('Welcome'));
+    groupServiceStub.addUserToGroup.and.returnValue(Promise.resolve('123'));
 
     fixture = TestBed.createComponent(GroupManagerComponent);
     component = fixture.componentInstance;
