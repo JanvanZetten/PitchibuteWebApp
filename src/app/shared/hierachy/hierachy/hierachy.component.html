@@ -1,9 +1,17 @@
 <ul>
-  <li *ngFor="let item of (items | async)" (click)="clickPath(item)">
-    {{item.name}} {{item.type}}
+  <li *ngFor="let item of (items | async)" (click)="clickPath(item)" >
+    {{item.name}}
+    <i [ngClass]="{'fa-address-book':item.type === 0,
+    'fa-calendar-alt':item.type === 1,
+    'fa-folder':item.type === 2,
+    'fa-file':item.type === 3,
+    'fa-external-link-alt':item.type === 4,
+    'far':item.type === 0 || item.type === 1 || item.type === 2 || item.type === 3,
+    'fas':item.type === 4}"></i>
   </li>
+  <app-file-upload [parentStructure]="currentPathItems"></app-file-upload>
 </ul>
-<app-file-upload [parentStructure]="currentPathItems"></app-file-upload>
+
 
 <button (click)="clickBack()">Click to go back one item</button>
 <button (click)="clickReturnToHome()">Click to refresh the item path</button>
