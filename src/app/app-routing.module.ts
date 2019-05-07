@@ -1,4 +1,3 @@
-import { AuthGuardService } from './auth-guard.service';
 import { WelcomeComponent } from './start/welcome/welcome.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
