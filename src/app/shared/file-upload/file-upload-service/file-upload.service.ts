@@ -19,8 +19,8 @@ export class FileUploadService {
     private firestorage: AngularFireStorage) { }
 
   upload(parentStructure: Item[], file: File): Observable<IFile> {
-    const path = this.getParentPath(parentStructure);
-    const uid = this.firestore.createId();
+    const path = this.getParentPath(parentStructure)
+    const uid = this.firestore.createId()
     return defer(() =>
       this.firestorage.ref('files/' + uid)
         .put(file, {
@@ -32,8 +32,8 @@ export class FileUploadService {
         .then()
     ).pipe(
       map(fileRef => {
-        fileRef.id = uid;
-        return fileRef;
+        fileRef.id = uid
+        return fileRef
       })
     );
   }
@@ -41,7 +41,7 @@ export class FileUploadService {
   private getParentPath(parentStructure: Item[]): string {
     var path: string = ''
     if (parentStructure === undefined || parentStructure === null || parentStructure.length === 0) {
-      return path;
+      return path
     }
     parentStructure.forEach(item => {
       if (item.id !== null && item.id !== '' && (item.type === type.group || item.type === type.folder || item.type === type.event)) {
