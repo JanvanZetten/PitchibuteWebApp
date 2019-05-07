@@ -4,24 +4,44 @@ import {AuthenticationService} from './authentication.service';
 import {AngularFireAuth, AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../../../environments/environment';
+import {Subject} from 'rxjs';
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService;
+  let angularFireAuth: AngularFireAuth;
+
+  let currentUserStub: any;
+  let getIdTokenStub: any;
 
   beforeEach(() => {
+    {
 
-    TestBed.configureTestingModule({
-      imports: [
-        AngularFireAuthModule,
-        AngularFireModule.initializeApp(environment.firebase)
-      ],
-      providers: [AuthenticationService],
-    });
-    service = TestBed.get(AuthenticationService);
+      currentUserStub = jasmine.createSpyObj('CurrentUser', ['currentUser']);
+      getIdTokenStub = jasmine.createSpyObj('GetIdToken', ['getIdToken']);
+
+      currentUserStub.currentUser.and.returnValue(getIdTokenStub);
+      getIdTokenStub.getIdToken.and.returnValue('123');
+
+      TestBed.configureTestingModule({
+        imports: [
+          AngularFireAuthModule,
+          AngularFireModule.initializeApp(environment.firebase)
+        ],
+        providers: [AuthenticationService],
+      });
+      service = TestBed.get(AuthenticationService);
+    }
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+  it('should call log out btn', () => {
+    angularFireAuth = TestBed.get(AngularFireAuth);
+
+    spyOn(angularFireAuth.auth, 'signOut');
+    service.signOut();
+    expect(angularFireAuth.auth.signOut).toHaveBeenCalled()
   });
 
   it('should call signInWithEmailAndPassword when loginWithFormData is called', () => {
