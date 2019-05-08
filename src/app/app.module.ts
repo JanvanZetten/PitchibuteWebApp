@@ -10,7 +10,7 @@ import { LoginComponent } from './start/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrerComponent } from './start/registrer/registrer.component';
 import { WelcomeComponent } from './start/welcome/welcome.component';
-import {AuthenticationServiceModule} from './shared/authentication/authentication-service.module';
+import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,6 @@ import {AuthenticationServiceModule} from './shared/authentication/authenticatio
     LoginComponent,
     RegistrerComponent,
     WelcomeComponent,
-
   ],
   imports: [
     SharedModule,
