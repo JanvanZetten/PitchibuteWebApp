@@ -34,6 +34,10 @@ describe('GroupService', () => {
     service = TestBed.get(GroupService);
     authenticationService = TestBed.get(AuthenticationService);
   });
+  
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
   it('Should call Get Http Options and thereafter the getToken from auth service', () => {
     spyOn(service, 'getHttpOptions');
