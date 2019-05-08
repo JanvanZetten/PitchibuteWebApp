@@ -17,4 +17,4 @@ export class UpdateItem {
     static readonly type = '[Item] Update'
 
     constructor(public payload: Item) { }
-}$  
+}
