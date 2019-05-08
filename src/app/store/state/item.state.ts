@@ -1,4 +1,4 @@
-import { UpdateItem } from './../actions/item.action';
+import { UpdateItem, FetchItems } from './../actions/item.action';
 import { Item } from "src/app/entities/item";
 import { State, Selector, Action, StateContext } from "@ngxs/store";
 import { AddItem, DeleteItem } from "../actions/item.action";
@@ -28,6 +28,7 @@ export class ItemState {
     @Action(AddItem)
     add({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
         const state = getState();
+        //TODO call backend service 
         patchState({
             items: [...state.items, payload]
         });
@@ -36,6 +37,7 @@ export class ItemState {
     @Action(DeleteItem)
     delete({ getState, patchState }: StateContext<ItemStateModel>, { payload }: DeleteItem) {
         const state = getState();
+        //TODO call backend service
         patchState({
             items: state.items.filter(i => i.id !== payload.id)
         });
@@ -44,9 +46,19 @@ export class ItemState {
     @Action(UpdateItem)
     update({ getState, patchState }: StateContext<ItemStateModel>, { payload }: UpdateItem) {
         const state = getState();
+        //TODO call backend service
         patchState({
             items: state.items.map(i => i.id === payload.id ? payload : i)
         });
     }
+
+    @Action(FetchItems)
+    fetch({patchState}: StateContext<ItemStateModel>, {}: FetchItems){
+        // Update the state bassed on the items on firestore via an item service
+        patchState({
+            items: [/*Here should the items from firestore */]
+        });
+    }
+
 
 }
