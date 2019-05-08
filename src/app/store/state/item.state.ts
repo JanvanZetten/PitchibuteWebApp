@@ -6,11 +6,9 @@ import { AddItem, DeleteItem } from "../actions/item.action";
 export class ItemStateModel {
     items: Item[];
 
-
     constructor() {
-        //ItemService get observable of data on firebase and subscribe then set state to the new items
     }
-
+    // If some inital state should be added then the NgxsOnInit can be used
 }
 
 @State<ItemStateModel>({
