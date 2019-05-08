@@ -15,8 +15,10 @@ import { SharedModule } from '../shared.module';
   imports: [
     SharedModule,
     NgxDropzoneModule,
-    FileUploadRoutingModule,
     FileUploadServiceModule,
+  ],
+  exports: [
+    FileUploadComponent
   ]
 })
 export class FileUploadModule { }
