@@ -29,10 +29,6 @@ const routes: Routes = [
     path: 'groupmanager',
     loadChildren: './groups/groups.module#GroupsModule',
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'hierachy',
-    loadChildren: './shared/hierachy/hierachy.module#HierachyModule'
   }
 ];
 

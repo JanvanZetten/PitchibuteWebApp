@@ -10,9 +10,7 @@ import { LoginComponent } from './start/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrerComponent } from './start/registrer/registrer.component';
 import { WelcomeComponent } from './start/welcome/welcome.component';
-import {AuthenticationServiceModule} from './shared/authentication/authentication-service.module';
-import {AngularFireAuthModule} from '@angular/fire/auth';
-import {AngularFirestoreModule, FirestoreSettingsToken} from '@angular/fire/firestore';
+import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
 
 @NgModule({
   declarations: [
@@ -28,11 +26,8 @@ import {AngularFirestoreModule, FirestoreSettingsToken} from '@angular/fire/fire
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     ReactiveFormsModule,
-    AuthenticationServiceModule,
-    AngularFireAuthModule,
-    AngularFirestoreModule
+    AuthenticationServiceModule
   ],
-  providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

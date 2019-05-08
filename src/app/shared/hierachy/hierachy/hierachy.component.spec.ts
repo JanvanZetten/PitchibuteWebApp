@@ -6,7 +6,7 @@ import {DebugElement} from '@angular/core';
 import {FileUploadComponent} from '../../file-upload/file-upload/file-upload.component';
 import {FileUploadService} from '../../file-upload/file-upload-service/file-upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
-import {Item} from '../../../Entities/item';
+import {Item} from '../../../entities/item';
 import {Observable, Subscriber} from 'rxjs';
 
 
@@ -44,17 +44,17 @@ describe('HierachyComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show a list of items when created', async () => {
+  it('should set an observable array of items when initiated', async () => {
     component.ngOnInit();
     component.items.subscribe(result => expect(result.length).toBeGreaterThan(0));
   });
 
   it('should generate the correct url for an http request', () => {
     const url = '/items/one/items/two/items/three/items';
-    expect(url).toBe(component.generateHttpURL());
+    expect(component.generateHttpURL()).toBe(url);
   });
 
-  it('should add to the local file path when an item is clicked', () => {
+  it('should add to the local file path when an item is clicked and add the correct item', () => {
     const item4 = <Item>{
       id: 'four',
       name: 'item4',
@@ -63,12 +63,21 @@ describe('HierachyComponent', () => {
     expect(component.currentPathItems.length).toBe(3);
     component.clickPath(item4);
     expect(component.currentPathItems.length).toBe(4);
+    expect(component.currentPathItems[3]).toBe(item4);
   });
 
   it('should shave off the path when the "go back" button is pressed', () => {
     expect(component.currentPathItems.length).toBe(3);
     component.clickBack();
     expect(component.currentPathItems.length).toBe(2);
+  });
+
+  it('should pop the correct item in the array when the "go back" button is pressed', () => {
+    expect(component.currentPathItems.length).toBe(3);
+    component.clickBack();
+    if (component.currentPathItems.find(i => i.id === 'three') === null) {
+      fail();
+    }
   });
 
   it('should reset the path when the "go home" button is pressed', () => {
