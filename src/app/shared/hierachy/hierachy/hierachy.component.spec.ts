@@ -6,7 +6,7 @@ import {DebugElement} from '@angular/core';
 import {FileUploadComponent} from '../../file-upload/file-upload/file-upload.component';
 import {FileUploadService} from '../../file-upload/file-upload-service/file-upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
-import {Item} from '../../../Entities/item';
+import {Item} from '../../../entities/item';
 import {Observable, Subscriber} from 'rxjs';
 
 

@@ -1,4 +1,4 @@
-import { Item, type } from './../../../entities/item';
+import { Item, type } from '../../../entities/item';
 import { TestBed, async } from '@angular/core/testing';
 
 import { FileUploadService } from './file-upload.service';
