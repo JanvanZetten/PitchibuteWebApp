@@ -1,19 +1,20 @@
-ol {
-  background: #ff9999;
-  padding: 20px;
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
 }
 
-ul {
-  background: #3399ff;
-  padding: 20px;
+.icon {
+  text-align: right;
+  width: 165px;
 }
 
-ol li {
-  padding: 5px;
-  margin-left: 35px;
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }
 
-ul li {
-  background: #cce5ff;
-  margin: 5px;
+tr:nth-child(even) {
+  background-color: #dddddd;
 }

@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
+import {HierachyComponent} from '../shared/hierachy/hierachy/hierachy.component';
+import {FileUploadComponent} from '../shared/file-upload/file-upload/file-upload.component';
+import {NgxDropzoneModule} from 'ngx-dropzone';
+import {HierachyServiceService} from '../shared/hierachy/hierachy-service/hierachy-service.service';
+import {FileUploadService} from '../shared/file-upload/file-upload-service/file-upload.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -8,7 +13,18 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      declarations: [
+        HomeComponent,
+        HierachyComponent,
+        FileUploadComponent
+      ],
+      providers: [
+        {provide: HierachyServiceService, useClass: HierachyServiceStub},
+        {provide: FileUploadService, useClass: FileUploadCServiceStub}
+      ],
+      imports: [
+        [NgxDropzoneModule],
+      ]
     })
     .compileComponents();
   }));
@@ -23,3 +39,8 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+export class HierachyServiceStub {
+  displayItems() {}
+}
+export class FileUploadCServiceStub {}
