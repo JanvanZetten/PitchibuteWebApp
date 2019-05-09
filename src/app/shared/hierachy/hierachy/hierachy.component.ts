@@ -24,7 +24,8 @@ export class HierachyComponent implements OnInit {
     if (item.type === type.group || item.type === type.event || item.type === type.folder) {
       this.currentPathItems.push(item);
       this.items = this.service.displayItems(this.generateHttpURL());
-    } else if (item.type === type.file || item.type === type.link) { // ADD SOMETHING HERE
+    } else if (item.type === type.file || item.type === type.link) { 
+      // ADD SOMETHING HERE
       }
   }
 

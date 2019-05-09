@@ -1,6 +1,6 @@
 import { UpdateItem, FetchItems } from './../actions/item.action';
 import { Item } from "src/app/entities/item";
-import { State, Selector, Action, StateContext } from "@ngxs/store";
+import { State, Selector, Action, StateContext, createSelector } from "@ngxs/store";
 import { AddItem, DeleteItem } from "../actions/item.action";
 
 export class ItemStateModel {
@@ -23,6 +23,13 @@ export class ItemState {
     @Selector()
     static getItems(state: ItemStateModel) {
         return state.items;
+    }
+
+    static directChildren(parrentPath: Item) {
+        return createSelector([ItemState], (state: Item[]) => {
+            // TODO add some check here to only get the children maybe run the fetch state
+            return state
+        });
     }
 
     @Action(AddItem)
@@ -53,7 +60,7 @@ export class ItemState {
     }
 
     @Action(FetchItems)
-    fetch({patchState}: StateContext<ItemStateModel>, {}: FetchItems){
+    fetch({ patchState }: StateContext<ItemStateModel>, { }: FetchItems) {
         // Update the state bassed on the items on firestore via an item service
         patchState({
             items: [/*Here should the items from firestore */]
