@@ -18,7 +18,7 @@ export class HierachyServiceService {
     private http: HttpClient,
     private auth: AngularFireAuth) { }
 
-  public getChildItemsFromFirebaseFunction(path: Item[]): Observable<Item[]> {
+  getChildItemsFromFirebaseFunction(path: Item[]): Observable<Item[]> {
     /* Some stuff that is not used but it was here, TODO ask Alex about this
     const self = this;
     // This cannot get the UID needed in the header below.
@@ -41,7 +41,7 @@ export class HierachyServiceService {
     return this.http.get('https://us-central1-pitchibute.cloudfunctions.net/getPathItems', headers) as Observable<Item[]>;
   }
 
-  private generateStoreUri(path: Item[]): string {
+  generateStoreUri(path: Item[]): string {
     const itemsUriPart = '/items'
     let currentPathString = itemsUriPart;
     path.forEach(arrayItem => {

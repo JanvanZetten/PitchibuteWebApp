@@ -1,13 +1,13 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {HierachyComponent} from './hierachy.component';
-import {HierachyServiceService} from '../hierachy-service/hierachy-service.service';
-import {DebugElement} from '@angular/core';
-import {FileUploadComponent} from '../../file-upload/file-upload/file-upload.component';
-import {FileUploadService} from '../../file-upload/file-upload-service/file-upload.service';
-import {NgxDropzoneModule} from 'ngx-dropzone';
-import {Item} from '../../../entities/item';
-import {Observable, Subscriber} from 'rxjs';
+import { HierachyComponent } from './hierachy.component';
+import { HierachyServiceService } from '../hierachy-service/hierachy-service.service';
+import { DebugElement } from '@angular/core';
+import { FileUploadComponent } from '../../file-upload/file-upload/file-upload.component';
+import { FileUploadService } from '../../file-upload/file-upload-service/file-upload.service';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { Item } from '../../../entities/item';
+import { Observable, Subscriber } from 'rxjs';
 
 
 describe('HierachyComponent', () => {
@@ -22,8 +22,8 @@ describe('HierachyComponent', () => {
         FileUploadComponent
       ],
       providers: [
-        {provide: HierachyServiceService, useClass: HierachyServiceStub},
-        {provide: FileUploadService, useClass: FileUploadCServiceStub}
+        { provide: HierachyServiceService, useClass: HierachyServiceStub },
+        { provide: FileUploadService, useClass: FileUploadCServiceStub }
       ],
       imports: [
         [NgxDropzoneModule],
@@ -47,11 +47,6 @@ describe('HierachyComponent', () => {
   it('should set an observable array of items when initiated', async () => {
     component.ngOnInit();
     component.items.subscribe(result => expect(result.length).toBeGreaterThan(0));
-  });
-
-  it('should generate the correct url for an http request', () => {
-    const url = '/items/one/items/two/items/three/items';
-    expect(component.generateHttpURL()).toBe(url);
   });
 
   it('should add to the local file path when an item is clicked and add the correct item', () => {
@@ -114,7 +109,7 @@ describe('HierachyComponent', () => {
 
 export class HierachyServiceStub {
   // This function converts the argued array into an Observable<any> to be returned into the component.
-  displayItems(items: Item[]): Observable<any> {
+  getChildItemsFromFirebaseFunction(items: Item[]): Observable<any> {
     return Observable.create((observer: Subscriber<any>) => {
       observer.next(items);
       observer.complete();
@@ -123,4 +118,4 @@ export class HierachyServiceStub {
   }
 }
 
-export class FileUploadCServiceStub {}
+export class FileUploadCServiceStub { }

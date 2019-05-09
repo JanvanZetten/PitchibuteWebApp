@@ -13,10 +13,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 })
 export class ItemService {
 
-  constructor(
-    private db: AngularFirestore,
-    private http: HttpClient,
-    private auth: AngularFireAuth) { }
+  constructor() { }
 
   public static getChildItems(parentPath: Item[]): Observable<Item[]> {
     return null
