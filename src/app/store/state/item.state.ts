@@ -1,10 +1,15 @@
+import { Resource } from './../../entities/resource';
+import { Group } from './../../entities/group';
+import { Folder } from './../../entities/folder';
+import { Event as EventEntitie } from './../../entities/event';
 import { UpdateItem, FetchItems, NavigateIntoItem, GoBack } from './../actions/item.action';
-import { Item } from "src/app/entities/item";
+import { Item, type } from "src/app/entities/item";
 import { State, Selector, Action, StateContext, createSelector } from "@ngxs/store";
 import { AddItem, DeleteItem } from "../actions/item.action";
+import { ItemService } from 'src/app/shared/item/item.service';
 
 export class ItemStateModel {
-    items: Item[];
+    itemTree: Item[];
     path: Item[];
 
     constructor() {
@@ -15,7 +20,7 @@ export class ItemStateModel {
 @State<ItemStateModel>({
     name: 'items',
     defaults: {
-        items: [],
+        itemTree: [],
         path: []
     }
 })
@@ -23,18 +28,29 @@ export class ItemStateModel {
 export class ItemState {
 
     @Selector()
-    static getItems(state: ItemStateModel) {
-        return state.items;
+    static getChildren(state: ItemStateModel) {
+        var children = state.itemTree
+        state.path.forEach(i => {
+            const childToGo = children.find(c => c.id === i.id)
+            if (childToGo.type === type.event) {
+                children = (childToGo as EventEntitie).resources
+            } else if (childToGo.type === type.folder) {
+                children = (childToGo as Folder).resources
+            } else if (childToGo.type === type.group) {
+                children = (childToGo as Group).items
+            } else {
+                throw new Error("Unexpected error occured, item can't have items")
+            }
+        })
+        return children
     }
-
-    // TODO GetChildren
 
     @Action(AddItem)
     add({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
         const state = getState();
         //TODO call backend service 
         patchState({
-            items: [...state.items, payload]
+            //itemTree: [...state.items, payload]
         });
     }
 
@@ -43,7 +59,7 @@ export class ItemState {
         const state = getState();
         //TODO call backend service
         patchState({
-            items: state.items.filter(i => i.id !== payload.id)
+            //itemTree: state.items.filter(i => i.id !== payload.id)
         });
     }
 
@@ -52,7 +68,7 @@ export class ItemState {
         const state = getState();
         //TODO call backend service
         patchState({
-            items: state.items.map(i => i.id === payload.id ? payload : i)
+            //itemTree: state.items.map(i => i.id === payload.id ? payload : i)
         });
     }
 
@@ -60,18 +76,19 @@ export class ItemState {
     fetch({ patchState }: StateContext<ItemStateModel>, { }: FetchItems) {
         // Update the state bassed on the items on firestore via an item service
         patchState({
-            items: [/*Here should the items from firestore */]
+            //itemTree: [/*Here should the items from firestore */]
         });
     }
 
     @Action(NavigateIntoItem)
     navigateInto({ getState, patchState }: StateContext<ItemStateModel>, { payload }: NavigateIntoItem) {
         const state = getState();
+        // TODO check if the item exists and check that it is a of a type that is valid to navigat into.
+        // TODO if the cheks have passed then add item to the current path and load the children from firebase.
+        const children = ItemService.getChildItems(state.path.concat(payload))
 
         patchState({
-            // TODO check if the item exists and check that it is a of a type that is valid to navigat into.
-            // TODO if the cheks have passed then add item to the current path and load the children from firebase.
-            
+
         });
     }
 
