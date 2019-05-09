@@ -24,14 +24,14 @@ export class GroupService {
 
   getHttpOptions() {
     this.authService.getToken().then(token => {
-      this.httpOptions.headers.set('Authorization', token);
+      this.httpOptions.headers = this.httpOptions.headers.set('Authorization', 'Bearer ' + token);
     });
   }
 
   // Retrieve group data, and then sending HTTP request to add new user.
   async addUserToGroup(group: Group, email: string): Promise<any> {
     await this.getHttpOptions();
-    return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/addUserToGroup',
+    return this.http.post('http://localhost:5000/pitchibute/us-central1/addUserToGroup',
       {collection: 'groups', doc: group.id, email: email},
       this.httpOptions).toPromise();
   }

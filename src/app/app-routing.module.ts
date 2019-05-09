@@ -25,7 +25,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'groupmanager',
+    path: 'groupmanager/:id',
     loadChildren: './groups/groups.module#GroupsModule',
     canActivate: [AuthGuard]
   }

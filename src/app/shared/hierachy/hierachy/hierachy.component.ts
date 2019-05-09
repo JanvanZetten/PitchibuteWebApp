@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import { Item, type } from 'src/app/entities/item';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {Item, type} from 'src/app/entities/item';
 import {HierachyServiceService} from '../hierachy-service/hierachy-service.service';
 import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-hierachy',
@@ -14,10 +15,15 @@ export class HierachyComponent implements OnInit {
   staticMainPath = '/items';
   currentPathItems: Item[] = [];
 
-  constructor(private service: HierachyServiceService) { }
+  constructor(private service: HierachyServiceService, private router: Router) {
+  }
 
   ngOnInit() {
     this.items = this.service.displayItems(this.staticMainPath);
+  }
+
+  openMenu(event: Event) {
+    event.stopPropagation();
   }
 
   clickPath(item: Item) {
@@ -25,7 +31,7 @@ export class HierachyComponent implements OnInit {
       this.currentPathItems.push(item);
       this.items = this.service.displayItems(this.generateHttpURL());
     } else if (item.type === type.file || item.type === type.link) { // ADD SOMETHING HERE
-      }
+    }
   }
 
   clickBack() {
@@ -40,7 +46,7 @@ export class HierachyComponent implements OnInit {
 
   generateHttpURL(): string {
     let currentPathString = this.staticMainPath;
-    this.currentPathItems.forEach( arrayItem => {
+    this.currentPathItems.forEach(arrayItem => {
       currentPathString = currentPathString + '/' + arrayItem.id + '/items';
     });
     return currentPathString;

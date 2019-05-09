@@ -39,7 +39,7 @@ describe('GroupService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('Should call Get Http Options and thereafter the getToken from auth service', () => {
+  it('Should call Get Http Options', () => {
     spyOn(service, 'getHttpOptions');
     service.getHttpOptions();
     expect(service.getHttpOptions).toHaveBeenCalled();
