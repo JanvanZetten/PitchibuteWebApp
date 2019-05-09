@@ -1,10 +1,6 @@
-import { Resource } from './../../entities/resource';
-import { Group } from './../../entities/group';
-import { Folder } from './../../entities/folder';
-import { Event as EventEntitie } from './../../entities/event';
+import { Item, type } from './../../entities/item';
 import { UpdateItem, FetchItems, NavigateIntoItem, GoBack } from './../actions/item.action';
-import { Item, type } from "src/app/entities/item";
-import { State, Selector, Action, StateContext, createSelector } from "@ngxs/store";
+import { State, Selector, Action, StateContext } from "@ngxs/store";
 import { AddItem, DeleteItem } from "../actions/item.action";
 import { ItemService } from 'src/app/shared/item/item.service';
 
@@ -29,20 +25,7 @@ export class ItemState {
 
     @Selector()
     static getChildren(state: ItemStateModel) {
-        var children = state.itemTree
-        state.path.forEach(i => {
-            const childToGo = children.find(c => c.id === i.id)
-            if (childToGo.type === type.event) {
-                children = (childToGo as EventEntitie).resources
-            } else if (childToGo.type === type.folder) {
-                children = (childToGo as Folder).resources
-            } else if (childToGo.type === type.group) {
-                children = (childToGo as Group).items
-            } else {
-                throw new Error("Unexpected error occured, item can't have items")
-            }
-        })
-        return children
+        return ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
     }
 
     @Action(AddItem)
@@ -83,13 +66,26 @@ export class ItemState {
     @Action(NavigateIntoItem)
     navigateInto({ getState, patchState }: StateContext<ItemStateModel>, { payload }: NavigateIntoItem) {
         const state = getState();
-        // TODO check if the item exists and check that it is a of a type that is valid to navigat into.
-        // TODO if the cheks have passed then add item to the current path and load the children from firebase.
-        const children = ItemService.getChildItems(state.path.concat(payload))
+        const itemToNavigate = ItemService
+            .getChildrenFromPathAndTree(state.path, state.itemTree)
+            .find(i => i.id === payload.id)
+
+        if (itemToNavigate.type === type.file || itemToNavigate.type === type.link) {
+            throw new Error("Can't navigate into files or links")
+        }
+        const newPath = [...state.path, itemToNavigate]
 
         patchState({
-
+            path: newPath
         });
+
+        ItemService.getChildItems(state.path.concat(itemToNavigate))
+            .subscribe(children => {
+                const UpdatedTree = ItemService.updateTree(state.itemTree, newPath, children)
+                patchState({
+                    itemTree: UpdatedTree
+                });
+            })
     }
 
     @Action(GoBack)
