@@ -4,16 +4,21 @@ import { Group } from './../../entities/group';
 import { Folder } from './../../entities/folder';
 import { Event } from './../../entities/event';
 import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  constructor() { }
+  constructor(
+    private db: AngularFirestore,
+    private http: HttpClient,
+    private auth: AngularFireAuth) { }
 
   public static getChildItems(parentPath: Item[]): Observable<Item[]> {
-    // TODO get the child items from firebase
     return null
   }
 

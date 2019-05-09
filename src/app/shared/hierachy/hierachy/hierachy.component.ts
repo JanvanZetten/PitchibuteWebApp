@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Item, type } from 'src/app/entities/item';
-import {HierachyServiceService} from '../hierachy-service/hierachy-service.service';
-import {Observable} from 'rxjs';
+import { HierachyServiceService } from '../hierachy-service/hierachy-service.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-hierachy',
@@ -17,28 +17,29 @@ export class HierachyComponent implements OnInit {
   constructor(private service: HierachyServiceService) { }
 
   ngOnInit() {
-    this.items = this.service.displayItems(this.staticMainPath);
+    this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
   }
 
   clickPath(item: Item) {
     if (item.type === type.group || item.type === type.event || item.type === type.folder) {
       this.currentPathItems.push(item);
-      this.items = this.service.displayItems(this.generateHttpURL());
-    } else if (item.type === type.file || item.type === type.link) { 
+      this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
+    } else if (item.type === type.file || item.type === type.link) {
       // ADD SOMETHING HERE
-      }
+    }
   }
 
   clickBack() {
     this.currentPathItems.pop();
-    this.items = this.service.displayItems(this.generateHttpURL());
+    this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
   }
 
   clickReturnToHome() {
     this.currentPathItems = [];
-    this.items = this.service.displayItems(this.generateHttpURL());
+    this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
   }
 
+  /* TODO this should be removed
   generateHttpURL(): string {
     let currentPathString = this.staticMainPath;
     this.currentPathItems.forEach( arrayItem => {
@@ -46,6 +47,5 @@ export class HierachyComponent implements OnInit {
     });
     return currentPathString;
   }
-
-
+  */
 }
