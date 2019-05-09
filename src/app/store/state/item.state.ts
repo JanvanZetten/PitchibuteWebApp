@@ -1,10 +1,11 @@
-import { UpdateItem, FetchItems } from './../actions/item.action';
+import { UpdateItem, FetchItems, NavigateIntoItem, GoBack } from './../actions/item.action';
 import { Item } from "src/app/entities/item";
 import { State, Selector, Action, StateContext, createSelector } from "@ngxs/store";
 import { AddItem, DeleteItem } from "../actions/item.action";
 
 export class ItemStateModel {
     items: Item[];
+    path: Item[];
 
     constructor() {
     }
@@ -14,7 +15,8 @@ export class ItemStateModel {
 @State<ItemStateModel>({
     name: 'items',
     defaults: {
-        items: []
+        items: [],
+        path: []
     }
 })
 
@@ -25,12 +27,7 @@ export class ItemState {
         return state.items;
     }
 
-    static directChildren(parrentPath: Item) {
-        return createSelector([ItemState], (state: Item[]) => {
-            // TODO add some check here to only get the children maybe run the fetch state
-            return state
-        });
-    }
+    // TODO GetChildren
 
     @Action(AddItem)
     add({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
@@ -67,5 +64,22 @@ export class ItemState {
         });
     }
 
+    @Action(NavigateIntoItem)
+    navigateInto({ getState, patchState }: StateContext<ItemStateModel>, { payload }: NavigateIntoItem) {
+        const state = getState();
 
+        patchState({
+            // TODO check if the item exists and check that it is a of a type that is valid to navigat into.
+            // TODO if the cheks have passed then add item to the current path and load the children from firebase.
+            
+        });
+    }
+
+    @Action(GoBack)
+    goBack({ getState, patchState }: StateContext<ItemStateModel>, { }: GoBack) {
+        const state = getState();
+        patchState({
+            path: state.path.slice(0, state.path.length - 1) // -1 to remove the last item
+        });
+    }
 }

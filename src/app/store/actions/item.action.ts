@@ -21,5 +21,15 @@ export class UpdateItem {
 
 export class FetchItems {
     static readonly type = '[Item] Fetch'
-    constructor(){}
+    constructor() { }
+}
+
+export class NavigateIntoItem {
+    static readonly type = '[Item] NavigateInto'
+    constructor(public payload: Item) { }
+}
+
+export class GoBack {
+    static readonly type = '[Item] GoBack'
+    constructor() { }
 }
