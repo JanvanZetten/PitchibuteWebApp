@@ -1,24 +1,22 @@
 import { Item, type } from './../../entities/item';
-import { UpdateItem, FetchItems, NavigateIntoItem, GoBack } from './../actions/item.action';
-import { State, Selector, Action, StateContext } from "@ngxs/store";
-import { AddItem, DeleteItem } from "../actions/item.action";
+import { NavigateIntoItem, GoBack } from './../actions/item.action';
+import { State, Selector, Action, StateContext, NgxsOnInit } from "@ngxs/store";
 import { ItemService } from 'src/app/shared/item/item.service';
 
-export class ItemStateModel {
+export class ItemStateModel implements NgxsOnInit {
     itemTree: Item[];
     path: Item[];
 
-    constructor() {
+    // Set the initial outermost items in the tree
+    ngxsOnInit(ctx?: StateContext<ItemStateModel>) {
+        ctx.getState().path = []
+        ItemService.getChildItems([]).subscribe(items =>
+            ctx.getState().itemTree = items)
     }
-    // If some inital state should be added then the NgxsOnInit can be used
 }
 
 @State<ItemStateModel>({
-    name: 'items',
-    defaults: {
-        itemTree: [],
-        path: []
-    }
+    name: 'items'
 })
 
 export class ItemState {
@@ -26,41 +24,6 @@ export class ItemState {
     @Selector()
     static getChildren(state: ItemStateModel) {
         return ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
-    }
-
-    @Action(AddItem)
-    add({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
-        const state = getState();
-        //TODO call backend service 
-        patchState({
-            //itemTree: [...state.items, payload]
-        });
-    }
-
-    @Action(DeleteItem)
-    delete({ getState, patchState }: StateContext<ItemStateModel>, { payload }: DeleteItem) {
-        const state = getState();
-        //TODO call backend service
-        patchState({
-            //itemTree: state.items.filter(i => i.id !== payload.id)
-        });
-    }
-
-    @Action(UpdateItem)
-    update({ getState, patchState }: StateContext<ItemStateModel>, { payload }: UpdateItem) {
-        const state = getState();
-        //TODO call backend service
-        patchState({
-            //itemTree: state.items.map(i => i.id === payload.id ? payload : i)
-        });
-    }
-
-    @Action(FetchItems)
-    fetch({ patchState }: StateContext<ItemStateModel>, { }: FetchItems) {
-        // Update the state bassed on the items on firestore via an item service
-        patchState({
-            //itemTree: [/*Here should the items from firestore */]
-        });
     }
 
     @Action(NavigateIntoItem)
@@ -73,6 +36,7 @@ export class ItemState {
         if (itemToNavigate.type === type.file || itemToNavigate.type === type.link) {
             throw new Error("Can't navigate into files or links")
         }
+
         const newPath = [...state.path, itemToNavigate]
 
         patchState({
@@ -95,4 +59,41 @@ export class ItemState {
             path: state.path.slice(0, state.path.length - 1) // -1 to remove the last item
         });
     }
+
+    /*
+        @Action(AddItem)
+        add({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
+            const state = getState();
+            //TODO call backend service 
+            patchState({
+                //itemTree: [...state.items, payload]
+            });
+        }
+    
+        @Action(DeleteItem)
+        delete({ getState, patchState }: StateContext<ItemStateModel>, { payload }: DeleteItem) {
+            const state = getState();
+            //TODO call backend service
+            patchState({
+                //itemTree: state.items.filter(i => i.id !== payload.id)
+            });
+        }
+    
+        @Action(UpdateItem)
+        update({ getState, patchState }: StateContext<ItemStateModel>, { payload }: UpdateItem) {
+            const state = getState();
+            //TODO call backend service
+            patchState({
+                //itemTree: state.items.map(i => i.id === payload.id ? payload : i)
+            });
+        }
+    
+        @Action(FetchItems)
+        fetch({ patchState }: StateContext<ItemStateModel>, { }: FetchItems) {
+            // Update the state bassed on the items on firestore via an item service
+            patchState({
+                //itemTree: [/*Here should the items from firestore *//*]
+});
+}
+*/
 }

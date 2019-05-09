@@ -37,8 +37,8 @@ export class ItemService {
     return children
   }
 
-  public static updateTree(oldTree: Item[], pathToWhereToUpdate: Item[], newChildren: Item[]): Item[]{
-
+  public static updateTree(oldTree: Item[], pathToWhereToUpdate: Item[], newChildren: Item[]): Item[] {
+    // TODO return tree with the new children in the place of where the path goes
     return null;
   }
 }
