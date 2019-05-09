@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { RouterModule, Routes } from '@angular/router';
+import {HierachyModule} from '../shared/hierachy/hierachy.module';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }
 ];
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [
+    HomeComponent,
+  ],
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    HierachyModule
   ]
 })
 export class HomeModule { }
