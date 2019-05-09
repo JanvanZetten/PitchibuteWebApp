@@ -23,7 +23,7 @@ export class GroupManagerComponent implements OnInit {
   }
 
   addUserToGroup(email: string) {
-    this.groupService.addUserToGroup(this.groupForTest, email).subscribe(rspMsg => {
+    this.groupService.addUserToGroup(this.groupForTest, email).then(rspMsg => {
       this.responseMessage = rspMsg;
     }, error => {
       this.errorMessage = error.message;

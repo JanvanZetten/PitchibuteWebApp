@@ -27,7 +27,6 @@ import { AuthenticationServiceModule } from './shared/authentication/authenticat
     ReactiveFormsModule,
     AuthenticationServiceModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
