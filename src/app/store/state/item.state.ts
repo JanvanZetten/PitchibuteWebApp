@@ -7,10 +7,12 @@ export class ItemStateModel implements NgxsOnInit {
     itemTree: Item[];
     path: Item[];
 
+    constructor(private itemService: ItemService) { }
+
     // Set the initial outermost items in the tree
     ngxsOnInit(ctx?: StateContext<ItemStateModel>) {
         ctx.getState().path = []
-        ItemService.getChildItems([]).subscribe(items =>
+        this.itemService.getChildItems([]).subscribe(items =>
             ctx.getState().itemTree = items)
     }
 }
@@ -20,6 +22,8 @@ export class ItemStateModel implements NgxsOnInit {
 })
 
 export class ItemState {
+
+    constructor(private itemService: ItemService) { }
 
     @Selector()
     static getChildren(state: ItemStateModel) {
@@ -43,7 +47,7 @@ export class ItemState {
             path: newPath
         });
 
-        ItemService.getChildItems(state.path.concat(itemToNavigate))
+        this.itemService.getChildItems(state.path.concat(itemToNavigate))
             .subscribe(children => {
                 const UpdatedTree = ItemService.updateTree(state.itemTree, newPath, children)
                 patchState({

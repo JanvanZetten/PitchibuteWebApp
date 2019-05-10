@@ -1,3 +1,4 @@
+import { HierachyServiceService } from './../hierachy/hierachy-service/hierachy-service.service';
 import { Injectable } from '@angular/core';
 import { Item, type } from 'src/app/entities/item';
 import { Group } from './../../entities/group';
@@ -13,10 +14,10 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 })
 export class ItemService {
 
-  constructor() { }
+  constructor(private hiearchyService: HierachyServiceService) { }
 
-  public static getChildItems(parentPath: Item[]): Observable<Item[]> {
-    return null
+  public getChildItems(parentPath: Item[]): Observable<Item[]> {
+    return this.hiearchyService.getChildItemsFromFirebaseFunction(parentPath)
   }
 
   public static getChildrenFromPathAndTree(path: Item[], tree: Item[]): Item[] {
@@ -26,21 +27,36 @@ export class ItemService {
         throw new Error(`Unexpected error occured, item ${i.name} is missing id`)
       }
       const childToGo = children.find(c => c.id === i.id)
-      if (childToGo.type === type.event) {
-        children = (childToGo as Event).resources
-      } else if (childToGo.type === type.folder) {
-        children = (childToGo as Folder).resources
-      } else if (childToGo.type === type.group) {
-        children = (childToGo as Group).items
-      } else {
-        throw new Error(`Unexpected error occured, item ${i.name} can't have items`)
-      }
+      children = this.getChildArray(childToGo)
     })
     return children
   }
 
   public static updateTree(oldTree: Item[], pathToWhereToUpdate: Item[], newChildren: Item[]): Item[] {
-    // TODO return tree with the new children in the place of where the path goes
-    return null;
+    const itemToUpdate = oldTree.find(i => i.id === pathToWhereToUpdate[0].id)
+    var ref = itemToUpdate
+
+    for (let i = 1; i < pathToWhereToUpdate.length; i++) {
+      const pathItem = pathToWhereToUpdate[i]
+      const children = this.getChildArray(ref)
+      ref = children.find(item => item.id === pathItem.id)
+    }
+
+    //TODO Update the item to update
+
+    return oldTree.map(i => i.id === itemToUpdate.id ? itemToUpdate : i)
+  }
+
+  private static getChildArray(parent: Item): Item[] {
+    if (parent.type === type.event) {
+      return (parent as Event).resources
+    } else if (parent.type === type.folder) {
+      return (parent as Folder).resources
+    } else if (parent.type === type.group) {
+      return (parent as Group).items
+    } else {
+      throw new Error(`Unexpected error occured, item ${i.name} can't have items`)
+    }
+
   }
 }
