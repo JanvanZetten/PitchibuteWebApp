@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
-import {Group} from '../../../entities/group';
-import {AngularFireStorage} from '@angular/fire/storage';
 import {FileDownloadServiceModule} from '../file-download-service.module';
 import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { map, switchMap } from 'rxjs/operators';
-import { type as Type } from '../../../entities/item';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: FileDownloadServiceModule
 })
 export class FileDownloadService {
 
-  constructor(private fireStorage: AngularFireStorage,
-              private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   /*
    * Using a function to download file.
@@ -42,8 +38,6 @@ export class FileDownloadService {
 
       // Return filename and blob.
       return ({ fileName: fileName, blob: response.body });
-      }, err => {
-        throwError(err);
     }));
   }
 }
