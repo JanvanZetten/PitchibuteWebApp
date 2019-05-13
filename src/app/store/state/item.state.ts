@@ -48,9 +48,9 @@ export class ItemState implements NgxsOnInit {
 
         patchState({
             path: newPath
-        });
+        })
 
-        this.itemService.getChildItems(state.path.concat(itemToNavigate))
+        this.itemService.getChildItems(newPath)
             .subscribe(children => {
                 const UpdatedTree = ItemService.updateTree(state.itemTree, newPath, children)
                 patchState({
