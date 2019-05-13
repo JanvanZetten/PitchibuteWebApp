@@ -1,7 +1,10 @@
+import { GoBack, ResetPath } from './../../../store/actions/item.action';
+import { Store } from '@ngxs/store';
 import { Component, OnInit } from '@angular/core';
 import { Item, type } from 'src/app/entities/item';
-import { HierachyServiceService } from '../hierachy-service/hierachy-service.service';
 import { Observable } from 'rxjs';
+import { ItemState } from 'src/app/store/state/item.state';
+import { NavigateIntoItem } from 'src/app/store/actions/item.action';
 
 @Component({
   selector: 'app-hierachy',
@@ -14,38 +17,29 @@ export class HierachyComponent implements OnInit {
   staticMainPath = '/items';
   currentPathItems: Item[] = [];
 
-  constructor(private service: HierachyServiceService) { }
+
+  constructor(private store: Store) { }
 
   ngOnInit() {
-    this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
+    this.items = this.store.select(ItemState.getChildren)
   }
 
   clickPath(item: Item) {
     if (item.type === type.group || item.type === type.event || item.type === type.folder) {
-      this.currentPathItems.push(item);
-      this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
+      this.store.dispatch(new NavigateIntoItem(item))
+      this.items = this.store.select(ItemState.getChildren)
     } else if (item.type === type.file || item.type === type.link) {
       // ADD SOMETHING HERE
     }
   }
 
   clickBack() {
-    this.currentPathItems.pop();
-    this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
+    this.store.dispatch(new GoBack())
+    this.items = this.store.select(ItemState.getChildren)
   }
 
   clickReturnToHome() {
-    this.currentPathItems = [];
-    this.items = this.service.getChildItemsFromFirebaseFunction(this.currentPathItems);
+    this.store.dispatch(new ResetPath())
+    this.items = this.store.select(ItemState.getChildren)
   }
-
-  /* TODO this should be removed
-  generateHttpURL(): string {
-    let currentPathString = this.staticMainPath;
-    this.currentPathItems.forEach( arrayItem => {
-      currentPathString = currentPathString + '/' + arrayItem.id + '/items';
-    });
-    return currentPathString;
-  }
-  */
 }

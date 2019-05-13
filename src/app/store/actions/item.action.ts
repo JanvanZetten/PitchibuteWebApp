@@ -33,3 +33,7 @@ export class GoBack {
     static readonly type = '[Item] GoBack'
     constructor() { }
 }
+
+export class ResetPath {
+    static readonly type = '[Item] resetPath'
+}

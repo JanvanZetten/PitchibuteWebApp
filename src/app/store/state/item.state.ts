@@ -1,5 +1,5 @@
 import { Item, type } from './../../entities/item';
-import { NavigateIntoItem, GoBack } from './../actions/item.action';
+import { NavigateIntoItem, GoBack, ResetPath } from './../actions/item.action';
 import { State, Selector, Action, StateContext, NgxsOnInit } from "@ngxs/store";
 import { ItemService } from 'src/app/shared/item/item.service';
 
@@ -62,6 +62,13 @@ export class ItemState {
         patchState({
             path: state.path.slice(0, state.path.length - 1) // -1 to remove the last item
         });
+    }
+
+    @Action(ResetPath)
+    ResetPath({ patchState }: StateContext<ItemStateModel>, { }: ResetPath) {
+        patchState({
+            path: []
+        })
     }
 
     /*
