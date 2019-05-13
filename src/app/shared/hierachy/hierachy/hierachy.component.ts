@@ -15,7 +15,7 @@ export class HierachyComponent implements OnInit {
   staticMainPath = '/items';
   currentPathItems: Item[] = [];
 
-  constructor(private service: HierachyServiceService, private router: Router) {
+  constructor(private service: HierachyServiceService) {
   }
 
   ngOnInit() {
