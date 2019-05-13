@@ -1,4 +1,4 @@
-import { GoBack, ResetPath } from './../../../store/actions/item.action';
+import { GoBack, ResetPath, FetchItems } from './../../../store/actions/item.action';
 import { Store } from '@ngxs/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Item, type } from 'src/app/entities/item';
@@ -42,5 +42,9 @@ export class HierachyComponent implements OnInit, OnDestroy {
 
   clickReturnToHome() {
     this.store.dispatch(new ResetPath())
+  }
+
+  fetchNewItems() {
+    this.store.dispatch(new FetchItems())
   }
 }

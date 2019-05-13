@@ -1,5 +1,5 @@
 import { Item, type } from './../../entities/item';
-import { NavigateIntoItem, GoBack, ResetPath } from './../actions/item.action';
+import { NavigateIntoItem, GoBack, ResetPath, FetchItems } from './../actions/item.action';
 import { State, Selector, Action, StateContext, NgxsOnInit } from "@ngxs/store";
 import { ItemService } from 'src/app/shared/item/item.service';
 
@@ -13,6 +13,7 @@ export class ItemStateModel {
 })
 
 export class ItemState implements NgxsOnInit {
+
     constructor(private itemService: ItemService) { }
 
     // Setting the initial outermost items in the tree
@@ -67,9 +68,21 @@ export class ItemState implements NgxsOnInit {
     }
 
     @Action(ResetPath)
-    ResetPath({ patchState }: StateContext<ItemStateModel>, { }: ResetPath) {
+    resetPath({ patchState }: StateContext<ItemStateModel>, { }: ResetPath) {
         patchState({
             path: []
         })
+    }
+
+    @Action(FetchItems)
+    fetchItems({ getState, patchState }: StateContext<ItemStateModel>, { }: FetchItems) {
+        const state = getState();
+        this.itemService.getChildItems(state.path)
+            .subscribe(children => {
+                const UpdatedTree = ItemService.updateTree(state.itemTree, state.path, children)
+                patchState({
+                    itemTree: UpdatedTree
+                });
+            })
     }
 }

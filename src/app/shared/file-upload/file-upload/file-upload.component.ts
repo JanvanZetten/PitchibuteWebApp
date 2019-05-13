@@ -2,6 +2,7 @@ import { Item } from './../../../entities/item';
 import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { timer } from 'rxjs';
 import { FileUploadService } from '../file-upload-service/file-upload.service';
+import { store } from '@angular/core/src/render3';
 
 /*
  * Component logic for uploading files.
