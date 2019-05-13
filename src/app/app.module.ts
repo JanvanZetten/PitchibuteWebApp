@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrerComponent } from './start/registrer/registrer.component';
 import { WelcomeComponent } from './start/welcome/welcome.component';
 import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AuthenticationServiceModule } from './shared/authentication/authenticat
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     ReactiveFormsModule,
-    AuthenticationServiceModule
+    AuthenticationServiceModule,
+    NgxsModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })

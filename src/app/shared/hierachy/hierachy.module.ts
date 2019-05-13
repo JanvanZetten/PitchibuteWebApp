@@ -5,6 +5,7 @@ import { HierachyServiceModule } from './hierachy-service/hierachy-service.modul
 import { FileUploadModule } from '../file-upload/file-upload.module';
 import { NgxsModule } from '@ngxs/store';
 import { ItemState } from 'src/app/store/state/item.state';
+import { StoreModule } from 'src/app/store/store.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ItemState } from 'src/app/store/state/item.state';
     SharedModule,
     HierachyServiceModule,
     FileUploadModule,
-    NgxsModule.forFeature([ItemState])
+    NgxsModule.forFeature([ItemState]),
+    StoreModule
   ],
   exports: [
     HierachyComponent
