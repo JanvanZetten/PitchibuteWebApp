@@ -5,9 +5,6 @@ import { Group } from './../../entities/group';
 import { Folder } from './../../entities/folder';
 import { Event } from './../../entities/event';
 import { Observable } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +30,10 @@ export class ItemService {
   }
 
   public static updateTree(oldTree: Item[], pathToWhereToUpdate: Item[], newChildren: Item[]): Item[] {
+    if (oldTree === null || pathToWhereToUpdate === null ||
+      oldTree.length === 0 || pathToWhereToUpdate.length === 0) {
+      throw new Error("The tree or path is not valid")
+    }
     const itemToUpdate = oldTree.find(i => i.id === pathToWhereToUpdate[0].id)
     var ref = itemToUpdate
 
@@ -42,7 +43,15 @@ export class ItemService {
       ref = children.find(item => item.id === pathItem.id)
     }
 
-    //TODO Update the item to update
+    if (ref.type === type.event) {
+      (ref as Event).resources = newChildren
+    } else if (ref.type === type.folder) {
+      (ref as Folder).resources = newChildren
+    } else if (ref.type === type.group) {
+      (ref as Group).items = newChildren
+    } else {
+      throw new Error(`Unexpected error occured, item ${ref.name} can't have items`)
+    }
 
     return oldTree.map(i => i.id === itemToUpdate.id ? itemToUpdate : i)
   }
@@ -55,8 +64,7 @@ export class ItemService {
     } else if (parent.type === type.group) {
       return (parent as Group).items
     } else {
-      throw new Error(`Unexpected error occured, item ${i.name} can't have items`)
+      throw new Error(`Unexpected error occured, item ${parent.name} can't have items`)
     }
-
   }
 }

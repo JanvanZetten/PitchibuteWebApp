@@ -9,7 +9,7 @@ export class ItemStateModel implements NgxsOnInit {
 
     constructor(private itemService: ItemService) { }
 
-    // Set the initial outermost items in the tree
+    // Setting the initial outermost items in the tree
     ngxsOnInit(ctx?: StateContext<ItemStateModel>) {
         ctx.getState().path = []
         this.itemService.getChildItems([]).subscribe(items =>
