@@ -1,19 +1,17 @@
-import { auth } from 'firebase/app';
-import { ReactiveFormsModule } from '@angular/forms';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginComponent } from './login.component';
-import { $ } from 'protractor';
-import { By } from '@angular/platform-browser';
-import { Input } from '@angular/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { RegistrerComponent } from '../registrer/registrer.component';
-import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
-import { AngularFireModule } from '@angular/fire';
-import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import {LoginComponent} from './login.component';
+import {By} from '@angular/platform-browser';
+import {RouterTestingModule} from '@angular/router/testing';
+import {RegistrerComponent} from '../registrer/registrer.component';
+import {AngularFireAuthModule, AngularFireAuth} from '@angular/fire/auth';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from 'src/environments/environment';
+import {Router} from '@angular/router';
+import {Subject} from 'rxjs';
 import {AuthenticationService} from '../../shared/authentication/authentication-service/authentication.service';
+import {RecaptchaModule} from 'ng-recaptcha';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -30,7 +28,8 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([]),
         AngularFireAuthModule,
-        AngularFireModule.initializeApp(environment.firebase)
+        AngularFireModule.initializeApp(environment.firebase),
+        RecaptchaModule.forRoot()
       ],
       providers: [{provide: AuthenticationService, useValue: authStub}]
     })
@@ -139,25 +138,24 @@ describe('LoginComponent', () => {
   });
 
   it('should call route to home when login with Google is succsessful', () => {
-    const afAuth = TestBed.get(AngularFireAuth)
-    var working = true;
-    var sub = new Subject();
-    var promise = new Promise((resolve, reject) => {
+    const afAuth = TestBed.get(AngularFireAuth);
+    const sub = new Subject();
+    const promise = new Promise((resolve, reject) => {
       resolve(null);
-      sub.next()
+      sub.next();
     });
 
-    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise);
 
-    spyOn(component, "routeToHome")
+    spyOn(component, 'routeToHome');
 
-    component.loginWithGoogle()
+    component.loginWithGoogle();
 
-    let subscription = sub.subscribe(() => {
-      expect(component.routeToHome).toHaveBeenCalledTimes(1)
-      subscription.unsubscribe()
-    })
-  })
+    const subscription = sub.subscribe(() => {
+      expect(component.routeToHome).toHaveBeenCalledTimes(1);
+      subscription.unsubscribe();
+    });
+  });
 
   it('should not call route to home when login with google fails', () => {
     spyOn(component, 'routeToHome');
@@ -167,65 +165,83 @@ describe('LoginComponent', () => {
   });
 
   it('should make error message when login with google fails', () => {
-    const afAuth = TestBed.get(AngularFireAuth)
-    var sub = new Subject();
-    var promise = new Promise((resolve, reject) => {
-      reject({})
-      sub.next()
+    const afAuth = TestBed.get(AngularFireAuth);
+    const sub = new Subject();
+    const promise = new Promise((resolve, reject) => {
+      reject({});
+      sub.next();
     });
 
-    const spy = spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise)
+    const spy = spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise);
 
-    component.loginWithGoogle()
+    component.loginWithGoogle();
 
-    let subscription = sub.subscribe(() => {
-      var alert = fixture.debugElement.queryAll(By.css(".red-text"))
+    const subscription = sub.subscribe(() => {
+      const alert = fixture.debugElement.queryAll(By.css('.red-text'));
 
-      expect(alert.length).toBe(1)
-      subscription.unsubscribe()
-    })
-  })
+      expect(alert.length).toBe(1);
+      subscription.unsubscribe();
+    });
+  });
 
   it('should route to home when login with email and password is successful', () => {
-    const afAuth = TestBed.get(AngularFireAuth)
-    var working = true;
-    var sub = new Subject();
-    var promise = new Promise((resolve, reject) => {
-      resolve(null)
-      sub.next()
+    const afAuth = TestBed.get(AngularFireAuth);
+    const sub = new Subject();
+    const promise = new Promise((resolve, reject) => {
+      resolve(null);
+      sub.next();
     });
 
-    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise)
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise);
 
-    spyOn(component, "routeToHome")
-
-    component.loginWithFormData()
-
-    let subscription = sub.subscribe(() => {
-      expect(component.routeToHome).toHaveBeenCalledTimes(1)
-      subscription.unsubscribe()
-    })
-  })
-
-  it('should make error message when login with email and password fails', () => {
-    const afAuth = TestBed.get(AngularFireAuth)
-    var sub = new Subject();
-    var promise = new Promise((resolve, reject) => {
-      reject({})
-      sub.next()
-    });
-
-    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise)
+    spyOn(component, 'routeToHome');
 
     component.loginWithFormData();
 
-    let subscription = sub.subscribe(() => {
-      var alert = fixture.debugElement.queryAll(By.css(".red-text"));
-      expect(alert.length).toBe(1)
-      expect(component.emailPasswordError).toBe("Email or password is invalid")
-      subscription.unsubscribe()
-    })
-  })
+    const subscription = sub.subscribe(() => {
+      expect(component.routeToHome).toHaveBeenCalledTimes(1);
+      subscription.unsubscribe();
+    });
+  });
+
+  it('should make error message when login with email and password fails and lock the user out of trying again', () => {
+    const afAuth = TestBed.get(AngularFireAuth);
+    const sub = new Subject();
+    const promise = new Promise((resolve, reject) => {
+      reject({});
+      sub.next();
+    });
+
+    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise);
+
+    expect(component.eligibleLogin).toBe(true);
+    for (let i = 0; i < 3; i++) {
+      component.loginWithFormData();
+    }
+
+    const subscription = sub.subscribe(() => {
+      const alert = fixture.debugElement.queryAll(By.css('.red-text'));
+      expect(alert.length).toBe(1);
+      expect(component.emailPasswordError).toBe('Email or password is invalid');
+      expect(component.eligibleLogin).toBe(false);
+      expect(component.failedLoginAttempts).toBe(0);
+      subscription.unsubscribe();
+    });
+  });
+
+  it('should lock out the user when the captcha expires and unlock when it is completed again', () => {
+    expect(component.eligibleLogin).toBe(true);
+    component.captchaResolved(null);
+    expect(component.eligibleLogin).toBe(false);
+    component.captchaResolved('Mit navn er Sten');
+    expect(component.eligibleLogin).toBe(true);
+  });
+
+  it('should not be possible to attempt to login while the form login button is disabled', () => {
+    component.captchaResolved(null);
+    component.loginWithFormData();
+    expect(component.emailPasswordError).toBe('Please check the captcha to continue');
+  });
 
   function setInputValue(selector: string, value: string) {
     fixture.detectChanges();

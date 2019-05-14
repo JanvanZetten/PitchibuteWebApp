@@ -9,8 +9,10 @@
     <input class="single-item-on-line center form-field b-margin-s" type="password" placeholder="Password..."
       formControlName="password" id="passwordInput" autocomplete="current-password">
 
+    <re-captcha *ngIf="!eligibleLogin" (resolved)="captchaResolved($event)" siteKey="6LdMZqMUAAAAABG3cO3e2jsnTCgnVDEF1KxREjIT"></re-captcha>
+
     <p class="red-text center-text" *ngIf="emailPasswordError">{{emailPasswordError}}</p>
-    <input class="btn btn-green btn-press single-item-on-line center" (click)="loginWithFormData()" type="submit"
+    <input [disabled]="!eligibleLogin" class="btn btn-green btn-press single-item-on-line center" (click)="loginWithFormData()" type="submit"
       value="Login">
   </form>
 

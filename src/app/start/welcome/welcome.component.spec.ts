@@ -9,6 +9,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { RouterTestingModule } from '@angular/router/testing';
 import {AuthenticationService} from '../../shared/authentication/authentication-service/authentication.service';
+import {RecaptchaModule} from 'ng-recaptcha';
 
 describe('WelcomeComponent', () => {
   let component: WelcomeComponent;
@@ -22,7 +23,8 @@ describe('WelcomeComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([]),
         AngularFireAuthModule,
-        AngularFireModule.initializeApp(environment.firebase)
+        AngularFireModule.initializeApp(environment.firebase),
+        RecaptchaModule.forRoot()
       ],
       providers: [{provide: AuthenticationService, useValue: authStub}]
     })
