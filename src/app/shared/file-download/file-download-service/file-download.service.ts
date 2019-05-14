@@ -17,7 +17,7 @@ export class FileDownloadService {
    * Using a function to download file.
    */
   downloadFileFromFunctions(path: string): Observable<{ fileName: string, blob: Blob }> {
-    return defer(this.authenticationService.getToken).pipe(switchMap(token => {
+    return defer(() => this.authenticationService.getToken()).pipe(switchMap(token => {
       // Create url
       const url = 'https://us-central1-pitchibute.cloudfunctions.net/downloadfile';
 
