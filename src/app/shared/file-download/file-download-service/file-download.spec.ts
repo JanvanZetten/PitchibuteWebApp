@@ -1,16 +1,23 @@
-import { TestBed, async, fakeAsync } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, discardPeriodicTasks, tick } from '@angular/core/testing';
 
 import { FileDownloadService } from './file-download.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { HttpResponse, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { AuthenticationService } from '../../authentication/authentication-service/authentication.service';
+import { ReplaySubject } from 'rxjs';
 
 describe('FileDownloadService', () => {
   let service: FileDownloadService;
   let httpMock: HttpTestingController;
   
   beforeEach(() => {
+    let authenticationServiceMock = jasmine.createSpyObj('AuthenticationService', ['getToken']);
+    authenticationServiceMock.getToken.and.returnValue(new Promise((resolve, reject) => {
+      resolve('greatToken');
+    }));
+
     TestBed.configureTestingModule({
-      providers: [FileDownloadService],
+      providers: [FileDownloadService, { provide: AuthenticationService, useValue: authenticationServiceMock }],
       imports: [
         HttpClientTestingModule
       ]
@@ -28,73 +35,134 @@ describe('FileDownloadService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call a HTTP Request with real URL', () => {
+  it('should call a HTTP Request with real URL, if authentication token is set', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 
-    service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
       expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
     });
+
+    tick(50);
 
     httpDownloadMock.triggerSuccess();
-  });
+  })); 
 
-  it('should call a HTTP Request with Method POST', () => {
+  it('should not call a HTTP Request if authentication token is not set', () => {
+    const httpDownloadMock = new HttpDownloadMock(httpMock);
+    TestBed.get(AuthenticationService).getToken.and.returnValue(new Promise((resolve, reject) => {
+      reject('greatError');
+    }));
+
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+      expect(false).toBeTruthy();
+
+      sub1.unsubscribe();
+    }, err => {
+      expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
+    });
+  }); 
+
+  it('should call a HTTP Request with Method POST', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 
-    service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
       expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
     });
 
+    tick(50);
+    
     httpDownloadMock.triggerSuccess();
 
     expect(httpDownloadMock.req.request.method).toBe(httpDownloadMock.httpMethod);
-  });
 
-  it('should call a HTTP Request with content type json', () => {
+    discardPeriodicTasks();
+  }));
+   
+  it('should call a HTTP Request with content type json', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 
-    service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
       expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
     });
+
+    tick(50);
 
     httpDownloadMock.triggerSuccess();
 
     expect(httpDownloadMock.req.request.headers.get('Content-Type')).toBe(httpDownloadMock.requestContentType);
-  });
-
-  it('should call a HTTP Request with path in body', () => {
+  }));
+   
+  it('should call a HTTP Request with authorization bearer greatToken', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 
-    service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
       expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
     });
+
+    tick(50);
+
+    httpDownloadMock.triggerSuccess();
+
+    expect(httpDownloadMock.req.request.headers.get('Authorization')).toBe(httpDownloadMock.requestAuthorizationHeader);
+  }));
+
+  it('should call a HTTP Request with path in body', fakeAsync(() => {
+    const httpDownloadMock = new HttpDownloadMock(httpMock);
+
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+      expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
+    });
+
+    tick(50);
 
     httpDownloadMock.triggerSuccess();
 
     expect(httpDownloadMock.req.request.body).toEqual({ path: httpDownloadMock.path });
-  });
+  }));
 
-  it('should create file from response', () => {
+  it('should create file from response', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 
-    service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
-      expect(res).toEqual(httpDownloadMock.dummyResult);
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+      expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
     });
+
+    tick(50);
 
     httpDownloadMock.triggerSuccess();
-  });
+  }));
 
-  it('should catch an error on status code error', () => {
+  it('should catch an error on status code error', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 
-    service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
       expect(false).toBeTruthy();
+
+      sub1.unsubscribe();
     }, err => {
       expect(true).toBeTruthy();
+
+      sub1.unsubscribe();
     });
 
+    tick(50);
+
     httpDownloadMock.triggerStatusCodeError();
-  });
+  })); 
 });
 
 class HttpDownloadMock {
@@ -102,6 +170,7 @@ class HttpDownloadMock {
   req: TestRequest;
   httpMethod = 'POST';
   requestContentType = 'application/json';
+  requestAuthorizationHeader = 'Bearer greatToken';
   path = 'bing/bong';
 
   fileName = 'blib.pdf';
