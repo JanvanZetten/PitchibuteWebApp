@@ -6,6 +6,7 @@ import {type} from '../../../entities/item';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AuthenticationService} from '../../authentication/authentication-service/authentication.service';
 import {Subject} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 
 const responseMessage = 'Successfully added user to group';
@@ -23,40 +24,28 @@ describe('GroupService', () => {
     authServiceStub = jasmine.createSpyObj('AuthService', ['getToken']);
     thenStub = jasmine.createSpyObj('Then', ['then']);
     catchStub = jasmine.createSpyObj('Catch', ['catch']);
-    authServiceStub.getToken.and.returnValue(thenStub);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [GroupService,
-        {provide: AuthenticationService, useValue: authServiceStub}
+        {provide: AuthenticationService, useValue: authServiceStub},
       ],
     });
     service = TestBed.get(GroupService);
     authenticationService = TestBed.get(AuthenticationService);
   });
-  
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('Should call Get Http Options and thereafter the getToken from auth service', () => {
-    spyOn(service, 'getHttpOptions');
-    service.getHttpOptions();
-    expect(service.getHttpOptions).toHaveBeenCalled();
-  });
-
-  it('Should call GetToken from the service', () => {
-    thenStub.then.and.returnValue(catchStub);
-    service.getHttpOptions();
-    expect(authenticationService.getToken).toHaveBeenCalled();
-  });
-
   it('Should get Token value from response', () => {
     const sub = new Subject();
-    thenStub.then.and.returnValue(new Promise(resolve => {
+    authServiceStub.getToken.and.returnValue(new Promise(resolve => {
       sub.next();
-      return '123';
+      resolve('123');
     }));
+
     spyOn(service.httpOptions.headers, 'set');
     service.getHttpOptions();
     const subscription = sub.subscribe( next => {
@@ -65,15 +54,20 @@ describe('GroupService', () => {
     });
   });
 
-  it('Should return a promise from AddUserToGroup', () => {
-    const promiseEmpty = new Promise((resolve, reject) => {
-    });
-
-    spyOn(service, 'addUserToGroup').and.returnValue(promiseEmpty);
-    const promise = service.addUserToGroup(group[0], '123@easv.dk');
-    expect(promise).toEqual(promiseEmpty);
-    expect(service.addUserToGroup).toHaveBeenCalled();
+  it('Should rename item, calling http options', () => {
+    spyOn(service, 'getHttpOptions');
+    service.renameItem(null, null, null).then();
+    expect(service.getHttpOptions).toHaveBeenCalled();
   });
+
+  it('Should test add to group', () => {
+    spyOn(service, 'getHttpOptions');
+    service.addUserToGroup(null, null).then();
+    expect(service.getHttpOptions).toHaveBeenCalled();
+  });
+
+
+
 
 
 });
