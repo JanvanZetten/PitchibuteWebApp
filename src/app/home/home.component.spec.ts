@@ -6,6 +6,7 @@ import {FileUploadComponent} from '../shared/file-upload/file-upload/file-upload
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {HierachyServiceService} from '../shared/hierachy/hierachy-service/hierachy-service.service';
 import {FileUploadService} from '../shared/file-upload/file-upload-service/file-upload.service';
+import {GroupManagerComponent} from '../groups/group-manager/group-manager.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -16,7 +17,8 @@ describe('HomeComponent', () => {
       declarations: [
         HomeComponent,
         HierachyComponent,
-        FileUploadComponent
+        FileUploadComponent,
+        GroupManagerComponent
       ],
       providers: [
         {provide: HierachyServiceService, useClass: HierachyServiceStub},

@@ -1,2 +1,13 @@
-<h1>{{title}}</h1>
-<button id="addUserBtn" (click)="addUserToGroup('hus@easv.dk')"></button>
+<div class="btn-group" dropdown>
+  <button id="button-basic" dropdownToggle type="button"
+          aria-controls="dropdown-basic">
+    ... <span class="caret"></span>
+  </button>
+  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+      role="menu" aria-labelledby="button-basic">
+
+    <li role="menuitem"><a class="dropdown-item">Rename</a></li>
+    <li class="divider dropdown-divider"></li>
+    <li role="menuitem"><a class="dropdown-item">Delete</a></li>
+  </ul>
+</div>

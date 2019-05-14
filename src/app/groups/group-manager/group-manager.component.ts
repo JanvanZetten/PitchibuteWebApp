@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Group} from '../../entities/group';
 import {GroupService} from '../../shared/groups/group-service/group.service';
-import {type} from '../../entities/item';
+import {Item, type} from '../../entities/item';
 
 
 @Component({
@@ -11,10 +11,10 @@ import {type} from '../../entities/item';
 })
 export class GroupManagerComponent implements OnInit {
 
+  @Input() item: Item;
   errorMessage: string;
   responseMessage: string;
-  title =  'This is still under construction.';
-  groupForTest: Group = {id: '123', type: type.file, name: '123', items:null};
+  groupForTest: Group = {id: '123', type: type.file, name: '123', items: null};
 
   constructor(private groupService: GroupService) {
   }
@@ -22,11 +22,19 @@ export class GroupManagerComponent implements OnInit {
   ngOnInit() {
   }
 
+  renameItem(collection: string, doc: string, newName: string) {
+    this.groupService.renameItem(collection, doc, newName).then(response => {
+      this.responseMessage = response;
+    }).catch(error => {
+      this.errorMessage = error.error;
+    });
+  }
+
   addUserToGroup(email: string) {
-    this.groupService.addUserToGroup(this.groupForTest, email).then(rspMsg => {
-      this.responseMessage = rspMsg;
-    }, error => {
-      this.errorMessage = error.message;
+    this.groupService.addUserToGroup(this.groupForTest, email).then(response => {
+      this.responseMessage = response;
+    }).catch( error => {
+      this.errorMessage = error.error;
     });
   }
 }

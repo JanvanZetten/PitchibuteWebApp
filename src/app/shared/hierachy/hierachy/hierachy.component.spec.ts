@@ -8,6 +8,7 @@ import {FileUploadService} from '../../file-upload/file-upload-service/file-uplo
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {Item} from '../../../entities/item';
 import {Observable, Subscriber} from 'rxjs';
+import {GroupManagerComponent} from '../../../groups/group-manager/group-manager.component';
 
 
 describe('HierachyComponent', () => {
@@ -19,7 +20,8 @@ describe('HierachyComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         HierachyComponent,
-        FileUploadComponent
+        FileUploadComponent,
+        GroupManagerComponent
       ],
       providers: [
         {provide: HierachyServiceService, useClass: HierachyServiceStub},

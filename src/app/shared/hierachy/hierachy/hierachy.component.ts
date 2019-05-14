@@ -47,4 +47,7 @@ export class HierachyComponent implements OnInit {
   }
 
 
+  openMenu(event: MouseEvent) {
+    event.stopPropagation();
+  }
 }

@@ -23,11 +23,6 @@ const routes: Routes = [
     path: 'uploadfile',
     loadChildren: './shared/file-upload/file-upload.module#FileUploadModule',
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'groupmanager',
-    loadChildren: './groups/groups.module#GroupsModule',
-    canActivate: [AuthGuard]
   }
 ];
 
