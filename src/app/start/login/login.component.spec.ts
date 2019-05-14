@@ -124,7 +124,6 @@ describe('LoginComponent', () => {
   });
 
   it('should call signInWithEmailAndPassword with the data form the form when loginWithFormData', () => {
-
     const email = 'test@mail.com';
     const password = 'SuperSecretPassword1234';
 
