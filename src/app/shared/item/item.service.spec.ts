@@ -3,8 +3,7 @@ import { Folder } from './../../entities/folder';
 import { Group } from './../../entities/group';
 import { Event } from './../../entities/event';
 import { HierachyModule } from './../hierachy/hierachy.module';
-import { TestBed, async, getTestBed } from '@angular/core/testing';
-
+import { TestBed, async } from '@angular/core/testing';
 import { ItemService } from './item.service';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
@@ -12,6 +11,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { Item, type } from 'src/app/entities/item';
+import { NgxsModule } from '@ngxs/store';
+import { HierachyServiceService } from '../hierachy/hierachy-service/hierachy-service.service';
+import { of } from 'rxjs';
 
 describe('ItemService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -23,7 +25,8 @@ describe('ItemService', () => {
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
         HttpClientModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        NgxsModule.forRoot()
       ]
     });
   }));
@@ -85,7 +88,7 @@ describe('ItemService', () => {
       url: "www.theOtherURL.com",
       size: 2
     }
-    const oldTree: Item[] = getAnOldTree()
+    const oldTree: Item[] = getATree()
     const path: Item[] = [
       {
         id: "ID1",
@@ -108,11 +111,61 @@ describe('ItemService', () => {
 
     const output = ItemService.updateTree(oldTree, path, newItems)
 
-    //Using toString because they don't have the same object refrence
-    expect(output.toString()).toBe(expectedOutput.toString())
+    expect(output).toEqual(expectedOutput)
   })
 
-  function getAnOldTree(): Item[] {
+  it('should call hierachyService to get items for child when getChildItems is called', () => {
+    const hiearchyService = TestBed.get(HierachyServiceService)
+    const spy = spyOn(hiearchyService, 'getChildItemsFromFirebaseFunction').and.returnValue(of([]))
+    const itemService = TestBed.get(ItemService)
+    itemService.getChildItems([])
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('should return the children when getChildrenFromPathAndTree is called', () => {
+    const expectedChildren: Item[] = [
+      {
+        id: "ID3",
+        name: "event1",
+        type: type.event,
+        start: null,
+        end: null,
+        resources: []
+      },
+      {
+        id: "ID4",
+        name: "event2",
+        type: type.event,
+        start: null,
+        end: null,
+        resources: []
+      }
+    ]
+    const tree: Item[] = getATree()
+    const path: Item[] = [
+      {
+        id: "ID1",
+        name: "firstGroup",
+        type: type.group
+      }
+    ]
+
+    const result = ItemService.getChildrenFromPathAndTree(path, tree)
+    expect(result).toEqual(expectedChildren)
+  })
+
+  it('should throw an error if the path, in getChildrenFromPathAndTree, contains items of a type that can\'t have children', () => {
+    const pathWithNonValidItem: Item[] = [{ name: 'someName', type: type.file }]
+
+    expect(
+      function () {
+        ItemService.getChildrenFromPathAndTree(pathWithNonValidItem, [])
+      }
+    ).toThrowError()
+  })
+
+
+  function getATree(): Item[] {
     const file1: IFile = {
       id: "ID6",
       name: "file1",

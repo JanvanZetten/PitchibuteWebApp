@@ -26,6 +26,13 @@ export class ItemService {
       const childToGo = children.find(c => c.id === i.id)
       children = this.getChildArray(childToGo)
     })
+    children.forEach(c => {
+      if (c.type === type.group) {
+        (c as Group).items = []
+      } else if (c.type === type.event || c.type === type.folder) {
+        (c as Event | Folder).resources = []
+      }
+    })
     return children
   }
 
