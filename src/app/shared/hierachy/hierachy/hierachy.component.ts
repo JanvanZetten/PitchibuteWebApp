@@ -1,50 +1,50 @@
-import {Component, OnInit} from '@angular/core';
+import { GoBack, ResetPath, FetchItems } from './../../../store/actions/item.action';
+import { Store } from '@ngxs/store';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Item, type } from 'src/app/entities/item';
-import {HierachyServiceService} from '../hierachy-service/hierachy-service.service';
-import {Observable} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { ItemState } from 'src/app/store/state/item.state';
+import { NavigateIntoItem } from 'src/app/store/actions/item.action';
 
 @Component({
   selector: 'app-hierachy',
   templateUrl: './hierachy.component.html',
   styleUrls: ['./hierachy.component.scss']
 })
-export class HierachyComponent implements OnInit {
+export class HierachyComponent implements OnInit, OnDestroy {
 
-  items: Observable<Item[]>;
-  staticMainPath = '/items';
-  currentPathItems: Item[] = [];
+  items: Observable<Item[]>
+  path: Item[]
+  pathSub: Subscription
 
-  constructor(private service: HierachyServiceService) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
-    this.items = this.service.displayItems(this.staticMainPath);
+    this.items = this.store.select(ItemState.getChildren)
+    this.pathSub = this.store.select(ItemState.getPath).subscribe(p => this.path = p)
+  }
+
+  ngOnDestroy(): void {
+    this.pathSub.unsubscribe()
   }
 
   clickPath(item: Item) {
     if (item.type === type.group || item.type === type.event || item.type === type.folder) {
-      this.currentPathItems.push(item);
-      this.items = this.service.displayItems(this.generateHttpURL());
-    } else if (item.type === type.file || item.type === type.link) { // ADD SOMETHING HERE
-      }
+      this.store.dispatch(new NavigateIntoItem(item))
+    } else if (item.type === type.file || item.type === type.link) {
+      // ADD SOMETHING HERE
+    }
   }
 
   clickBack() {
-    this.currentPathItems.pop();
-    this.items = this.service.displayItems(this.generateHttpURL());
+    this.store.dispatch(new GoBack())
   }
 
   clickReturnToHome() {
-    this.currentPathItems = [];
-    this.items = this.service.displayItems(this.generateHttpURL());
+    this.store.dispatch(new ResetPath())
   }
 
-  generateHttpURL(): string {
-    let currentPathString = this.staticMainPath;
-    this.currentPathItems.forEach( arrayItem => {
-      currentPathString = currentPathString + '/' + arrayItem.id + '/items';
-    });
-    return currentPathString;
+  fetchNewItems() {
+    this.store.dispatch(new FetchItems())
   }
-
-
 }
