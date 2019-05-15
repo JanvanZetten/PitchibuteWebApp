@@ -24,11 +24,17 @@ describe ('logintests', () => {
   it('should register a brute force attack and make it impossible to login if too many attempts are made', () => {
     cy.get('#emailInput').clear().type(mockEmail);
     cy.get('#passwordInput').clear().type(mockPass);
-    for (let i = 0; i < 20; i++) {
+    cy.wait(500);
+    for (let i = 0; i < 3; i++) {
       cy.get('#submitButton').click();
+      cy.wait(250);
     }
-    cy.wait(50)
-    cy.contains('Email or password is invalid').should('not.exist');
+    cy.wait(1000);
+    cy.contains('Email or password is invalid');
+    cy.get('#submitButton').should('disabled');
+    cy.get('#captchaElement');
   });
+
+
 
 });

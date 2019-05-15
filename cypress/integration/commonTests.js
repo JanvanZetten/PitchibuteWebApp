@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 
 import Chance from 'chance';
 const chance = new Chance();
@@ -60,6 +59,7 @@ describe ('logintests', () => {
     cy.contains('EtEvent').click();
     cy.contains('pkaFile (1).pka');
 
+    cy.wait(5000);
     cy.get('#homeButton').click();
     cy.contains('EnGruppe');
   });
