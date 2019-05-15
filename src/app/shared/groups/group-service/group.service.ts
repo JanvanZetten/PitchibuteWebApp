@@ -47,7 +47,7 @@ export class GroupService {
     }
 
     await this.getHttpOptions();
-    return this.http.post('http://localhost:5000/pitchibute/us-central1/renameItem',
+    return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/renameItem',
       {collection: collection, doc: doc, name: newName}, this.httpOptions).toPromise();
   }
 
