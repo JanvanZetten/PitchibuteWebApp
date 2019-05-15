@@ -148,7 +148,7 @@ describe('FileDownloadService', () => {
 
     expect(httpDownloadMock.req.request.body).toEqual({ path: httpDownloadMock.path });
   }));
-
+  
   it('should create file from response', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 

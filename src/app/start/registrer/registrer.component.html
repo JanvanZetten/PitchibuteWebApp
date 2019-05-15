@@ -1,5 +1,5 @@
 <div id="registrer-container">
-  <h1>Registrer as a new user</h1>
+  <h1>Register as a new user</h1>
   <form class="center" [formGroup]="registrerForm">
     <label class="single-item-on-line center center-text form-label">Email</label>
     <input class="single-item-on-line center form-field b-margin-m" type="email" placeholder="Email"
@@ -17,8 +17,8 @@
       Passwords do not match!
     </div>
 
-    <input class="btn btn-red btn-press single-item-on-line center t-margin-l" (click)="registrer()" type="submit"
-      value="Registrer">
+    <input class="btn btn-red btn-press single-item-on-line center t-margin-l" id="registerNewUserButton" (click)="registrer()" type="submit"
+      value="Register">
 
     <h3 class="red-text" *ngIf="errorMessage">{{errorMessage}}</h3>
   </form>

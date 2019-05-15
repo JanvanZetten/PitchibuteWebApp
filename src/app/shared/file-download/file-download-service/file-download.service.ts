@@ -42,8 +42,8 @@ export class FileDownloadService {
         fileName = fileName.replace(/"/g, '');
 
         // Convert file name from base64.
-          fileName = atob(fileName);
-
+        fileName = atob(fileName);
+        
         // Return filename and blob.
         return { fileName: fileName, blob: response.body };
       }));

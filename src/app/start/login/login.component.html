@@ -10,15 +10,15 @@
       formControlName="password" id="passwordInput" autocomplete="current-password">
 
     <p class="red-text center-text" *ngIf="emailPasswordError">{{emailPasswordError}}</p>
-    <input class="btn btn-green btn-press single-item-on-line center" (click)="loginWithFormData()" type="submit"
+    <input class="btn btn-green btn-press single-item-on-line center" id="submitButton" (click)="loginWithFormData()" type="submit"
       value="Login">
   </form>
 
   <p class="red-text center-text" *ngIf="googleloginError">{{googleloginError}}</p>
-  <button class="btn btn-blue btn-press single-item-on-line center b-margin-l" (click)="loginWithGoogle()">Login with
+  <button class="btn btn-blue btn-press single-item-on-line center b-margin-l" id="googleLoginButton" (click)="loginWithGoogle()">Login with
     Google</button>
 
-  <button class="btn btn-red btn-press single-item-on-line center" (click)="registerNewUser()">
+  <button class="btn btn-red btn-press single-item-on-line center" id="registerButton" (click)="registerNewUser()">
     Register new user
   </button>
 
