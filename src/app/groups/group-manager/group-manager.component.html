@@ -6,8 +6,11 @@
   <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
       role="menu" aria-labelledby="button-basic">
 
-    <li role="menuitem"><a class="dropdown-item">Rename</a></li>
+    <app-group-modal [item]="item"></app-group-modal>
     <li class="divider dropdown-divider"></li>
-    <li role="menuitem"><a class="dropdown-item">Delete</a></li>
+    <app-group-modal-delete></app-group-modal-delete>
   </ul>
 </div>
+
+
+

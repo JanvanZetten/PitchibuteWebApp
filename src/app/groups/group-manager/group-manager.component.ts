@@ -1,7 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef} from '@angular/core';
 import {Group} from '../../entities/group';
 import {GroupService} from '../../shared/groups/group-service/group.service';
 import {Item, type} from '../../entities/item';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {GroupModalRenameComponent} from '../group-modal-rename/group-modal-rename.component';
 
 
 @Component({
@@ -14,26 +17,23 @@ export class GroupManagerComponent implements OnInit {
   @Input() item: Item;
   errorMessage: string;
   responseMessage: string;
-  groupForTest: Group = {id: '123', type: type.file, name: '123', items: null};
+  modalRef: BsModalRef;
 
-  constructor(private groupService: GroupService) {
+  constructor(private groupService: GroupService,
+              private modalService: BsModalService) {
   }
 
   ngOnInit() {
   }
 
-  renameItem(collection: string, doc: string, newName: string) {
-    this.groupService.renameItem(collection, doc, newName).then(response => {
-      this.responseMessage = response;
-    }).catch(error => {
-      this.errorMessage = error.error;
-    });
+  openModal(template: GroupModalRenameComponent) {
+    this.modalRef = this.modalService.show(template);
   }
 
-  addUserToGroup(email: string) {
-    this.groupService.addUserToGroup(this.groupForTest, email).then(response => {
+  addUserToGroup(email: string, item: Item) {
+    this.groupService.addUserToGroup(item, email).then(response => {
       this.responseMessage = response;
-    }).catch( error => {
+    }).catch(error => {
       this.errorMessage = error.error;
     });
   }

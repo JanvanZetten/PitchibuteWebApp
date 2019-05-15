@@ -52,7 +52,7 @@ describe('GroupManagerComponent', () => {
     TestBed.get(GroupService).addUserToGroup.and.returnValue(new Promise((resolve, reject) => {
       resolve('Successful');
     }));
-    component.addUserToGroup('Random@email.dk');
+    component.addUserToGroup('Random@email.dk', null);
     expect(service.addUserToGroup).toHaveBeenCalled();
   });
 
@@ -60,7 +60,7 @@ describe('GroupManagerComponent', () => {
     TestBed.get(GroupService).addUserToGroup.and.returnValue(new Promise((resolve, reject) => {
       reject('not Successful');
     }));
-    component.addUserToGroup('Random@email.dk');
+    component.addUserToGroup('Random@email.dk', null);
     expect(service.addUserToGroup).toHaveBeenCalled();
   });
 

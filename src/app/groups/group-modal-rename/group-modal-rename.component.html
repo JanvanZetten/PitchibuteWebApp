@@ -1,0 +1,21 @@
+
+<li role="menuitem"><a class="dropdown-item" (click)="openModal()">Rename</a></li>
+
+<ng-template #changeName>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Item Name</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="itemForm">
+      <h6>Current name</h6>
+      <input type="text" formControlName="currentName">
+      <br><br>
+      <h6>New name</h6>
+      <input type="text" formControlName="newName">
+      <button (click)="renameItem(null, item.id)">Save</button>
+    </form>
+  </div>
+</ng-template>

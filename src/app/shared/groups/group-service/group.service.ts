@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {GroupServiceModule} from '../group-service.module';
-import {Group} from '../../../entities/group';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthenticationService} from '../../authentication/authentication-service/authentication.service';
+import {Item} from '../../../Entities/item';
 
 
 
@@ -36,10 +36,10 @@ export class GroupService {
   }
 
   // Retrieve group data, and then sending HTTP request to add new user.
-  async addUserToGroup(group: Group, email: string): Promise<any> {
+  async addUserToGroup(item: Item, email: string): Promise<any> {
     await this.getHttpOptions();
     return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/addUserToGroup',
-      {collection: 'items', doc: group.id, email: email},
+      {collection: 'items', doc: item.id, email: email},
       this.httpOptions).toPromise();
   }
 }
