@@ -50,19 +50,24 @@ describe ('logintests', () => {
   });
 
   it('should properly navigate between items', () => {
-    cy.contains('EnGruppe').click();
-    cy.contains('EtEvent');
-    cy.contains('EnMappe').click();
-    cy.contains('Tredje Semester eksamens rapport.pdf');
+    cy.get('#homeButton').click();
+    cy.get('#homeButton').click();
+    cy.get('#homeButton').click();
+    cy.get('#homeButton').click();
+	
+    cy.get('.fa-address-book').click();
+    cy.get('.fa-calendar-alt');
+	cy.get('.fa-folder:nth(0)').click();
+    cy.contains('.pdf');
 
     cy.get('#backButton').click();
-    cy.contains('EnMappe');
-    cy.contains('EtEvent').click();
-    cy.contains('pkaFile (1).pka');
+    cy.get('.fa-folder:nth(0)');
+    cy.get('.fa-calendar-alt').click();
+    cy.contains('.pka');
 
     cy.wait(5000);
     cy.get('#homeButton').click();
-    cy.contains('EnGruppe');
+    cy.get('.fa-address-book').click();
   });
 
 });
