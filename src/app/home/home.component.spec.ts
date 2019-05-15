@@ -6,6 +6,7 @@ import { FileUploadComponent } from '../shared/file-upload/file-upload/file-uplo
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { HierachyServiceService } from '../shared/hierachy/hierachy-service/hierachy-service.service';
 import { FileUploadService } from '../shared/file-upload/file-upload-service/file-upload.service';
+import { NgxsModule } from '@ngxs/store';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -20,10 +21,10 @@ describe('HomeComponent', () => {
       ],
       providers: [
         { provide: HierachyServiceService, useClass: HierachyServiceStub },
-        { provide: FileUploadService, useClass: FileUploadCServiceStub }
+        { provide: FileUploadService, useClass: FileUploadCServiceStub },
       ],
       imports: [
-        [NgxDropzoneModule],
+        [NgxDropzoneModule, NgxsModule.forRoot()],
       ]
     })
       .compileComponents();
