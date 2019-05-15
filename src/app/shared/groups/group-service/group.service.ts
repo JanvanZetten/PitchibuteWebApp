@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {GroupServiceModule} from '../group-service.module';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthenticationService} from '../../authentication/authentication-service/authentication.service';
-import {Item} from '../../../Entities/item';
+import {Item} from '../../../entities/item';
 
 
 
