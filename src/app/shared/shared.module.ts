@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { NgxsModule } from '@ngxs/store';
 
 /*
  * Shared Module between page specific modules.
@@ -11,8 +12,7 @@ import {HttpClient} from '@angular/common/http';
   declarations: [],
   imports: [
     RouterModule,
-    ReactiveFormsModule,
-
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
