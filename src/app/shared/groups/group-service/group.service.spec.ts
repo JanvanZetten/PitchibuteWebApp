@@ -6,11 +6,7 @@ import {type} from '../../../entities/item';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AuthenticationService} from '../../authentication/authentication-service/authentication.service';
 import {Subject} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-
-
-const responseMessage = 'Successfully added user to group';
-const group: Group[] = [{type: type.event, name: 'EnGruppe', id: 'id123', items: null}];
+import {Store} from '@ngxs/store';
 
 
 describe('GroupService', () => {
@@ -18,10 +14,15 @@ describe('GroupService', () => {
   let thenStub: any;
   let catchStub: any;
   let authServiceStub: any;
+  let storeStub: any;
+  let subscribeStub: any;
   let authenticationService: AuthenticationService;
   beforeEach(() => {
 
     authServiceStub = jasmine.createSpyObj('AuthService', ['getToken']);
+    storeStub = jasmine.createSpyObj('Store', ['select']);
+    subscribeStub = jasmine.createSpyObj('Subscribe', ['subscribe']);
+    storeStub.select.and.returnValue(subscribeStub);
     thenStub = jasmine.createSpyObj('Then', ['then']);
     catchStub = jasmine.createSpyObj('Catch', ['catch']);
 
@@ -29,6 +30,7 @@ describe('GroupService', () => {
       imports: [HttpClientTestingModule],
       providers: [GroupService,
         {provide: AuthenticationService, useValue: authServiceStub},
+        {provide: Store, useValue: storeStub}
       ],
     });
     service = TestBed.get(GroupService);
@@ -56,7 +58,7 @@ describe('GroupService', () => {
 
   it('Should rename item, calling http options', () => {
     spyOn(service, 'getHttpOptions');
-    service.renameItem(null, null, null).then();
+    service.renameItem('null', 'null', 'null').then();
     expect(service.getHttpOptions).toHaveBeenCalled();
   });
 
@@ -65,9 +67,5 @@ describe('GroupService', () => {
     service.addUserToGroup(null, null).then();
     expect(service.getHttpOptions).toHaveBeenCalled();
   });
-
-
-
-
 
 });

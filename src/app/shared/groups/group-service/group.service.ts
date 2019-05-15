@@ -2,10 +2,9 @@ import {Injectable} from '@angular/core';
 import {GroupServiceModule} from '../group-service.module';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthenticationService} from '../../authentication/authentication-service/authentication.service';
-import { Item } from '../../../entities/item';
-import { Store } from '@ngxs/store';
-import { ItemState } from 'src/app/store/state/item.state';
-
+import {Item} from '../../../entities/item';
+import {Store} from '@ngxs/store';
+import {ItemState} from 'src/app/store/state/item.state';
 
 
 @Injectable({
@@ -24,10 +23,10 @@ export class GroupService {
   path: Item[];
 
   constructor(private http: HttpClient,
-    private authService: AuthenticationService,
-    private store: Store) {
+              private authService: AuthenticationService,
+              private store: Store) {
     this.store.select(ItemState.getPath).subscribe(p => {
-      this.path = p
+      this.path = p;
     });
   }
 
@@ -45,7 +44,6 @@ export class GroupService {
       });
       collection += 'items/';
     }
-
     await this.getHttpOptions();
     return this.http.post('http://localhost:5000/pitchibute/us-central1/renameItem',
       {collection: collection, doc: doc, name: newName}, this.httpOptions).toPromise();
