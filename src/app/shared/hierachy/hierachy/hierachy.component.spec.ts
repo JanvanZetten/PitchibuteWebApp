@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HierachyComponent} from './hierachy.component';
 import {HierachyServiceService} from '../hierachy-service/hierachy-service.service';
-import {DebugElement} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FileUploadComponent} from '../../file-upload/file-upload/file-upload.component';
 import {FileUploadService} from '../../file-upload/file-upload-service/file-upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
@@ -18,6 +18,10 @@ describe('HierachyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA
+      ],
       declarations: [
         HierachyComponent,
         FileUploadComponent,

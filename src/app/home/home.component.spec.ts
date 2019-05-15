@@ -7,6 +7,7 @@ import {NgxDropzoneModule} from 'ngx-dropzone';
 import {HierachyServiceService} from '../shared/hierachy/hierachy-service/hierachy-service.service';
 import {FileUploadService} from '../shared/file-upload/file-upload-service/file-upload.service';
 import {GroupManagerComponent} from '../groups/group-manager/group-manager.component';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -14,6 +15,10 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA
+      ],
       declarations: [
         HomeComponent,
         HierachyComponent,
