@@ -21,7 +21,6 @@ describe('HierachyComponent', () => {
         FileUploadComponent
       ],
       providers: [
-        // { provide: HierachyServiceService, useClass: HierachyServiceStub },
         { provide: FileUploadService, useClass: FileUploadCServiceStub }
       ],
       imports: [
