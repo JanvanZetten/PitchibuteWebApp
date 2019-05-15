@@ -12,7 +12,6 @@ describe ('logintests', () => {
     },
   };
 
-  const mockEmail = chance.email();
   const testEmail = 'cypresstesting@bmwsucks.com';
   const mockPass = 'Password123';
 
