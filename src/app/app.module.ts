@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
@@ -12,6 +11,7 @@ import { RegistrerComponent } from './start/registrer/registrer.component';
 import { WelcomeComponent } from './start/welcome/welcome.component';
 import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
 import { RecaptchaModule } from 'ng-recaptcha';
+import {NgxsModule} from '@ngxs/store';
 
 
 @NgModule({
@@ -29,7 +29,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
     ReactiveFormsModule,
     AuthenticationServiceModule,
     RecaptchaModule.forRoot(),
-    
+    NgxsModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
