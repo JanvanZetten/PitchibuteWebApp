@@ -1,17 +1,19 @@
-<table>
+<table id="itemTable">
   <tr>
-    <td class="icon" colspan="0"><button (click)="clickBack()">
-      <i class="fas fa-caret-left"></i>
-      Back
-    </button>
-      <button (click)="clickReturnToHome()">
+
+    <td class="icon" colspan="0">
+      <button id="backButton" (click)="clickBack()">
+        <i class="fas fa-caret-left"></i>
+        Back
+      </button>
+      <button id="homeButton" (click)="clickReturnToHome()">
         <i class="fas fa-home"></i>
         Home
       </button></td>
     <td style="font-weight: bold">Name</td>
     <td style="font-weight: bold">Type</td>
   </tr>
-  <tr *ngFor="let item of (items | async)" (click)="clickPath(item)" >
+  <tr *ngFor="let item of (items | async)" (click)="clickPath(item)">
     <td class="icon"><i [ngClass]="{'fa-address-book':item.type === 0,
     'fa-calendar-alt':item.type === 1,
     'fa-folder':item.type === 2,
@@ -23,4 +25,4 @@
     <td><app-group-manager [item]="item" (click)="openMenu($event)"></app-group-manager></td>
   </tr>
 </table>
-<app-file-upload [parentStructure]="currentPathItems"></app-file-upload>
+<app-file-upload (onSuccessEvent)="fetchNewItems()" [parentStructure]="path"></app-file-upload>

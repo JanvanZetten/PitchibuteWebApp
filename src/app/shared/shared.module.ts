@@ -11,8 +11,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
   declarations: [ConfirmationDialogComponent],
   imports: [
     RouterModule,
-    ReactiveFormsModule,
-
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,

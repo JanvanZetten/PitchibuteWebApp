@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HomeComponent } from './home.component';
+import {HomeComponent} from './home.component';
 import {HierachyComponent} from '../shared/hierachy/hierachy/hierachy.component';
 import {FileUploadComponent} from '../shared/file-upload/file-upload/file-upload.component';
 import {NgxDropzoneModule} from 'ngx-dropzone';
@@ -8,6 +8,7 @@ import {HierachyServiceService} from '../shared/hierachy/hierachy-service/hierac
 import {FileUploadService} from '../shared/file-upload/file-upload-service/file-upload.service';
 import {GroupManagerComponent} from '../groups/group-manager/group-manager.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {NgxsModule} from '@ngxs/store';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -27,13 +28,13 @@ describe('HomeComponent', () => {
       ],
       providers: [
         {provide: HierachyServiceService, useClass: HierachyServiceStub},
-        {provide: FileUploadService, useClass: FileUploadCServiceStub}
+        {provide: FileUploadService, useClass: FileUploadCServiceStub},
       ],
       imports: [
-        [NgxDropzoneModule],
+        [NgxDropzoneModule, NgxsModule.forRoot()],
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -47,7 +48,10 @@ describe('HomeComponent', () => {
   });
 });
 
-export class HierachyServiceStub {
-  displayItems() {}
+class HierachyServiceStub {
+  getChildItemsFromFirebaseFunction() {
+  }
 }
-export class FileUploadCServiceStub {}
+
+class FileUploadCServiceStub {
+}

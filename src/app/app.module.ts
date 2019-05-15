@@ -13,6 +13,7 @@ import { WelcomeComponent } from './start/welcome/welcome.component';
 import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     LoginComponent,
     RegistrerComponent,
     WelcomeComponent,
-
   ],
   imports: [
     SharedModule,
@@ -30,7 +30,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ReactiveFormsModule,
     AuthenticationServiceModule,
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    NgxsModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
