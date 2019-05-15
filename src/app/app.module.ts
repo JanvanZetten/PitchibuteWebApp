@@ -12,6 +12,7 @@ import { RegistrerComponent } from './start/registrer/registrer.component';
 import { WelcomeComponent } from './start/welcome/welcome.component';
 import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,6 @@ import { RecaptchaModule } from 'ng-recaptcha';
     LoginComponent,
     RegistrerComponent,
     WelcomeComponent,
-
   ],
   imports: [
     SharedModule,
@@ -29,6 +29,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
     ReactiveFormsModule,
     AuthenticationServiceModule,
     RecaptchaModule.forRoot()
+    NgxsModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
