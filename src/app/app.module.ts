@@ -12,7 +12,7 @@ import { RegistrerComponent } from './start/registrer/registrer.component';
 import { WelcomeComponent } from './start/welcome/welcome.component';
 import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
 import { RecaptchaModule } from 'ng-recaptcha';
-import { NgxsModule } from '@ngxs/store';
+
 
 @NgModule({
   declarations: [
@@ -28,8 +28,8 @@ import { NgxsModule } from '@ngxs/store';
     AngularFireModule.initializeApp(environment.firebase),
     ReactiveFormsModule,
     AuthenticationServiceModule,
-    RecaptchaModule.forRoot()
-    NgxsModule.forRoot()
+    RecaptchaModule.forRoot(),
+    
   ],
   bootstrap: [AppComponent]
 })
