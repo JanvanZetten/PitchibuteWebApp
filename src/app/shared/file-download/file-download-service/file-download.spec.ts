@@ -132,6 +132,23 @@ describe('FileDownloadService', () => {
     expect(httpDownloadMock.req.request.body).toEqual({ path: httpDownloadMock.path });
   }));
 
+  it('should return blob from body and decoded base64 file name', fakeAsync(() => {
+    const httpDownloadMock = new HttpDownloadMock(httpMock);
+
+    const sub1 = service.downloadFileFromFunctions(httpDownloadMock.path).subscribe(res => {
+      expect(res.blob).toEqual(httpDownloadMock.blob);
+      expect(res.fileName).toEqual(httpDownloadMock.fileName);
+
+      sub1.unsubscribe();
+    });
+
+    tick(50);
+
+    httpDownloadMock.triggerSuccess();
+
+    expect(httpDownloadMock.req.request.body).toEqual({ path: httpDownloadMock.path });
+  }));
+  
   it('should create file from response', fakeAsync(() => {
     const httpDownloadMock = new HttpDownloadMock(httpMock);
 
@@ -174,10 +191,10 @@ class HttpDownloadMock {
   path = 'bing/bong';
 
   fileName = 'blib.pdf';
+  base64FileName = btoa(this.fileName);
   contentType = 'application/pdf';
-  contentDisposition = 'attachment; filename="' + this.fileName + '"';
+  contentDisposition = 'attachment; filename="' + this.base64FileName + '"';
   blob = new Blob([JSON.stringify({ element: 'pdffileforrealsmate' }, null, 2)], { type: 'blob' as 'json' });
-  dummyResult = { fileName: this.fileName, blob: this.blob };
   url = 'https://us-central1-pitchibute.cloudfunctions.net/downloadfile';
 
   constructor(httpMock: HttpTestingController) {
