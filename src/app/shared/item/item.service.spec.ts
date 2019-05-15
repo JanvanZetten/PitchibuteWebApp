@@ -123,7 +123,7 @@ describe('ItemService', () => {
   })
 
   it('should return the children when getChildrenFromPathAndTree is called', () => {
-    const expectedChildren: Item[] = [
+    const expectedChildren: Event[] = [
       {
         id: "ID3",
         name: "event1",
