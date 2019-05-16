@@ -21,6 +21,10 @@ describe('GroupManagerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA
+      ],
       imports: [
         ModalModule.forRoot(),
         BsDropdownModule.forRoot(),
@@ -50,38 +54,5 @@ describe('GroupManagerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  /**it('should call renameItem and hit service aswell', () => {
-    TestBed.get(GroupService).renameItem.and.returnValue(new Promise((resolve, reject) => {
-      resolve('Successful');
-    }));
-
-    component.renameItem(null, null, null);
-    expect(service.renameItem).toHaveBeenCalled();
-  });
-   it('Should fail and go to catch when calling renameItem', () => {
-    TestBed.get(GroupService).renameItem.and.returnValue(new Promise((resolve, reject) => {
-      reject('not Successful');
-    }));
-
-    component.renameItem(null, null, null);
-    expect(service.renameItem).toHaveBeenCalled();
-  });**/
-
-  it('Should call AddUserToGroup method and hit service aswell', () => {
-    TestBed.get(GroupService).addUserToGroup.and.returnValue(new Promise((resolve, reject) => {
-      resolve('Successful');
-    }));
-    component.addUserToGroup('Random@email.dk', null);
-    expect(service.addUserToGroup).toHaveBeenCalled();
-  });
-
-  it('Should fail and go to catch when calling addUserToGroup', () => {
-    TestBed.get(GroupService).addUserToGroup.and.returnValue(new Promise((resolve, reject) => {
-      reject('not Successful');
-    }));
-    component.addUserToGroup('Random@email.dk', null);
-    expect(service.addUserToGroup).toHaveBeenCalled();
   });
 });

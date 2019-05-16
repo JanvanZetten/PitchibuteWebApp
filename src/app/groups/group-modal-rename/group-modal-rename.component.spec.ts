@@ -58,16 +58,16 @@ describe('GroupModalRenameComponent', () => {
     TestBed.get(GroupService).renameItem.and.returnValue(new Promise((resolve, reject) => {
       resolve('Successful');
     }));
-
-    component.renameItem(null, null);
+    const item = component.item = {id: '123', type: 0, name: '123'};
+    component.renameItem(item);
     expect(service.renameItem).toHaveBeenCalled();
   });
   it('Should fail and go to catch when calling renameItem', () => {
     TestBed.get(GroupService).renameItem.and.returnValue(new Promise((resolve, reject) => {
       reject('not Successful');
     }));
-
-    component.renameItem(null, null);
+    const item = component.item = {id: '123', type: 0, name: '123'};
+    component.renameItem(item);
     expect(service.renameItem).toHaveBeenCalled();
   });
 

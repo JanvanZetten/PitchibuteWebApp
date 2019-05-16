@@ -46,9 +46,8 @@ export class GroupService {
   }
 
   async renameItem(item: Item, newName: string): Promise<any> {
-    const collection = this.getPathCollection();
-
     await this.getHttpOptions();
+    const collection = this.getPathCollection();
     return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/renameItem',
       {collection: collection, doc: item.id, name: newName}, this.httpOptions).toPromise();
   }
