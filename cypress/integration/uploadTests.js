@@ -1,18 +1,18 @@
 
 describe ('UploadTests', () => {
-
-  const url = 'http://localhost:4200';
-
   const dropEvent = {
     dataTransfer: {
       files: [],
     },
   };
 
+  const url = 'http://localhost:4200';
+  const mockPass = 'Password123';
+
   beforeEach(function () {
     cy.visit(url);
     cy.get('[data-cy=email]').type(Cypress.env("user"));
-    cy.get('[data-cy=password]').type(Cypress.env("pass"));
+    cy.get('[data-cy=password]').type(mockPass);
     cy.get('[data-cy=submit]').click();
     cy.url().should('have.attr', 'href', '/home');
   });

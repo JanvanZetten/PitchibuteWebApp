@@ -3,15 +3,13 @@ import Chance from 'chance';
 const chance = new Chance();
 
 describe ('LoginTests', () => {
-
-  const url = 'http://localhost:4200';
-
   const dropEvent = {
     dataTransfer: {
       files: [],
     },
   };
 
+  const url = 'http://localhost:4200';
   const mockEmail = chance.email();
   const mockPass = 'Password123';
 
@@ -70,7 +68,7 @@ describe ('LoginTests', () => {
 
   it('should login successfully and redirect to home', () => {
     cy.get('[data-cy=email]').type(Cypress.env("user"));
-    cy.get('[data-cy=password]').type(Cypress.env("pass"));
+    cy.get('[data-cy=password]').type(mockPass);
     cy.get('[data-cy=submit]').click();
     cy.url().should('be', 'http://localhost:4200/home');
   });

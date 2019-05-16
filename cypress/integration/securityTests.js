@@ -3,15 +3,13 @@ import Chance from 'chance';
 const chance = new Chance();
 
 describe ('SecurityTests', () => {
-
-  const url = 'http://localhost:4200';
-
   const dropEvent = {
     dataTransfer: {
       files: [],
     },
   };
 
+  const url = 'http://localhost:4200';
   const mockEmail = chance.email();
   const mockPass = 'Password123';
 
