@@ -1,15 +1,21 @@
-<table id="itemTable">
-  <tr>
 
-    <td class="icon" colspan="0">
-      <button id="backButton" (click)="clickBack()">
+<div id="button-bar">
+    <button class="btn" id="backButton" (click)="clickBack()">
         <i class="fas fa-caret-left"></i>
         Back
       </button>
-      <button id="homeButton" (click)="clickReturnToHome()">
+      <button class="btn" id="homeButton" (click)="clickReturnToHome()">
         <i class="fas fa-home"></i>
         Home
-      </button></td>
+      </button>
+      
+      <app-add-item></app-add-item>
+</div>
+
+<table id="itemTable">
+  <tr>
+    <td class="icon" colspan="0">
+    </td>
     <td style="font-weight: bold">Name</td>
     <td style="font-weight: bold">Type</td>
   </tr>

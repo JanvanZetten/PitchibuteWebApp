@@ -1,0 +1,74 @@
+<div class="dropdown">
+  <button class="dropbtn btn">
+    <i class="fas fa-plus"></i>
+    New
+  </button>
+  <div class="dropdown-content">
+
+    <a *ngIf="path.length === 0" (click)="openAddGroup()">
+      <i class=" fa fa-address-book"></i>
+      Group
+
+    </a>
+
+    <a *ngIf="showEventType()" (click)="openAddEvent()">
+      <i class="fa fa-calendar-alt"></i>
+      Event
+
+    </a>
+
+    <a *ngIf="path.length > 0" (click)="openAddFolder()">
+      <i class="fas fa-folder"></i>
+      Folder
+
+    </a>
+
+    <a *ngIf="showLinkType()" (click)="openAddLink()">
+      Link
+      <i class="far fa-external-link-alt"></i>
+    </a>
+
+  </div>
+</div>
+
+<div *ngIf="showModal">
+  <div id="modal-container">
+    <h1>Add {{getTypeAsString()}}</h1>
+    <form class="center" [formGroup]="addItemForm">
+
+      <div>
+        <label class="single-item-on-line center center-text form-label">
+          {{getTypeAsString().charAt(0).toUpperCase() + getTypeAsString().slice(1)}}
+          name</label>
+        <input class="single-item-on-line center form-field b-margin-m" type="text" placeholder="Name"
+          formControlName="name" id="name">
+      </div>
+
+      <div *ngIf="newIsOfTypeLink()">
+        <label class="single-item-on-line center center-text form-label">
+          URL
+        </label>
+        <input class="single-item-on-line center form-field b-margin-m" type="text" placeholder="URL"
+          formControlName="url" id="url">
+      </div>
+
+      <div *ngIf="newIsOfTypeEvent()">
+        <label class="single-item-on-line center center-text form-label">
+          Start date
+        </label>
+        <input class="single-item-on-line center form-field b-margin-m" type="date" formControlName="startDate"
+          id="start-date">
+
+        <label class="single-item-on-line center center-text form-label">
+          End date
+        </label>
+        <input class="single-item-on-line center form-field b-margin-m" type="date" formControlName="endDate"
+          id="end-date">
+      </div>
+
+      <input class="btn btn-green btn-press single-item-on-line center t-margin-l" id="registerNewUserButton"
+        (click)="addItem()" type="submit" value="Add">
+    </form>
+  </div>
+  <div id="overlay" (click)="showModal = false"></div>
+</div>

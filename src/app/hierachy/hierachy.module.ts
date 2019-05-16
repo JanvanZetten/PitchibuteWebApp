@@ -6,10 +6,12 @@ import { NgxsModule } from '@ngxs/store';
 import { ItemState } from 'src/app/store/state/item.state';
 import { StoreModule } from 'src/app/store/store.module';
 import { FileUploadModule } from '../file-upload/file-upload.module';
+import { AddItemComponent } from '../add-item/add-item.component';
 
 @NgModule({
   declarations: [
     HierachyComponent,
+    AddItemComponent,
   ],
   imports: [
     SharedModule,

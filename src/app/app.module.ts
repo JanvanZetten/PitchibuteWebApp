@@ -18,7 +18,7 @@ import { NgxsModule } from '@ngxs/store';
     AppComponent,
     LoginComponent,
     RegistrerComponent,
-    WelcomeComponent,
+    WelcomeComponent
   ],
   imports: [
     SharedModule,
