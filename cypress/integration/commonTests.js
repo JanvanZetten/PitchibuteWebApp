@@ -13,25 +13,55 @@ describe ('logintests', () => {
   };
 
   const mockEmail = chance.email();
-  const testEmail = 'cypresstesting@bmwsucks.com';
   const mockPass = 'Password123';
 
+  beforeEach(function () {
+    cy.visit(url);
+  });
 
   it('starts at the login page and be able to enter the mock email and password', () => {
-    cy.visit(url);
     cy.contains('Login:');
-    cy.get('#emailInput').type(mockEmail);
-    cy.get('#passwordInput').type(mockPass);
-    cy.get('#googleLoginButton').contains('Login with Google');
+    cy.get('[data-cy=email]').type(mockEmail);
+    cy.get('[data-cy=password]').type(mockPass);
   });
 
   it('should mention that the email or password is wrong when bad login info is entered', () => {
     cy.contains('Email or password is invalid').should('not.exist');
-    cy.get('#submitButton').click();
+    cy.get('[data-cy=submit]').click();
     cy.wait(2000);
     cy.contains('Email or password is invalid');
-    cy.get('#emailInput').clear();
-    cy.get('#passwordInput').clear();
+    cy.get('[data-cy=email]').type(mockEmail);
+    cy.contains('Email or password is invalid');
+    cy.get('[data-cy=email]').clear();
+    cy.get('[data-cy=password]').type(mockPass);
+    cy.contains('Email or password is invalid');
+  });
+
+  it('should be possible to press enter to login', () => {
+    cy.contains('Email or password is invalid').should('not.exist');
+    cy.type('qwerty{enter}');
+    cy.contains('Email or password is invalid');
+  });
+
+  it('should tell if passwords dont match when registering a new user', () => {
+    cy.get('[data-cy=register').click();
+    cy.contains('Passwords do not match!').should('not.exist');
+    cy.get('[data-cy=regemail').type(mockEmail);
+    cy.get('[data-cy=regpass').type(mockPass);
+    cy.get('[data-cy=regconfirm').type(mockPass + '123');
+    cy.get('[data-cy=regregister').click();
+    cy.contains('Passwords do not match!');
+  });
+
+  // Remember to delete your random account from Firestore
+  it('should register and attempt to login successfully', () => {
+    cy.get('[data-cy=register').click();
+    cy.get('#email').clear().type(mockEmail);
+    cy.get('#password').clear().type(mockPass);
+    cy.get('#confirmPassword').clear().type(mockPass);
+    cy.get('#registerNewUserButton').click();
+
+    cy.contains('Passwords do not match!').should('not.exist');
   });
 
   /*it('should login successfully and redirect to home', () => {
