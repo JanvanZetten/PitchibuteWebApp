@@ -25,24 +25,35 @@ describe ('LoginTests', () => {
     cy.get('[data-cy=password]').type(mockPass);
   });
 
-  it('should mention that the email or password is wrong when bad login info is entered', () => {
+  it('should return bad credentials when no login info is entered', () => {
     cy.contains('Email or password is invalid').should('not.exist');
+    cy.wait(500);
     cy.get('[data-cy=submit]').click();
     cy.contains('Email or password is invalid');
+  });
 
+  it('should return bad credentials when bad user info is entered', () => {
+    cy.contains('Email or password is invalid').should('not.exist');
     cy.get('[data-cy=email]').type(mockEmail);
+    cy.get('[data-cy=password]').type(mockPass);
+    cy.wait(500);
     cy.get('[data-cy=submit]').click();
     cy.contains('Email or password is invalid');
+  });
 
-    cy.get('[data-cy=email]').clear();
-    cy.get('[data-cy=password]').type(mockPass);
+  it('should return bad credentials when bad password info is entered', () => {
+    cy.contains('Email or password is invalid').should('not.exist');
+    cy.get('[data-cy=email]').type(Cypress.env("user"));
+    cy.get('[data-cy=password]').type('WhatTheHeck123');
+    cy.wait(500);
     cy.get('[data-cy=submit]').click();
     cy.contains('Email or password is invalid');
   });
 
   it('should be possible to press enter to login', () => {
     cy.contains('Email or password is invalid').should('not.exist');
-    cy.type('qwerty{enter}');
+    cy.wait(500);
+    cy.get('[data-cy=password]').type('qwerty{enter}');
     cy.contains('Email or password is invalid');
   });
 
@@ -61,7 +72,7 @@ describe ('LoginTests', () => {
     cy.get('[data-cy=email]').type(Cypress.env("user"));
     cy.get('[data-cy=password]').type(Cypress.env("pass"));
     cy.get('[data-cy=submit]').click();
-    cy.url().should('have.attr', 'href', '/home');
+    cy.url().should('be', 'http://localhost:4200/home');
   });
 
   // Not used due to flooding the database

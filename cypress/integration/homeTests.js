@@ -11,10 +11,10 @@ describe ('HomeTests', () => {
 
   beforeEach(function () {
     cy.visit(url);
-    cy.get('[data-cy=email]').type(Cypress.env('pass'));
+    cy.get('[data-cy=email]').type(Cypress.env('user'));
     cy.get('[data-cy=password]').type(Cypress.env('pass'));
     cy.get('[data-cy=submit]').click();
-    cy.url().should('have.attr', 'href', '/home');
+    cy.url().should('be', 'http://localhost:4200/home');
   });
 
   it('should have loaded home correctly', () => {
@@ -25,6 +25,7 @@ describe ('HomeTests', () => {
   });
 
   it('should properly navigate between items', () => {
+    cy.wait(5000);
     cy.get('[data-cy=home]').click();
     cy.get('[data-cy=home]').click();
     cy.get('[data-cy=home]').click();
