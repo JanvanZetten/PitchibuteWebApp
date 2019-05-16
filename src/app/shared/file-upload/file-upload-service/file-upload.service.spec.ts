@@ -80,25 +80,22 @@ describe('FileUploadService', () => {
       const itemArray = new Array<Item>();
 
       const service: FileUploadService = TestBed.get(FileUploadService);
-
-      try {
-        service.upload(itemArray, null);
+      
+      service.upload(itemArray, null).subscribe(() => {
         fail('Did not throw expected error');
-      } catch (error) {
+      }, error => {
         expect(error.message).toBe('Missing Path');
-      }
-      try {
-        service.upload(null, null);
+      });
+      service.upload(null, null).subscribe(() => {
         fail('Did not throw expected error');
-      } catch (error) {
+      }, error => {
         expect(error.message).toBe('Missing Path');
-      }
-      try {
-        service.upload(undefined, null);
+      });
+      service.upload(undefined, null).subscribe(() => {
         fail('Did not throw expected error');
-      } catch (error) {
+      }, error => {
         expect(error.message).toBe('Missing Path');
-      }
+      });
     });
 
   it('should throw error if one of the parantpath items is a file', () => {
@@ -111,12 +108,12 @@ describe('FileUploadService', () => {
 
     const service: FileUploadService = TestBed.get(FileUploadService);
 
-    try {
-      service.upload(itemArray, null)
-      fail("Did not throw expectet error")
-    } catch (error) {
+
+    service.upload(itemArray, null).subscribe(() => {
+      fail('Did not throw expected error');
+    }, error => {
       expect(error.message).toBe("Can't place a file here, check the structure and id's")
-    }
+    })
   })
 
   it('should throw error if one of the parantpath items is a link', () => {
@@ -129,12 +126,11 @@ describe('FileUploadService', () => {
 
     const service: FileUploadService = TestBed.get(FileUploadService);
 
-    try {
-      service.upload(itemArray, null)
-      fail("Did not throw expectet error")
-    } catch (error) {
+    service.upload(itemArray, null).subscribe(() => {
+      fail('Did not throw expected error');
+    }, error => {
       expect(error.message).toBe("Can't place a file here, check the structure and id's")
-    }
+    });
   })
 
   it('should call put on the firestorage refrence when a file should be uploaded', () => {

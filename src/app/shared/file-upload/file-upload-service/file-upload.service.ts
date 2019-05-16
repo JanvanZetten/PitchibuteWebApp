@@ -22,10 +22,14 @@ export class FileUploadService {
     private authenticationService: AuthenticationService) { }
 
   upload(parentStructure: Item[], file: File): Observable<IFile> {
-    const path = this.getParentPath(parentStructure)
+    try {
+      const path = this.getParentPath(parentStructure);
+    } catch (error) {
+      return throwError(error);
+    }
     const uid = this.firestore.createId()
     if (!path) {
-      throw new Error('Missing Path');
+      return throwError(new Error('Missing Path'));
     }
     return defer(() => this.authenticationService.getToken()).pipe(switchMap(token => {
       return defer(() =>
