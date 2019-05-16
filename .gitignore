@@ -669,3 +669,4 @@ MigrationBackup/
 package.json
 package-lock.json
 cypress.json
+cypress.json
