@@ -30,11 +30,4 @@ export class GroupManagerComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  addUserToGroup(email: string, item: Item) {
-    this.groupService.addUserToGroup(item, email).then(response => {
-      this.responseMessage = response;
-    }).catch(error => {
-      this.errorMessage = error.error;
-    });
-  }
 }

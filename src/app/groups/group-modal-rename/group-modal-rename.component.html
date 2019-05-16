@@ -1,5 +1,5 @@
 
-<li role="menuitem"><a class="dropdown-item" (click)="openModal()">Rename</a></li>
+<i class="fas fa-file-signature"><li role="menuitem"><a class="dropdown-item" (click)="openModal()">Rename</a></li></i>
 
 <ng-template #changeName>
   <div class="modal-header">
@@ -9,13 +9,13 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="itemForm">
+    <form [formGroup]="itemForm" (ngSubmit)="renameItem(item)">
       <h6>Current name</h6>
       <input type="text" formControlName="currentName">
       <br><br>
       <h6>New name</h6>
       <input type="text" formControlName="newName">
-      <button (click)="renameItem(null, item.id)">Save</button>
+      <button type="submit">Save</button>
     </form>
   </div>
 </ng-template>

@@ -6,9 +6,10 @@
   <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
       role="menu" aria-labelledby="button-basic">
 
+    <app-group-modal-add-user *ngIf="item.type === 0" [item]="item"></app-group-modal-add-user>
     <app-group-modal [item]="item"></app-group-modal>
     <li class="divider dropdown-divider"></li>
-    <app-group-modal-delete></app-group-modal-delete>
+    <app-group-modal-delete *ngIf="item.type !== 0" [item]="item"></app-group-modal-delete>
   </ul>
 </div>
 

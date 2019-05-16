@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {GroupService} from '../../shared/groups/group-service/group.service';
+import {Item} from '../../entities/item';
 
 @Component({
   selector: 'app-group-modal-delete',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupModalDeleteComponent implements OnInit {
 
+  @Input() item: Item;
   title: string;
   paragraph: string;
-  constructor() { }
+  errorMessage: string;
+  responseMessage: string;
+  constructor(private groupService: GroupService) { }
 
   ngOnInit() {
     this.title = 'Confirmation Dialog';
@@ -17,7 +22,11 @@ export class GroupModalDeleteComponent implements OnInit {
   }
 
   deleteItem() {
-    console.log('Deleted');
+ this.groupService.deleteItem(this.item).then(response => {
+      this.responseMessage = response;
+    }).catch(error => {
+      this.errorMessage = error.error;
+    });
   }
 
 }

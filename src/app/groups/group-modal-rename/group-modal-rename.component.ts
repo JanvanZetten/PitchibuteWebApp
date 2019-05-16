@@ -32,9 +32,9 @@ export class GroupModalRenameComponent implements OnInit {
     this.itemForm.get('currentName').setValue(this.item.name);
   }
 
-  renameItem(collection: string, doc: string) {
+  renameItem(item: Item) {
     const newName = this.itemForm.get('newName').value;
-    this.groupService.renameItem(collection, doc, newName).then(response => {
+    this.groupService.renameItem(item, newName).then(response => {
       this.responseMessage = response;
     }).catch(error => {
       this.errorMessage = error.error;

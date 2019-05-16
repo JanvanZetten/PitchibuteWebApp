@@ -1,2 +1,2 @@
-<li role="menuitem"><a class="dropdown-item" (click)="confirmation.openModal()">Delete</a></li>
+<i class="fas fa-trash"><li role="menuitem"><a class="dropdown-item" (click)="confirmation.openModal()">Delete</a></li></i>
 <app-confirmation-dialog #confirmation [title]="title" [body]="paragraph" (confirmationSignal)="deleteItem()"></app-confirmation-dialog>

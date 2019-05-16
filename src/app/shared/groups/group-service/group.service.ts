@@ -36,17 +36,21 @@ export class GroupService {
     });
   }
 
-  async renameItem(collection: string, doc: string, newName: string): Promise<any> {
-    if (!collection) {
-      collection = '';
-      this.path.forEach(item => {
-        collection += 'items/' + item.id + '/';
-      });
-      collection += 'items/';
-    }
+  getPathCollection() {
+    let collection = '';
+    this.path.forEach(itemP => {
+      collection += 'items/' + itemP.id + '/';
+    });
+    collection += 'items/';
+    return collection;
+  }
+
+  async renameItem(item: Item, newName: string): Promise<any> {
+    const collection = this.getPathCollection();
+
     await this.getHttpOptions();
     return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/renameItem',
-      {collection: collection, doc: doc, name: newName}, this.httpOptions).toPromise();
+      {collection: collection, doc: item.id, name: newName}, this.httpOptions).toPromise();
   }
 
   // Retrieve group data, and then sending HTTP request to add new user.
@@ -55,5 +59,14 @@ export class GroupService {
     return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/addUserToGroup',
       {collection: 'items', doc: item.id, email: email},
       this.httpOptions).toPromise();
+  }
+
+  async deleteItem(item: Item): Promise<any> {
+    await this.getHttpOptions();
+    const collection = this.getPathCollection();
+    return this.http.post('http://localhost:5000/pitchibute/us-central1/deleteItem', {
+      collection: collection,
+      doc: item.id
+    }, this.httpOptions).toPromise();
   }
 }
