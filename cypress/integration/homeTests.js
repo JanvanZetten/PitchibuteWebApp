@@ -39,7 +39,7 @@ describe ('HomeTests', () => {
     cy.get('[data-cy=back]').click();
     cy.get('.fa-folder:nth(0)');
     cy.get('.fa-calendar-alt').click();
-    cy.contains('.pka');
+    cy.contains('.pdf');
 
     cy.get('[data-cy=home]').click();
     cy.get('.fa-address-book').click();
