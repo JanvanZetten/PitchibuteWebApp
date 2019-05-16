@@ -2,7 +2,7 @@
 import Chance from 'chance';
 const chance = new Chance();
 
-describe ('logintests', () => {
+describe ('SecurityTests', () => {
 
   const url = 'http://localhost:4200';
 
@@ -33,7 +33,5 @@ describe ('logintests', () => {
     cy.get('#submitButton').should('disabled');
     cy.get('#captchaElement');
   });
-
-
 
 });

@@ -1,5 +1,5 @@
 <!-- File Upload Component -->
-<div id="fileUploadDropzone" class="dropzone_container">
+<div id="fileUploadDropzone" data-cy="uploadDropzone" class="dropzone_container">
   <ngx-dropzone #dropzone class="actual_dropzone" (filesAdded)="uploadFile($event)" [label]="''" [disabled]="isLoading || hasSucceeded || hasFailed" [preserveFiles]="false"></ngx-dropzone>
   
   <i *ngIf="!isLoading && !hasSucceeded && !hasFailed" class="fas fa-3x fa-upload text-dark dropzone_fa"></i>
