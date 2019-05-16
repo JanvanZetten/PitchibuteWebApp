@@ -2,7 +2,7 @@ import { IFile } from './../../entities/file';
 import { Folder } from './../../entities/folder';
 import { Group } from './../../entities/group';
 import { Event } from './../../entities/event';
-import { HierachyModule } from './../hierachy/hierachy.module';
+import { HierachyModule } from '../../hierachy/hierachy.module';
 import { TestBed, async } from '@angular/core/testing';
 import { ItemService } from './item.service';
 import { AngularFireModule } from '@angular/fire';

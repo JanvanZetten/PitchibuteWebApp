@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { FileUploadComponent } from '../../file-upload/file-upload.component';
-import { FileUploadServiceModule } from './file-upload-service/file-upload-service.module';
-import { FileUploadRoutingModule } from '../../file-upload/file-upload-routing.module';
-import { SharedModule } from '../shared.module';
+import { FileUploadComponent } from './file-upload.component';
+import { FileUploadServiceModule } from '../shared/file-upload/file-upload-service/file-upload-service.module';
+import { SharedModule } from '../shared/shared.module';
+
 
 /*
  * Module for File Upload Component.

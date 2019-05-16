@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HierachyComponent } from './hierachy.component';
-import { FileUploadComponent } from '../../file-upload/file-upload/file-upload.component';
-import { FileUploadService } from '../../file-upload/file-upload-service/file-upload.service';
+import { FileUploadComponent } from '../file-upload/file-upload.component';
+import { FileUploadService } from '../shared/file-upload/file-upload-service/file-upload.service';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { Item, type } from '../../../entities/item';
+import { Item, type } from '../entities/item';
 import { of } from 'rxjs';
 import { NgxsModule, Store } from '@ngxs/store';
 import { GoBack, ResetPath, FetchItems, NavigateIntoItem } from 'src/app/store/actions/item.action';
