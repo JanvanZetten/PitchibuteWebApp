@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef} from '@angular/core';
 import {Group} from '../../entities/group';
 import {GroupService} from '../../shared/groups/group-service/group.service';
-import {type} from '../../entities/item';
+import {Item, type} from '../../entities/item';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {GroupModalRenameComponent} from '../group-modal-rename/group-modal-rename.component';
 
 
 @Component({
@@ -11,22 +14,20 @@ import {type} from '../../entities/item';
 })
 export class GroupManagerComponent implements OnInit {
 
+  @Input() item: Item;
   errorMessage: string;
   responseMessage: string;
-  title =  'This is still under construction.';
-  groupForTest: Group = {id: '123', type: type.file, name: '123', items:null};
+  modalRef: BsModalRef;
 
-  constructor(private groupService: GroupService) {
+  constructor(private groupService: GroupService,
+              private modalService: BsModalService) {
   }
 
   ngOnInit() {
   }
 
-  addUserToGroup(email: string) {
-    this.groupService.addUserToGroup(this.groupForTest, email).then(rspMsg => {
-      this.responseMessage = rspMsg;
-    }, error => {
-      this.errorMessage = error.message;
-    });
+  openModal(template: GroupModalRenameComponent) {
+    this.modalRef = this.modalService.show(template);
   }
+
 }

@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { NgxsModule } from '@ngxs/store';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 /*
  * Shared Module between page specific modules.
  */
 @NgModule({
-  declarations: [],
+  declarations: [ConfirmationDialogComponent],
   imports: [
     RouterModule,
     ReactiveFormsModule
@@ -17,7 +16,8 @@ import { NgxsModule } from '@ngxs/store';
   exports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ConfirmationDialogComponent
   ]
 })
 export class SharedModule { }

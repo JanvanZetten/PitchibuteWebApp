@@ -11,6 +11,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrerComponent } from './start/registrer/registrer.component';
 import { WelcomeComponent } from './start/welcome/welcome.component';
 import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
@@ -27,6 +29,8 @@ import { NgxsModule } from '@ngxs/store';
     AngularFireModule.initializeApp(environment.firebase),
     ReactiveFormsModule,
     AuthenticationServiceModule,
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
     NgxsModule.forRoot()
   ],
   bootstrap: [AppComponent]
