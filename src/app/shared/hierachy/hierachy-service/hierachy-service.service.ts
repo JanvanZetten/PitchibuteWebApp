@@ -9,7 +9,9 @@ import { Item } from 'src/app/entities/item';
   providedIn: HierachyServiceModule
 })
 export class HierachyServiceService {
-
+  private readonly FUNCTIONS_URL = "https://us-central1-pitchibute.cloudfunctions.net/"
+  private readonly GET_PATH_FUNCTION_URL = this.FUNCTIONS_URL + "getPathItems"
+  private readonly ADD_ITEM_FUNCTION_URL = this.FUNCTIONS_URL + "addItem"
   uid: string;
 
   constructor(private http: HttpClient) { }
@@ -22,7 +24,7 @@ export class HierachyServiceService {
         'authorization': 'random'
       })
     };
-    return this.http.get('https://us-central1-pitchibute.cloudfunctions.net/getPathItems', headers) as Observable<Item[]>;
+    return this.http.get(this.GET_PATH_FUNCTION_URL, headers) as Observable<Item[]>;
   }
 
   generateStoreUri(path: Item[]): string {
@@ -33,4 +35,9 @@ export class HierachyServiceService {
     });
     return currentPathString;
   }
+
+  addItem(path: Item[], newItem: Item): Observable<string> {
+    return this.http.post(this.ADD_ITEM_FUNCTION_URL, {path: path, newItem: newItem}) as Observable<string>
+  }
+
 }

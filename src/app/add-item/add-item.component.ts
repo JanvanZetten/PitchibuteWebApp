@@ -1,9 +1,14 @@
+import { Folder } from './../entities/folder';
+import { Group } from './../entities/group';
+import { Event } from './../entities/event';
 import { Store } from '@ngxs/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { type, Item } from '../entities/item';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ItemState } from '../store/state/item.state';
 import { Subscription } from 'rxjs';
+import { AddItem } from '../store/actions/item.action';
+import { Link } from '../entities/link';
 
 @Component({
   selector: 'app-add-item',
@@ -19,7 +24,10 @@ export class AddItemComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = []
 
   addItemForm = new FormGroup({
-    name: new FormControl()
+    name: new FormControl(),
+    url: new FormControl(),
+    startDate: new FormControl(),
+    endDate: new FormControl()
   })
 
   constructor(private store: Store) { }
@@ -55,10 +63,12 @@ export class AddItemComponent implements OnInit, OnDestroy {
   }
 
   newIsOfTypeLink() {
+    // This is here because the template does not nativly support enums
     return this.itemType == type.link
   }
 
   newIsOfTypeEvent() {
+    // This is here because the template does not nativly support enums
     return this.itemType == type.event
   }
 
@@ -80,10 +90,38 @@ export class AddItemComponent implements OnInit, OnDestroy {
   }
 
   getTypeAsString(): string {
+    // This is here because the template does not nativly support enums
     return type[this.itemType]
   }
 
   addItem() {
+    const name = this.addItemForm.get('name').value
+    const newItem: Item = { name: name, type: this.itemType }
 
+    switch (this.itemType) {
+      case type.group:
+        (newItem as Group).items = []
+        break
+
+      case type.event:
+        const start: Date = this.addItemForm.get('startDate').value;
+        const end: Date = this.addItemForm.get('endDate').value;
+        (newItem as Event).start = start;
+        (newItem as Event).end = end;
+
+      case type.folder:
+        (newItem as Event | Folder).resources = []
+        break
+
+      case type.link:
+        const url: string = this.addItemForm.get('url').value;
+        (newItem as Link).url = url
+        break
+
+      default:
+        throw new Error("Can't add this item type")
+    }
+
+    this.store.dispatch(new AddItem(newItem))
   }
 }

@@ -74,4 +74,8 @@ export class ItemService {
       throw new Error(`Unexpected error occured, item ${parent.name} can't have items`)
     }
   }
+
+  public AddItem(path: Item[], newItem: Item): Observable<string> {
+    return this.hiearchyService.addItem(path, newItem)
+  }
 }

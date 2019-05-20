@@ -1,5 +1,5 @@
 import { Item, type } from './../../entities/item';
-import { NavigateIntoItem, GoBack, ResetPath, FetchItems } from './../actions/item.action';
+import { NavigateIntoItem, GoBack, ResetPath, FetchItems, AddItem } from './../actions/item.action';
 import { State, Selector, Action, StateContext, NgxsOnInit } from "@ngxs/store";
 import { ItemService } from 'src/app/shared/item/item.service';
 
@@ -84,5 +84,22 @@ export class ItemState implements NgxsOnInit {
                     itemTree: UpdatedTree
                 });
             })
+    }
+
+    @Action(AddItem)
+    AddItem({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
+        const state = getState()
+        debugger
+        const children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+        children.push(payload)
+        const UpdatedTree = ItemService.updateTree(state.itemTree, state.path, children)
+        patchState({
+            itemTree: UpdatedTree
+        });
+        this.itemService.AddItem(state.path, payload).subscribe(id => {
+            payload.id = id;
+            // TODO check if it should also patch? cause it seems like it patches without a patchState()
+        }
+        )
     }
 }
