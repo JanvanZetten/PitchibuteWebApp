@@ -3,22 +3,22 @@
   <form class="center" [formGroup]="registrerForm">
     <label class="single-item-on-line center center-text form-label">Email</label>
     <input class="single-item-on-line center form-field b-margin-m" type="email" placeholder="Email"
-      formControlName="email" id="email" autocomplete="username">
+      formControlName="email" id="email" data-cy="regemail" autocomplete="username">
 
     <label class="single-item-on-line center center-text form-label">Password</label>
     <input class="single-item-on-line center form-field b-margin-m" type="password" placeholder="Password"
-      formControlName="password" id="password" autocomplete="new-password">
+      formControlName="password" id="password" data-cy="regpass" autocomplete="new-password">
 
     <label class="single-item-on-line center center-text form-label">Confirm password</label>
     <input class="single-item-on-line center form-field b-margin-s" (mouseleave)="checkPasswordMatch()" type="password"
-      placeholder="Password" formControlName="comfirmPassword" id="confirmPassword" autocomplete="new-password">
+      placeholder="Password" formControlName="comfirmPassword" id="confirmPassword" data-cy="regconfirm" autocomplete="new-password">
 
     <div *ngIf="showPasswordNotMatchError" class="red-text">
       Passwords do not match!
     </div>
 
-    <input class="btn btn-red btn-press single-item-on-line center t-margin-l" id="registerNewUserButton" (click)="registrer()" type="submit"
-      value="Register">
+    <input class="btn btn-red btn-press single-item-on-line center t-margin-l" id="registerNewUserButton" data-cy="regregister"
+           (click)="registrer()" type="submit" value="Register">
 
     <h3 class="red-text" *ngIf="errorMessage">{{errorMessage}}</h3>
   </form>

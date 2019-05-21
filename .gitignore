@@ -668,3 +668,5 @@ MigrationBackup/
 # End of https://www.gitignore.io/api/visualstudio
 package.json
 package-lock.json
+cypress.json
+cypress.json

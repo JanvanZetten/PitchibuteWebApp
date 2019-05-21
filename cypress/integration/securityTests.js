@@ -2,18 +2,15 @@
 import Chance from 'chance';
 const chance = new Chance();
 
-describe ('logintests', () => {
-
-  const url = 'http://localhost:4200';
-
+describe ('SecurityTests', () => {
   const dropEvent = {
     dataTransfer: {
       files: [],
     },
   };
 
+  const url = 'http://localhost:4200';
   const mockEmail = chance.email();
-  const testEmail = 'cypresstesting@bmwsucks.com';
   const mockPass = 'Password123';
 
   it('should open the login page', () => {
@@ -22,13 +19,17 @@ describe ('logintests', () => {
   });
 
   it('should register a brute force attack and make it impossible to login if too many attempts are made', () => {
-    cy.get('#emailInput').clear().type(mockEmail);
-    cy.get('#passwordInput').clear().type(mockPass);
-    for (let i = 0; i < 20; i++) {
-      cy.get('#submitButton').click();
+    cy.get('[data-cy=email]').clear().type(mockEmail);
+    cy.get('[data-cy=password]').clear().type(mockPass);
+    cy.wait(500);
+    for (let i = 0; i < 3; i++) {
+      cy.get('[data-cy=submit]').click();
+      cy.wait(250);
     }
-    cy.wait(50)
-    cy.contains('Email or password is invalid').should('not.exist');
+    cy.wait(1000);
+    cy.contains('Email or password is invalid');
+    cy.get('[data-cy=submit]').should('disabled');
+    cy.get('[data-cy=captcha]');
   });
 
 });

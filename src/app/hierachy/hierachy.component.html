@@ -1,15 +1,13 @@
-
 <div id="button-bar">
-    <button class="btn" id="backButton" (click)="clickBack()">
-        <i class="fas fa-caret-left"></i>
-        Back
-      </button>
-      <button class="btn" id="homeButton" (click)="clickReturnToHome()">
-        <i class="fas fa-home"></i>
-        Home
-      </button>
-      
-      <app-add-item></app-add-item>
+  <button class="btn" id="backButton" (click)="clickBack()">
+    <i class="fas fa-caret-left"></i>
+    Back
+  </button>
+  <button class="btn" id="homeButton" (click)="clickReturnToHome()">
+    <i class="fas fa-home"></i>
+    Home
+  </button>
+  <app-add-item></app-add-item>
 </div>
 
 <table id="itemTable">
@@ -28,6 +26,9 @@
     'far':item.type === 0 || item.type === 1 || item.type === 2 || item.type === 3,
     'fas':item.type === 4}"></i></td>
     <td>{{item.name}}</td>
+    <td>
+      <app-group-manager [item]="item" (click)="openMenu($event)"></app-group-manager>
+    </td>
   </tr>
 </table>
 <app-file-upload (onSuccessEvent)="fetchNewItems()" [parentStructure]="path"></app-file-upload>
