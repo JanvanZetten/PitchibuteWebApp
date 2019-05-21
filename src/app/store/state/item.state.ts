@@ -20,7 +20,9 @@ export class ItemState implements NgxsOnInit {
     ngxsOnInit(ctx?: StateContext<ItemStateModel>) {
         ctx.getState().path = []
         this.itemService.getChildItems([]).subscribe(items =>
-            ctx.getState().itemTree = items)
+          ctx.patchState({
+            itemTree: items
+          }))
     }
 
     @Selector()
