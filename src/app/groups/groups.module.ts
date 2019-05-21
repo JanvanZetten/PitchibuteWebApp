@@ -21,7 +21,7 @@ import { GroupModalAddUserComponent } from './group-modal-add-user/group-modal-a
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class GroupsModule { }

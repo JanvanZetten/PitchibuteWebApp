@@ -47,6 +47,7 @@ export class GroupService {
 
   async renameItem(item: Item, newName: string): Promise<any> {
     await this.getHttpOptions();
+    console.log(this.httpOptions.headers);
     const collection = this.getPathCollection();
     return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/renameItem',
       {collection: collection, doc: item.id, name: newName}, this.httpOptions).toPromise();
@@ -63,7 +64,7 @@ export class GroupService {
   async deleteItem(item: Item): Promise<any> {
     await this.getHttpOptions();
     const collection = this.getPathCollection();
-    return this.http.post('http://localhost:5000/pitchibute/us-central1/deleteItem', {
+    return this.http.post('https://us-central1-pitchibute.cloudfunctions.net/deleteItem', {
       collection: collection,
       doc: item.id
     }, this.httpOptions).toPromise();

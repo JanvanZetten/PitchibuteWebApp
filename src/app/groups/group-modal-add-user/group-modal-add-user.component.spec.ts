@@ -16,7 +16,7 @@ describe('GroupModalAddUserComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupModalAddUserComponent],
-      imports: [ReactiveFormsModule, ModalModule.forRoot(),],
+      imports: [ReactiveFormsModule, ModalModule.forRoot(), ],
       providers: [
         {provide: GroupService, useValue: groupServiceStub}]
     })
@@ -29,6 +29,8 @@ describe('GroupModalAddUserComponent', () => {
     catchStub = jasmine.createSpyObj('Catch', ['catch']);
     fixture = TestBed.createComponent(GroupModalAddUserComponent);
     component = fixture.componentInstance;
+    component.item = {id: '123', type: 0, name: '123'};
+    component.modalId = component.item + '123';
     fixture.detectChanges();
     service = TestBed.get(GroupService);
   });

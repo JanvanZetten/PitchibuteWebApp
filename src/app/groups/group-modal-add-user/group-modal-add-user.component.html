@@ -1,17 +1,21 @@
-<i class="fas fa-user-plus"><li role="menuitem"><a class="dropdown-item" (click)="openModal()">Add User</a></li></i>
-
-<ng-template #addUser>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Add User To Group</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
+<!-- The Modal -->
+<div *ngIf="getBoolean()" id="myModal" class="modal">
+  <div class="modal-content">
+    <span (click)="closeModal()" class="close">&times;</span>
+    <div class="modal-header">
+      <h2>Add User</h2>
+    </div>
     <form [formGroup]="addUserForm" (ngSubmit)="addUserToGroup(item)">
-      <h6>Email to add:</h6>
-      <input type="text" formControlName="email">
-      <button type="submit">Save</button>
+      <div class="modal-body">
+        <h6>Email to add:</h6>
+        <label>
+          <input type="text" formControlName="email">
+        </label>
+        <button type="submit">Add</button>
+      </div>
+      <div class="modal-footer">
+        <a></a>
+      </div>
     </form>
   </div>
-</ng-template>
+</div>
