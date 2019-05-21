@@ -31,9 +31,14 @@ describe ('HomeTests', () => {
     cy.get('[data-cy=home]').click();
     cy.get('[data-cy=home]').click();
 
+    /*
     cy.get('.fa-address-book').click();
     cy.get('.fa-calendar-alt');
+    */
+
     cy.get('.fa-folder:nth(0)').click();
+
+    /*
     cy.contains('.pdf');
 
     cy.get('[data-cy=back]').click();
@@ -43,6 +48,7 @@ describe ('HomeTests', () => {
 
     cy.get('[data-cy=home]').click();
     cy.get('.fa-address-book').click();
+    */
   });
 
 });
