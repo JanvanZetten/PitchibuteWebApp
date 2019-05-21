@@ -22,8 +22,9 @@ export class FileUploadService {
     private authenticationService: AuthenticationService) { }
 
   upload(parentStructure: Item[], file: File): Observable<IFile> {
+    let path: string;
     try {
-      const path = this.getParentPath(parentStructure);
+      path = this.getParentPath(parentStructure);
     } catch (error) {
       return throwError(error);
     }
