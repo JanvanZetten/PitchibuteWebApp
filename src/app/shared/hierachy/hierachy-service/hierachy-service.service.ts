@@ -48,9 +48,13 @@ export class HierachyServiceService {
     }
     return this.http.post(this.ADD_ITEM_FUNCTION_URL, { path: path, newItem: newItem }, options)
       .pipe(
-        map(o => { return o.id as string })
+        map(o => { return (o as ObjectWithId).id })
       )
       .toPromise()
   }
 
+}
+
+class ObjectWithId extends Object {
+  id: string
 }
