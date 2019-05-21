@@ -1,0 +1,35 @@
+<div id="login-container">
+  <h1 class="center b-margin-m center-text">Login:</h1>
+  <form class="center b-margin-m" [formGroup]="loginForm">
+    <label class="single-item-on-line center center-text form-label">Email</label>
+    <input class="single-item-on-line center form-field b-margin-s" type="email" placeholder="Email..."
+      formControlName="email" id="emailInput" autocomplete="username" data-cy="email">
+
+    <label class="single-item-on-line center center-text form-label">Password</label>
+    <input class="single-item-on-line center form-field b-margin-s" type="password" placeholder="Password..."
+      formControlName="password" id="passwordInput" autocomplete="current-password" data-cy="password">
+
+    <re-captcha data-cy="captcha" *ngIf="!eligibleLogin" (resolved)="captchaResolved($event)" siteKey="6LdMZqMUAAAAABG3cO3e2jsnTCgnVDEF1KxREjIT"></re-captcha>
+
+    <p class="red-text center-text" *ngIf="emailPasswordError">{{emailPasswordError}}</p>
+    <input [disabled]="!eligibleLogin" class="btn btn-green btn-press single-item-on-line center" data-cy="submit" (click)="loginWithFormData()" type="submit"
+      value="Login">
+  </form>
+
+  <p class="red-text center-text" *ngIf="googleloginError">{{googleloginError}}</p>
+  <button class="btn btn-blue btn-press single-item-on-line center b-margin-l" id="googleLoginButton" (click)="loginWithGoogle()">Login with
+    Google</button>
+
+  <button class="btn btn-red btn-press single-item-on-line center" id="registerButton" data-cy="register" (click)="registerNewUser()">
+    Register new user
+  </button>
+
+</div>
+
+<!-- Custom modal setup -->
+<div *ngIf="showModal">
+  <div id="modal-container">
+    <app-registrer (succes)="userRegistred($event)"></app-registrer>
+  </div>
+  <div id="overlay" (click)="removeModal()"></div>
+</div>
