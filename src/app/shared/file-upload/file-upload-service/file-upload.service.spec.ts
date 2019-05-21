@@ -8,14 +8,21 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { first } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { AuthenticationService } from '../../authentication/authentication-service/authentication.service';
 
 
 describe('FileUploadService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
+  const testToken = 'greatToken';
 
   beforeEach(async(() => {
+    let authenticationServiceMock = jasmine.createSpyObj('AuthenticationService', ['getToken']);
+    authenticationServiceMock.getToken.and.returnValue(new Promise((resolve, reject) => {
+      resolve(testToken);
+    }));
+
     TestBed.configureTestingModule({
-      providers: [FileUploadService],
+      providers: [FileUploadService, { provide: AuthenticationService, useValue: authenticationServiceMock }],
       imports: [
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
@@ -60,13 +67,36 @@ describe('FileUploadService', () => {
     spyOn(fireStorage, 'ref').and.returnValue(fireStorageRefrence)
     spyOn(fireStorageRefrence, 'put').and.returnValue(of({}).toPromise())
 
-    const meta = { originalName: fileName, path: exspectetPathOutput }
+    const meta = { originalName: fileName, path: exspectetPathOutput, token: testToken }
 
     const observable = service.upload(itemArray, theFile).pipe(first()).subscribe(() => {
       expect(fireStorageRefrence.put).toHaveBeenCalledWith(theFile, { customMetadata: meta })
       observable.unsubscribe()
     })
   })
+
+  it('should throw error if the path is not set',
+    () => {
+      const itemArray = new Array<Item>();
+
+      const service: FileUploadService = TestBed.get(FileUploadService);
+      
+      service.upload(itemArray, null).subscribe(() => {
+        fail('Did not throw expected error');
+      }, error => {
+        expect(error.message).toBe('Missing Path');
+      });
+      service.upload(null, null).subscribe(() => {
+        fail('Did not throw expected error');
+      }, error => {
+        expect(error.message).toBe('Missing Path');
+      });
+      service.upload(undefined, null).subscribe(() => {
+        fail('Did not throw expected error');
+      }, error => {
+        expect(error.message).toBe('Missing Path');
+      });
+    });
 
   it('should throw error if one of the parantpath items is a file', () => {
     const itemArray: Item[] = [
@@ -78,12 +108,12 @@ describe('FileUploadService', () => {
 
     const service: FileUploadService = TestBed.get(FileUploadService);
 
-    try {
-      service.upload(itemArray, null)
-      fail("Did not throw expectet error")
-    } catch (error) {
+
+    service.upload(itemArray, null).subscribe(() => {
+      fail('Did not throw expected error');
+    }, error => {
       expect(error.message).toBe("Can't place a file here, check the structure and id's")
-    }
+    })
   })
 
   it('should throw error if one of the parantpath items is a link', () => {
@@ -96,12 +126,11 @@ describe('FileUploadService', () => {
 
     const service: FileUploadService = TestBed.get(FileUploadService);
 
-    try {
-      service.upload(itemArray, null)
-      fail("Did not throw expectet error")
-    } catch (error) {
+    service.upload(itemArray, null).subscribe(() => {
+      fail('Did not throw expected error');
+    }, error => {
       expect(error.message).toBe("Can't place a file here, check the structure and id's")
-    }
+    });
   })
 
   it('should call put on the firestorage refrence when a file should be uploaded', () => {
