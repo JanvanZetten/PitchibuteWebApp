@@ -9,6 +9,7 @@ import { ItemState } from '../store/state/item.state';
 import { Subscription } from 'rxjs';
 import { AddItem } from '../store/actions/item.action';
 import { Link } from '../entities/link';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-item',
@@ -122,6 +123,6 @@ export class AddItemComponent implements OnInit, OnDestroy {
         throw new Error("Can't add this item type")
     }
 
-    this.store.dispatch(new AddItem(newItem))
+    this.store.dispatch(new AddItem(newItem)).pipe(first()).subscribe(() => { this.showModal = false })
   }
 }

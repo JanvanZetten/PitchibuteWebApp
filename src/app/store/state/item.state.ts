@@ -87,19 +87,15 @@ export class ItemState implements NgxsOnInit {
     }
 
     @Action(AddItem)
-    AddItem({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
+    async AddItem({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
         const state = getState()
-        debugger
-        const children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+        const children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree);
+        const id = await this.itemService.AddItem(state.path, payload)
+        payload.id = id;
         children.push(payload)
         const UpdatedTree = ItemService.updateTree(state.itemTree, state.path, children)
         patchState({
             itemTree: UpdatedTree
         });
-        this.itemService.AddItem(state.path, payload).subscribe(id => {
-            payload.id = id;
-            // TODO check if it should also patch? cause it seems like it patches without a patchState()
-        }
-        )
     }
 }

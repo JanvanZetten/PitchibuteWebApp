@@ -1,9 +1,11 @@
+import { AuthenticationService } from './../../authentication/authentication-service/authentication.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { HierachyServiceModule } from './hierachy-service.module';
 import { Item } from 'src/app/entities/item';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: HierachyServiceModule
@@ -14,7 +16,7 @@ export class HierachyServiceService {
   private readonly ADD_ITEM_FUNCTION_URL = this.FUNCTIONS_URL + "addItem"
   uid: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
   getChildItemsFromFirebaseFunction(path: Item[]): Observable<Item[]> {
     const headers = {
@@ -36,8 +38,19 @@ export class HierachyServiceService {
     return currentPathString;
   }
 
-  addItem(path: Item[], newItem: Item): Observable<string> {
-    return this.http.post(this.ADD_ITEM_FUNCTION_URL, {path: path, newItem: newItem}) as Observable<string>
+  async addItem(path: Item[], newItem: Item): Promise<string> {
+    const token = await this.authService.getToken()
+
+    const options = {
+      headers: new HttpHeaders({
+        'authorization': 'bearer ' + token
+      })
+    }
+    return this.http.post(this.ADD_ITEM_FUNCTION_URL, { path: path, newItem: newItem }, options)
+      .pipe(
+        map(o => { return o.id as string })
+      )
+      .toPromise()
   }
 
 }
