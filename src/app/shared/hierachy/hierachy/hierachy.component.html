@@ -1,12 +1,12 @@
-<table id="itemTable">
+<table data-cy="mainTable">
   <tr>
 
     <td class="icon" colspan="0">
-      <button id="backButton" (click)="clickBack()">
+      <button data-cy="back" (click)="clickBack()">
         <i class="fas fa-caret-left"></i>
         Back
       </button>
-      <button id="homeButton" (click)="clickReturnToHome()">
+      <button data-cy="home" (click)="clickReturnToHome()">
         <i class="fas fa-home"></i>
         Home
       </button></td>
@@ -22,6 +22,7 @@
     'far':item.type === 0 || item.type === 1 || item.type === 2 || item.type === 3,
     'fas':item.type === 4}"></i></td>
     <td>{{item.name}}</td>
+    <td><app-group-manager [item]="item" (click)="openMenu($event)"></app-group-manager></td>
   </tr>
 </table>
 <app-file-upload (onSuccessEvent)="fetchNewItems()" [parentStructure]="path"></app-file-upload>

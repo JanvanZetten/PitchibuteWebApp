@@ -1,10 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupManagerComponent } from './group-manager.component';
+import {GroupManagerComponent} from './group-manager.component';
 import {GroupService} from '../../shared/groups/group-service/group.service';
-import {By} from '@angular/platform-browser';
-import {DebugElement} from '@angular/core';
-import {AuthenticationService} from '../../shared/authentication/authentication-service/authentication.service';
+import {CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
+import {GroupModalDeleteComponent} from '../group-modal-delete/group-modal-delete.component';
+import {GroupModalRenameComponent} from '../group-modal-rename/group-modal-rename.component';
+import {ConfirmationDialogComponent} from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {BsDropdownModule, ModalModule} from 'ngx-bootstrap';
+
 
 describe('GroupManagerComponent', () => {
   let component: GroupManagerComponent;
@@ -12,21 +16,35 @@ describe('GroupManagerComponent', () => {
   let debugElement: DebugElement;
   let service: GroupService;
   let groupServiceStub: any;
-  let authServiceStub: any;
+  let thenStub: any;
+  let catchStub: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupManagerComponent ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA
+      ],
+      imports: [
+        ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ReactiveFormsModule,
+      ],
+      declarations: [GroupManagerComponent,
+        GroupModalRenameComponent,
+        GroupModalDeleteComponent,
+      ConfirmationDialogComponent],
       providers: [
-      {provide: GroupService, useValue: groupServiceStub},
+        {provide: GroupService, useValue: groupServiceStub},
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    groupServiceStub = jasmine.createSpyObj('GroupService', ['addUserToGroup']);
-    groupServiceStub.addUserToGroup.and.returnValue(Promise.resolve('123'));
+    groupServiceStub = jasmine.createSpyObj('GroupService', ['addUserToGroup', 'renameItem']);
+    thenStub = jasmine.createSpyObj('Then', ['then']);
+    catchStub = jasmine.createSpyObj('Catch', ['catch']);
 
     fixture = TestBed.createComponent(GroupManagerComponent);
     component = fixture.componentInstance;
@@ -36,22 +54,5 @@ describe('GroupManagerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    component.title = 'This is still under construction.';
-    expect(component.title).toEqual('This is still under construction.');
-  });
-
-  it('should click button for adding user to group and set response message', () => {
-    spyOn(component, 'addUserToGroup');
-    const elementSelected = debugElement.query(By.css('#addUserBtn'));
-    elementSelected.nativeElement.click();
-    expect(component.addUserToGroup).toHaveBeenCalled();
-    component.responseMessage = 'Welcome';
-    expect(component.responseMessage).toEqual('Welcome');
-  });
-
-  it('Should hit services AddUserToGroup aswell', () => {
-    const elementSelected = debugElement.query(By.css('#addUserBtn'));
-    elementSelected.nativeElement.click();
-    expect(service.addUserToGroup).toHaveBeenCalled();
   });
 });
