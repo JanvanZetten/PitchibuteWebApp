@@ -35,8 +35,9 @@ describe ('HomeTests', () => {
     cy.get('.fa-address-book').click();
     cy.get('.fa-calendar-alt');
     */
+
     cy.get('.fa-folder:nth(0)').click();
-    /
+
     /*
     cy.contains('.pdf');
 
