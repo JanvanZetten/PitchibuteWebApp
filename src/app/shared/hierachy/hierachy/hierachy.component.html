@@ -22,6 +22,7 @@
     'far':item.type === 0 || item.type === 1 || item.type === 2 || item.type === 3,
     'fas':item.type === 4}"></i></td>
     <td>{{item.name}}</td>
+    <td><app-group-manager [item]="item" (click)="openMenu($event)"></app-group-manager></td>
   </tr>
 </table>
 <app-file-upload (onSuccessEvent)="fetchNewItems()" [parentStructure]="path"></app-file-upload>
