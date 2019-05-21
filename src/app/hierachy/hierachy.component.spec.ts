@@ -1,3 +1,4 @@
+import { AddItemComponent } from './../add-item/add-item.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HierachyComponent } from './hierachy.component';
@@ -8,6 +9,7 @@ import { Item, type } from '../entities/item';
 import { of } from 'rxjs';
 import { NgxsModule, Store } from '@ngxs/store';
 import { GoBack, ResetPath, FetchItems, NavigateIntoItem } from 'src/app/store/actions/item.action';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 describe('HierachyComponent', () => {
@@ -18,14 +20,16 @@ describe('HierachyComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         HierachyComponent,
-        FileUploadComponent
+        FileUploadComponent,
+        AddItemComponent
       ],
       providers: [
         { provide: FileUploadService, useClass: FileUploadCServiceStub }
       ],
       imports: [
         [NgxDropzoneModule, NgxsModule.forRoot()],
-        []
+        ReactiveFormsModule
+
       ]
     })
       .compileComponents();

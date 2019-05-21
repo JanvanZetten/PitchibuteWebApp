@@ -58,7 +58,7 @@ export class AddItemComponent implements OnInit, OnDestroy {
     this.openModal(type.link)
   }
 
-  openModal(itemType: type) {
+  private openModal(itemType: type) {
     this.itemType = itemType
     this.showModal = true
   }

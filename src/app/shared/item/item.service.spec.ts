@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../authentication/authentication-service/authentication.service';
 import { IFile } from './../../entities/file';
 import { Folder } from './../../entities/folder';
 import { Group } from './../../entities/group';
@@ -20,6 +21,7 @@ describe('ItemService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [AuthenticationService],
       imports: [
         HierachyModule,
         AngularFireModule.initializeApp(environment.firebase),
@@ -50,16 +52,10 @@ describe('ItemService', () => {
     ).toThrowError()
   })
 
-  it('should throw error if path is null or empty', () => {
+  it('should throw error if path is null', () => {
     expect(
       function () {
         ItemService.updateTree([{ name: "Somename", type: type.group }], null, []);
-      }
-    ).toThrowError()
-
-    expect(
-      function () {
-        ItemService.updateTree([{ name: "Somename", type: type.group }], [], []);
       }
     ).toThrowError()
   })
