@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import {CommonModule} from '@angular/common';
 
 /*
  * Shared Module between page specific modules.
@@ -11,7 +11,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
   declarations: [ConfirmationDialogComponent],
   imports: [
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   exports: [
     CommonModule,
