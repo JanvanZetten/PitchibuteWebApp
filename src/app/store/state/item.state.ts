@@ -107,10 +107,12 @@ export class ItemState implements NgxsOnInit {
         state = getState()
         children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
         let oldChildren = children.filter(c => c.id !== tempId)
-        oldChildren.push(payload)
-        UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
-        patchState({
-            itemTree: UpdatedTree
-        });
+        if (oldChildren.length < children.length) {
+            oldChildren.push(payload)
+            UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
+            patchState({
+                itemTree: UpdatedTree
+            });
+        }
     }
 }
