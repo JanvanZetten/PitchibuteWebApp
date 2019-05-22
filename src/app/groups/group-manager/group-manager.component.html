@@ -1,17 +1,27 @@
-<div class="btn-group" dropdown>
-  <button id="button-basic" dropdownToggle type="button"
-          aria-controls="dropdown-basic">
-    ... <span class="caret"></span>
+<div class="dropdown">
+  <button>
+    ...
   </button>
-  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-      role="menu" aria-labelledby="button-basic">
+  <div class="dropdown-content">
 
-    <app-group-modal-add-user *ngIf="item.type === 0" [item]="item"></app-group-modal-add-user>
-    <app-group-modal [item]="item"></app-group-modal>
-    <li class="divider dropdown-divider"></li>
-    <app-group-modal-delete *ngIf="item.type !== 0" [item]="item"></app-group-modal-delete>
-  </ul>
+    <a *ngIf="item.type === 0" (click)="addTemp.openModal()">
+      Add User
+      <i class="fas fa-user-plus"></i>
+    </a>
+
+    <a *ngIf="item.type !== 0" (click)="delTemp.openModal()">
+      Delete
+      <i class="fas fa-trash"></i>
+    </a>
+    <a (click)="renameTemp.openModal()">
+      Rename
+      <i class="fas fa-file-signature"></i>
+    </a>
+
+  </div>
 </div>
-
+<app-group-modal-delete #delTemp [item]="item"></app-group-modal-delete>
+<app-group-modal-rename #renameTemp [item]="item"></app-group-modal-rename>
+<app-group-modal-add-user #addTemp [item]="item"></app-group-modal-add-user>
 
 
