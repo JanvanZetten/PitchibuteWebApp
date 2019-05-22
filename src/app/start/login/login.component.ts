@@ -48,8 +48,9 @@ export class LoginComponent implements OnInit {
       this.resetErrors();
       this.authService.loginWithFormData(
         this.loginForm.value.email, this.loginForm.value.password)
-        .then(UserCred => this.routeToHome())
-        .catch(reason => {
+        .then(UserCred => {
+          this.routeToHome()
+        }, reason => {
           this.emailPasswordError = 'Email or password is invalid';
           this.failedLoginAttempts++;
           if (this.failedLoginAttempts === 3) {
@@ -87,6 +88,6 @@ export class LoginComponent implements OnInit {
   signOut() {
     this.authService.signOut().then(() => {
       console.log('You have been logged out');
-    }).catch();
+    });
   }
 }
