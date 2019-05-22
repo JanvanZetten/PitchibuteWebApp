@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { AddItem } from '../store/actions/item.action';
 import { Link } from '../entities/link';
 import { first } from 'rxjs/operators';
+import { formatDate } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-add-item',
@@ -106,7 +107,10 @@ export class AddItemComponent implements OnInit, OnDestroy {
 
       case type.event:
         const start: Date = this.addItemForm.get('startDate').value;
-        const end: Date = this.addItemForm.get('endDate').value;
+        let end: Date = this.addItemForm.get('endDate').value;
+        if (end === null || end === undefined || end.valueOf() === 0) {
+          end = start
+        }
         (newItem as Event).start = start;
         (newItem as Event).end = end;
 
