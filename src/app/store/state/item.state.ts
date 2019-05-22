@@ -20,9 +20,9 @@ export class ItemState implements NgxsOnInit {
     ngxsOnInit(ctx?: StateContext<ItemStateModel>) {
         ctx.getState().path = []
         this.itemService.getChildItems([]).subscribe(items =>
-          ctx.patchState({
-            itemTree: items
-          }))
+            ctx.patchState({
+                itemTree: items
+            }))
     }
 
     @Selector()
@@ -103,18 +103,31 @@ export class ItemState implements NgxsOnInit {
         payload = Object.assign({}, payload)
         payload.id = undefined;
 
-        const id = await this.itemService.AddItem(state.path, payload)
-        payload.id = id
+        try {
+            const id = await this.itemService.AddItem(state.path, payload)
+            payload.id = id
 
-        state = getState()
-        children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
-        let oldChildren = children.filter(c => c.id !== tempId)
-        if (oldChildren.length < children.length) {
-            oldChildren.push(payload)
-            UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
-            patchState({
-                itemTree: UpdatedTree
-            });
+            state = getState()
+            children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+            let oldChildren = children.filter(c => c.id !== tempId)
+            if (oldChildren.length < children.length) {
+                oldChildren.push(payload)
+                UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
+                patchState({
+                    itemTree: UpdatedTree
+                });
+            }
+        } catch{
+            state = getState()
+            children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+            let oldChildren = children.filter(c => c.id !== tempId)
+            if (oldChildren.length < children.length) {
+                UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
+                patchState({
+                    itemTree: UpdatedTree
+                });
+            }
         }
+
     }
 }
