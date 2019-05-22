@@ -19,6 +19,10 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
+.not-ready-yet {
+  cursor: wait;
+}
+
 .btn {
     background-color: #4e6bcb;
     color: white;

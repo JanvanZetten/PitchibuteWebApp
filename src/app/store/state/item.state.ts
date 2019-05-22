@@ -88,12 +88,27 @@ export class ItemState implements NgxsOnInit {
 
     @Action(AddItem)
     async AddItem({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
-        const state = getState()
-        const children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree);
-        const id = await this.itemService.AddItem(state.path, payload)
-        payload.id = id;
+        let state = getState()
+        let children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+
+        const tempId = `temp-${payload.name}-${payload.type}-${Date.now()}`
+        payload.id = tempId
         children.push(payload)
-        const UpdatedTree = ItemService.updateTree(state.itemTree, state.path, children)
+        let UpdatedTree = ItemService.updateTree(state.itemTree, state.path, children)
+        patchState({
+            itemTree: UpdatedTree
+        });
+        payload = Object.assign({}, payload)
+        payload.id = undefined;
+
+        const id = await this.itemService.AddItem(state.path, payload)
+        payload.id = id
+
+        state = getState()
+        children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+        let oldChildren = children.filter(c => c.id !== tempId)
+        oldChildren.push(payload)
+        UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
         patchState({
             itemTree: UpdatedTree
         });

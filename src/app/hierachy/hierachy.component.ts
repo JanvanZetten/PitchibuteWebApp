@@ -30,10 +30,12 @@ export class HierachyComponent implements OnInit, OnDestroy {
   }
 
   clickPath(item: Item) {
-    if (item.type === type.group || item.type === type.event || item.type === type.folder) {
-      this.store.dispatch(new NavigateIntoItem(item));
-    } else if (item.type === type.file || item.type === type.link) {
-      // ADD SOMETHING HERE
+    if (!item.id.startsWith('temp')) {
+      if (item.type === type.group || item.type === type.event || item.type === type.folder) {
+        this.store.dispatch(new NavigateIntoItem(item));
+      } else if (item.type === type.file || item.type === type.link) {
+        // ADD SOMETHING HERE
+      }
     }
   }
 

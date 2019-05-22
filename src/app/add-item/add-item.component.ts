@@ -123,6 +123,7 @@ export class AddItemComponent implements OnInit, OnDestroy {
         throw new Error("Can't add this item type")
     }
 
-    this.store.dispatch(new AddItem(newItem)).pipe(first()).subscribe(() => { this.showModal = false })
+    this.store.dispatch(new AddItem(newItem))
+    this.showModal = false
   }
 }

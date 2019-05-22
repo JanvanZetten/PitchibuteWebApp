@@ -17,8 +17,9 @@
     <td style="font-weight: bold">Name</td>
     <td style="font-weight: bold">Type</td>
   </tr>
-  <tr *ngFor="let item of (items | async)" (click)="clickPath(item)">
-    <td class="icon"><i [ngClass]="{'fa-address-book':item.type === 0,
+  <tr *ngFor="let item of (items | async)" (click)="clickPath(item)"
+    [ngClass]="{'not-ready-yet':item.id.startsWith('temp')}">
+    <td class=" icon"><i [ngClass]="{'fa-address-book':item.type === 0,
     'fa-calendar-alt':item.type === 1,
     'fa-folder':item.type === 2,
     'fa-file':item.type === 3,
