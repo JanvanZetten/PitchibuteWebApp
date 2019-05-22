@@ -28,6 +28,7 @@ export class GroupModalDeleteComponent implements OnInit {
   }
 
   openModal() {
+    this.errorMessage = '';
     this.modalService.open(this.modalId);
   }
 
@@ -43,10 +44,10 @@ export class GroupModalDeleteComponent implements OnInit {
   deleteItem() {
     this.groupService.deleteItem(this.item).then(response => {
       this.responseMessage = response;
+      this.closeModal();
     }).catch(error => {
       this.errorMessage = error.error;
     }).finally(() => {
-      this.closeModal();
     });
   }
 

@@ -34,6 +34,7 @@ export class GroupModalAddUserComponent implements OnInit {
   }
 
   openModal() {
+    this.errorMessage = '';
     this.modalService.open(this.modalId);
   }
 
@@ -46,11 +47,11 @@ export class GroupModalAddUserComponent implements OnInit {
     const email = this.addUserForm.get('email').value;
     this.groupService.addUserToGroup(item, email).then(response => {
       this.responseMessage = response;
+      this.closeModal();
     }).catch(error => {
       this.errorMessage = error.error;
     }).finally(() => {
       this.addUserForm.reset();
-      this.closeModal();
     });
   }
 

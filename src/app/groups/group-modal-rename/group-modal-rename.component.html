@@ -4,7 +4,7 @@
   <div class="modal-content">
     <span (click)="closeModal()" class="close">&times;</span>
     <div class="modal-header">
-      <h2>Change Item Name</h2>
+      <h3>Change Item Name</h3>
     </div>
     <form [formGroup]="itemForm" (ngSubmit)="renameItem()">
     <div class="modal-body">
@@ -20,7 +20,7 @@
       <button type="submit">Save</button>
     </div>
     <div class="modal-footer">
-      <a></a>
+      <a *ngIf="errorMessage">{{errorMessage}}</a>
     </div>
     </form>
   </div>

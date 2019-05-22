@@ -118,7 +118,7 @@ html *:not(i)
   margin: auto;
   padding: 0;
   border: 1px solid #888;
-  width: 50%;
+  width: 20%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   animation-name: animatetop;
   animation-duration: 0.4s
@@ -135,7 +135,7 @@ html *:not(i)
 .modal-footer {
   padding: 2px 16px;
   background-color: #fefefe;
-  color: white;
+  color: red;
 }
 
 /* Modal Body */
@@ -155,6 +155,10 @@ html *:not(i)
   text-decoration: none;
   cursor: pointer;
 }
-
+/* Add Animation */
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
 
 

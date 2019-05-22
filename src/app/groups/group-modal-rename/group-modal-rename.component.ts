@@ -33,6 +33,7 @@ export class GroupModalRenameComponent implements OnInit {
   }
 
   openModal() {
+    this.errorMessage = '';
     this.modalService.open(this.modalId);
     this.itemForm.get('currentName').setValue(this.item.name);
   }
@@ -45,12 +46,11 @@ export class GroupModalRenameComponent implements OnInit {
     const newName = this.itemForm.get('newName').value;
     this.groupService.renameItem(this.item, newName).then(response => {
       this.responseMessage = response;
+      this.closeModal();
     }).catch(error => {
       this.errorMessage = error.error;
-      console.log(error.error);
     }).finally(() => {
-      this.closeModal();
-      this.itemForm.reset();
+      this.itemForm.get('newName').reset();
     });
   }
 }
