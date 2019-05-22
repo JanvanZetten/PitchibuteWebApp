@@ -30,6 +30,8 @@ describe('GroupModalDeleteComponent', () => {
     groupServiceStub = jasmine.createSpyObj('GroupService', ['deleteItem']);
     fixture = TestBed.createComponent(GroupModalDeleteComponent);
     component = fixture.componentInstance;
+    component.item = {id: '123', type: 0, name: '123'};
+    component.modalId = component.item + '123';
     fixture.detectChanges();
     service = TestBed.get(GroupService);
   });
