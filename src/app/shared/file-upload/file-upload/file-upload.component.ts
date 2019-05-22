@@ -18,6 +18,8 @@ export class FileUploadComponent implements OnInit {
   onErrorEvent = new EventEmitter<string>();
   @Input()
   parentStructure: Item[];
+  @Input()
+  isDisabled: boolean = false;
 
   isLoading: boolean = false;
   hasFailed: boolean = false;

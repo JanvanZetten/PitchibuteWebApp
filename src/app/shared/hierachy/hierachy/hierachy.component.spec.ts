@@ -105,6 +105,24 @@ describe('HierachyComponent', () => {
       expect(store.dispatch).not.toHaveBeenCalled();
     });
   });
+
+  it('should return true if path is set and not root',
+    () => {
+      component.path = [{ id: 'testId', name: 'testName', type: 2 }];
+      expect(component.shouldDisableDropdown()).toBeFalsy();
+    });
+
+  it('should return false if path is not set',
+    () => {
+      component.path = undefined;
+      expect(component.shouldDisableDropdown()).toBeTruthy();
+    });
+
+  it('should return false if path is root',
+    () => {
+      component.path = [];
+      expect(component.shouldDisableDropdown()).toBeTruthy();
+    });
 });
 
 class FileUploadCServiceStub {
