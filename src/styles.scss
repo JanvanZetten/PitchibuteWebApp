@@ -26,6 +26,10 @@ html *:not(i)
 	transition: all 0.3s;
 }
 
+.btn:hover{
+	color: white;
+}
+
 .btn:after {
 	content: '';
 	position: absolute;
