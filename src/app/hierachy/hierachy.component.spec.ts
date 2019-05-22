@@ -84,9 +84,9 @@ describe('HierachyComponent', () => {
     const store = TestBed.get(Store);
     spyOn(store, 'dispatch');
     const navigateItems: Item[] = [
-      { name: 'someName', type: type.folder },
-      { name: 'someName', type: type.event },
-      { name: 'someName', type: type.group }];
+      { name: 'someName', type: type.folder, id:"ads" },
+      { name: 'someName', type: type.event, id:"ads" },
+      { name: 'someName', type: type.group, id:"ads" }];
 
     navigateItems.forEach(i => {
       component.clickPath(i);
@@ -100,8 +100,8 @@ describe('HierachyComponent', () => {
     spyOn(store, 'dispatch');
 
     const navigateItems: Item[] = [
-      { name: 'someName', type: type.file },
-      { name: 'someName', type: type.link }];
+      { name: 'someName', type: type.file, id:"ads" },
+      { name: 'someName', type: type.link, id:"ads" }];
 
     navigateItems.forEach(i => {
       component.clickPath(i);
