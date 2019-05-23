@@ -26,7 +26,9 @@
     'fa-external-link-alt':item.type === 4,
     'far':item.type === 0 || item.type === 1 || item.type === 2 || item.type === 3,
     'fas':item.type === 4}"></i></td>
-    <td>{{item.name}}</td>
+    <td>
+      <app-download-file *ngIf="item.type === 3" [fileId]="item.id"></app-download-file>{{item.name}}
+    </td>
     <td>
       <app-group-manager [item]="item" (click)="openMenu($event)"></app-group-manager>
     </td>

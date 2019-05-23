@@ -8,6 +8,7 @@ import { StoreModule } from 'src/app/store/store.module';
 import { FileUploadModule } from '../file-upload/file-upload.module';
 import { AddItemComponent } from '../add-item/add-item.component';
 import { GroupsModule } from '../groups/groups.module';
+import { DownloadModule } from 'src/app/download/download.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { GroupsModule } from '../groups/groups.module';
     FileUploadModule,
     GroupsModule,
     NgxsModule.forFeature([ItemState]),
-    StoreModule
+    StoreModule,
+    DownloadModule
   ],
   exports: [
     HierachyComponent
