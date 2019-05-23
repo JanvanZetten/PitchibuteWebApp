@@ -54,7 +54,6 @@ export class HierachyComponent implements OnInit, OnDestroy {
   }
 
   shouldDisableDropdown(): boolean {
-    console.log(this.path);
     return !this.path || this.path.length < 1;
   }
 }
