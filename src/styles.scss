@@ -2,9 +2,7 @@
 /* General button style*/
 html *:not(i)
 {
-   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
-   font-family: 'Montserrat', sans-serif;
-   font-family: 'Raleway', sans-serif;
+   font-family: 'Montserrat', 'Raleway', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .btn {
@@ -101,6 +99,20 @@ html *:not(i)
 	top: 6px;
 }
 
+.single-item-on-line{
+    display: block;
+}
+
+.center {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.center-text {
+    text-align: center;
+}
+
 /* The Modal (background) */
 .modal {
   display: inline; /* Hidden by default */
@@ -164,5 +176,3 @@ html *:not(i)
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
 }
-
-
