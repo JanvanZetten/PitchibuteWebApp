@@ -103,8 +103,8 @@ html *:not(i)
 
 /* The Modal (background) */
 .modal {
-  display: inline; /* Hidden by default */
-  position: absolute; /* Stay in place */
+  display: inline;
+  position: fixed;
   z-index: 100; /* Sit on top */
   left: 0;
   top: 0;
@@ -122,7 +122,7 @@ html *:not(i)
   margin: auto;
   padding: 0;
   border: 1px solid #888;
-  width: 20%;
+  width: 250px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   animation-name: animatetop;
   animation-duration: 0.4s
@@ -164,5 +164,31 @@ html *:not(i)
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
 }
+.overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: inline; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  cursor: pointer; /* Add a pointer on hover */
+}
+.loader {
+  position:fixed;
+  z-index: 2;
+  margin-left:40px;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
 
-
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

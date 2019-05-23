@@ -15,6 +15,7 @@ export class GroupModalAddUserComponent implements OnInit {
   errorMessage: string;
   responseMessage: string;
   modalId: string;
+  loading = false;
 
   addUserForm = new FormGroup({
     email: new FormControl(''),
@@ -44,6 +45,7 @@ export class GroupModalAddUserComponent implements OnInit {
 
 
   addUserToGroup(item: Item) {
+    this.loading = true;
     const email = this.addUserForm.get('email').value;
     this.groupService.addUserToGroup(item, email).then(response => {
       this.responseMessage = response;
@@ -52,6 +54,7 @@ export class GroupModalAddUserComponent implements OnInit {
       this.errorMessage = error.error;
     }).finally(() => {
       this.addUserForm.reset();
+      this.loading = false;
     });
   }
 

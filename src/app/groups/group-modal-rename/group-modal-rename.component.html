@@ -8,6 +8,8 @@
     </div>
     <form [formGroup]="itemForm" (ngSubmit)="renameItem()">
     <div class="modal-body">
+      <div *ngIf="loading" class="loader"></div>
+      <div *ngIf="loading" class="overlay"></div>
         <h6>Current name</h6>
       <label>
         <input type="text" formControlName="currentName">
