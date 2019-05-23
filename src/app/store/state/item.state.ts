@@ -1,5 +1,5 @@
 import { Item, type } from './../../entities/item';
-import { NavigateIntoItem, GoBack, ResetPath, FetchItems } from './../actions/item.action';
+import { NavigateIntoItem, GoBack, ResetPath, FetchItems, AddItem } from './../actions/item.action';
 import { State, Selector, Action, StateContext, NgxsOnInit } from "@ngxs/store";
 import { ItemService } from 'src/app/shared/item/item.service';
 
@@ -20,9 +20,9 @@ export class ItemState implements NgxsOnInit {
     ngxsOnInit(ctx?: StateContext<ItemStateModel>) {
         ctx.getState().path = []
         this.itemService.getChildItems([]).subscribe(items =>
-          ctx.patchState({
-            itemTree: items
-          }))
+            ctx.patchState({
+                itemTree: items
+            }))
     }
 
     @Selector()
@@ -86,5 +86,48 @@ export class ItemState implements NgxsOnInit {
                     itemTree: UpdatedTree
                 });
             })
+    }
+
+    @Action(AddItem)
+    async AddItem({ getState, patchState }: StateContext<ItemStateModel>, { payload }: AddItem) {
+        let state = getState()
+        let children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+
+        const tempId = `temp-${payload.name}-${payload.type}-${Date.now()}`
+        payload.id = tempId
+        children.push(payload)
+        let UpdatedTree = ItemService.updateTree(state.itemTree, state.path, children)
+        patchState({
+            itemTree: UpdatedTree
+        });
+        payload = Object.assign({}, payload)
+        payload.id = undefined;
+
+        try {
+            const id = await this.itemService.AddItem(state.path, payload)
+            payload.id = id
+
+            state = getState()
+            children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+            let oldChildren = children.filter(c => c.id !== tempId)
+            if (oldChildren.length < children.length) {
+                oldChildren.push(payload)
+                UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
+                patchState({
+                    itemTree: UpdatedTree
+                });
+            }
+        } catch{
+            state = getState()
+            children = ItemService.getChildrenFromPathAndTree(state.path, state.itemTree)
+            let oldChildren = children.filter(c => c.id !== tempId)
+            if (oldChildren.length < children.length) {
+                UpdatedTree = ItemService.updateTree(state.itemTree, state.path, oldChildren)
+                patchState({
+                    itemTree: UpdatedTree
+                });
+            }
+        }
+
     }
 }

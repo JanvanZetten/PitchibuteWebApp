@@ -37,10 +37,14 @@ export class ItemService {
   }
 
   public static updateTree(oldTree: Item[], pathToWhereToUpdate: Item[], newChildren: Item[]): Item[] {
-    if (oldTree === null || pathToWhereToUpdate === null ||
-      oldTree.length === 0 || pathToWhereToUpdate.length === 0) {
+    if (oldTree === null || pathToWhereToUpdate === null) {
       throw new Error("The tree or path is not valid")
     }
+
+    if (pathToWhereToUpdate.length === 0) {
+      return newChildren
+    }
+
     const itemToUpdate = oldTree.find(i => i.id === pathToWhereToUpdate[0].id)
     var ref = itemToUpdate
 
@@ -73,5 +77,9 @@ export class ItemService {
     } else {
       throw new Error(`Unexpected error occured, item ${parent.name} can't have items`)
     }
+  }
+
+  public async AddItem(path: Item[], newItem: Item): Promise<string> {
+    return await this.hiearchyService.addItem(path, newItem)
   }
 }
