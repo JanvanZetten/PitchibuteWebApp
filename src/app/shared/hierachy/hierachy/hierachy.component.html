@@ -25,4 +25,4 @@
     <td><app-group-manager [item]="item" (click)="openMenu($event)"></app-group-manager></td>
   </tr>
 </table>
-<app-file-upload (onSuccessEvent)="fetchNewItems()" [parentStructure]="path"></app-file-upload>
+<app-file-upload (onSuccessEvent)="fetchNewItems()" [parentStructure]="path" [isDisabled]="shouldDisableDropdown()"></app-file-upload>
