@@ -25,4 +25,12 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('PitchibuteWebApp');
   });
+
+  it('should call the authService signout', () => {
+    fail("Test not made")
+  })
+
+  it('should navigate to the root/login site', () => {
+    fail("Test not made")
+  })
 });
