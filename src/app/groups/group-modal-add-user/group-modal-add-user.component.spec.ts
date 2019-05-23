@@ -16,7 +16,7 @@ describe('GroupModalAddUserComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupModalAddUserComponent],
-      imports: [ReactiveFormsModule, ModalModule.forRoot(), ],
+      imports: [ReactiveFormsModule],
       providers: [
         {provide: GroupService, useValue: groupServiceStub}]
     })

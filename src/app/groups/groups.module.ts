@@ -18,8 +18,6 @@ import { GroupModalAddUserComponent } from './group-modal-add-user/group-modal-a
   imports: [
     CommonModule,
     GroupServiceModule,
-    ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
     ReactiveFormsModule,
     SharedModule,
   ]
