@@ -112,7 +112,8 @@ export class AddItemComponent implements OnInit, OnDestroy {
         }
         (newItem as Event).start = start;
         (newItem as Event).end = end;
-        break;
+
+      // tslint:disable-next-line:no-switch-case-fall-through
       case type.folder:
         (newItem as Event | Folder).resources = [];
         break;
