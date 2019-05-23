@@ -220,7 +220,7 @@ describe('LoginComponent', () => {
         reject();
       });
 
-      authService.loginWithFormData.and.returnValue(promise);
+      this.promise = promise;
 
       await component.loginWithFormData();
     }

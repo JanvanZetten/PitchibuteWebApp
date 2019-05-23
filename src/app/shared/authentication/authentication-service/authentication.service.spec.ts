@@ -20,8 +20,8 @@ describe('AuthenticationService', () => {
       });
 
       angularFireAuth = TestBed.get(AngularFireAuth);
-      angularFireAuth.auth = new mockFirebaseAuth();
 
+      Object.defineProperty(angularFireAuth, 'auth', new mockFirebaseAuth());
 
       service = TestBed.get(AuthenticationService);
     }
