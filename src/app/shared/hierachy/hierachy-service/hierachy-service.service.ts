@@ -6,6 +6,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { HierachyServiceModule } from './hierachy-service.module';
 import { Item } from 'src/app/entities/item';
 import { map, tap } from 'rxjs/operators';
+import {promise} from 'selenium-webdriver';
 
 @Injectable({
   providedIn: HierachyServiceModule
@@ -14,19 +15,28 @@ export class HierachyServiceService {
   private readonly FUNCTIONS_URL = "https://us-central1-pitchibute.cloudfunctions.net/"
   private readonly GET_PATH_FUNCTION_URL = this.FUNCTIONS_URL + "getPathItems"
   private readonly ADD_ITEM_FUNCTION_URL = this.FUNCTIONS_URL + "addItem"
-  uid: string;
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'path': '',
+      'authorization': 'my-auth-token',
+    })
+  };
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  getChildItemsFromFirebaseFunction(path: Item[]): Observable<Item[]> {
-    const headers = {
-      headers: new HttpHeaders({
-        'uid': 'keyString',
-        'path': this.generateStoreUri(path),
-        'authorization': 'random'
-      })
-    };
-    return this.http.get(this.GET_PATH_FUNCTION_URL, headers) as Observable<Item[]>;
+  async getChildItemsFromFirebaseFunction(path: Item[]): Observable<Item[]> {
+    await this.getHttpOptions();
+    console.log(this.httpOptions.headers);
+    this.httpOptions.headers = this.httpOptions.headers.set('path', this.generateStoreUri(path));
+    return this.http.get(this.GET_PATH_FUNCTION_URL, this.httpOptions) as Observable<Item[]>;
+  }
+
+  getHttpOptions() {
+    this.authService.getToken().then(token => {
+      console.log(token);
+      this.httpOptions.headers = this.httpOptions.headers.set('authorization', 'Bearer ' + token);
+    });
   }
 
   generateStoreUri(path: Item[]): string {
