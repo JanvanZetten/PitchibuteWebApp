@@ -4,8 +4,8 @@ import { NgModule, Component, Input, Output, EventEmitter } from '@angular/core'
 import { By } from '@angular/platform-browser';
 
 import { FileUploadComponent } from './file-upload.component';
-import { IFile } from '../../../entities/file';
-import { FileUploadService } from '../file-upload-service/file-upload.service';
+import { IFile } from '../entities/file';
+import { FileUploadService } from '../shared/file-upload/file-upload-service/file-upload.service';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
