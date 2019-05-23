@@ -1,5 +1,4 @@
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {GroupService} from '../../shared/groups/group-service/group.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Item} from '../../entities/item';
