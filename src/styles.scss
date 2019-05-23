@@ -114,7 +114,7 @@ html *:not(i)
 }
 
 /* The Modal (background) */
-.modal {
+.modalOverlay {
   display: inline;
   position: fixed;
   z-index: 100; /* Sit on top */
@@ -186,7 +186,6 @@ html *:not(i)
   right: 0;
   bottom: 0;
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-  cursor: pointer; /* Add a pointer on hover */
 }
 .loader {
   position:fixed;
