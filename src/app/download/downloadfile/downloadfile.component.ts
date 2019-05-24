@@ -11,7 +11,7 @@ export class DownloadfileComponent implements OnInit {
   @Input() fileId: string;
   errorMessage: string;
   constructor(private downloadService: FileDownloadService) { }
-  isLoading = false;
+   isLoading = false;
 
   ngOnInit() {
 

@@ -15,6 +15,16 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   }
 ];
+    path: 'download',
+    loadChildren: './download/download.module#DownloadModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'uploadfile',
+    loadChildren: './shared/file-upload/file-upload.module#FileUploadModule',
+    canActivate: [AuthGuard]
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
