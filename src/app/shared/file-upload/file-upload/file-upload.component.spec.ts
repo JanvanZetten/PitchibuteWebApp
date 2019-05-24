@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { FileUploadComponent } from './file-upload.component';
 import { IFile } from '../../../entities/file';
 import { FileUploadService } from '../file-upload-service/file-upload.service';
+import { Item } from '../../../entities/item';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -21,8 +22,8 @@ describe('FileUploadComponent', () => {
             throw new Error('Test error');
           });
         }
-        const returnFile: IFile = { name: 'test', url: 'testURL', size: 7357, type: 4 };
-        return of(returnFile);
+        const returnNumb: number = 5;
+        return of(returnNumb);
       }
     };
 
