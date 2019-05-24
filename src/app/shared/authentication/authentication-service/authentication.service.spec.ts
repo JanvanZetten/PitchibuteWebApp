@@ -16,12 +16,10 @@ describe('AuthenticationService', () => {
           AngularFireAuthModule,
           AngularFireModule.initializeApp(environment.firebase)
         ],
-        providers: [AuthenticationService]
+        providers: [AuthenticationService, { provide: AngularFireAuth, useValue: new mockAngularFireAuth()}]
       });
 
       angularFireAuth = TestBed.get(AngularFireAuth);
-
-      Object.defineProperty(angularFireAuth, 'auth', new mockFirebaseAuth());
 
       service = TestBed.get(AuthenticationService);
     }
@@ -76,6 +74,10 @@ describe('AuthenticationService', () => {
   });
 
 });
+
+class mockAngularFireAuth {
+  auth = new mockFirebaseAuth();
+}
 
 class mockFirebaseAuth {
   currentUser = new mockUser();
