@@ -18,18 +18,6 @@ const routes: Routes = [
     loadChildren: './home/home.module#HomeModule',
     canLoad: [AuthGuard],
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'download',
-    loadChildren: './download/download.module#DownloadModule',
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'uploadfile',
-    loadChildren: './shared/file-upload/file-upload.module#FileUploadModule',
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard]
   }
 ];
 

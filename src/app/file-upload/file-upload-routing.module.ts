@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {DownloadfileComponent} from './downloadfile/downloadfile.component';
+import { FileUploadComponent } from './file-upload.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: DownloadfileComponent
-  },
+  { path: '', component: FileUploadComponent }
 ];
 
+/*
+ * Routing for FileUploadModule.
+ */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DownloadRoutingModule { }
+export class FileUploadRoutingModule { }

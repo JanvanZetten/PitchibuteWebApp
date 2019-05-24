@@ -1,15 +1,16 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
-import {GroupManagerComponent} from '../../../groups/group-manager/group-manager.component';
-import {HierachyComponent} from './hierachy.component';
-import {FileUploadComponent} from '../../file-upload/file-upload/file-upload.component';
-import {FileUploadService} from '../../file-upload/file-upload-service/file-upload.service';
-import {NgxDropzoneModule} from 'ngx-dropzone';
-import {Item, type} from '../../../entities/item';
-import {of} from 'rxjs';
-import {NgxsModule, Store} from '@ngxs/store';
-import {GoBack, ResetPath, FetchItems, NavigateIntoItem} from 'src/app/store/actions/item.action';
+import { AddItemComponent } from './../add-item/add-item.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HierachyComponent } from './hierachy.component';
+import { FileUploadComponent } from '../file-upload/file-upload.component';
+import { FileUploadService } from '../shared/file-upload/file-upload-service/file-upload.service';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { Item, type } from '../entities/item';
+import { of } from 'rxjs';
+import { NgxsModule, Store } from '@ngxs/store';
+import { GoBack, ResetPath, FetchItems, NavigateIntoItem } from 'src/app/store/actions/item.action';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { GroupManagerComponent } from '../groups/group-manager/group-manager.component';
 
 describe('HierachyComponent', () => {
   let component: HierachyComponent;
@@ -24,14 +25,16 @@ describe('HierachyComponent', () => {
       declarations: [
         HierachyComponent,
         FileUploadComponent,
+        AddItemComponent,
         GroupManagerComponent
       ],
       providers: [
-        {provide: FileUploadService, useClass: FileUploadCServiceStub}
+        { provide: FileUploadService, useClass: FileUploadCServiceStub }
       ],
       imports: [
         [NgxDropzoneModule, NgxsModule.forRoot()],
-        []
+        ReactiveFormsModule
+
       ]
     })
       .compileComponents();
@@ -81,9 +84,9 @@ describe('HierachyComponent', () => {
     const store = TestBed.get(Store);
     spyOn(store, 'dispatch');
     const navigateItems: Item[] = [
-      {name: 'someName', type: type.folder},
-      {name: 'someName', type: type.event},
-      {name: 'someName', type: type.group}];
+      { name: 'someName', type: type.folder, id:"ads" },
+      { name: 'someName', type: type.event, id:"ads" },
+      { name: 'someName', type: type.group, id:"ads" }];
 
     navigateItems.forEach(i => {
       component.clickPath(i);
@@ -97,14 +100,32 @@ describe('HierachyComponent', () => {
     spyOn(store, 'dispatch');
 
     const navigateItems: Item[] = [
-      {name: 'someName', type: type.file},
-      {name: 'someName', type: type.link}];
+      { name: 'someName', type: type.file, id:"ads" },
+      { name: 'someName', type: type.link, id:"ads" }];
 
     navigateItems.forEach(i => {
       component.clickPath(i);
       expect(store.dispatch).not.toHaveBeenCalled();
     });
   });
+
+  it('should return true if path is set and not root',
+    () => {
+      component.path = [{ id: 'testId', name: 'testName', type: 2 }];
+      expect(component.shouldDisableDropdown()).toBeFalsy();
+    });
+
+  it('should return false if path is not set',
+    () => {
+      component.path = undefined;
+      expect(component.shouldDisableDropdown()).toBeTruthy();
+    });
+
+  it('should return false if path is root',
+    () => {
+      component.path = [];
+      expect(component.shouldDisableDropdown()).toBeTruthy();
+    });
 });
 
 class FileUploadCServiceStub {

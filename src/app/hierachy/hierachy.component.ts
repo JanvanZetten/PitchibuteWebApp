@@ -1,10 +1,10 @@
-import {GoBack, ResetPath, FetchItems} from './../../../store/actions/item.action';
-import {Store} from '@ngxs/store';
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Item, type} from 'src/app/entities/item';
-import {Observable, Subscription} from 'rxjs';
-import {ItemState} from 'src/app/store/state/item.state';
-import {NavigateIntoItem} from 'src/app/store/actions/item.action';
+import { GoBack, ResetPath, FetchItems } from '../store/actions/item.action';
+import { Store } from '@ngxs/store';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Item, type } from 'src/app/entities/item';
+import { Observable, Subscription } from 'rxjs';
+import { ItemState } from 'src/app/store/state/item.state';
+import { NavigateIntoItem } from 'src/app/store/actions/item.action';
 
 @Component({
   selector: 'app-hierachy',
@@ -30,10 +30,12 @@ export class HierachyComponent implements OnInit, OnDestroy {
   }
 
   clickPath(item: Item) {
-    if (item.type === type.group || item.type === type.event || item.type === type.folder) {
-      this.store.dispatch(new NavigateIntoItem(item));
-    } else if (item.type === type.file || item.type === type.link) {
-      // ADD SOMETHING HERE
+    if (!item.id.startsWith('temp')) {
+      if (item.type === type.group || item.type === type.event || item.type === type.folder) {
+        this.store.dispatch(new NavigateIntoItem(item));
+      } else if (item.type === type.file || item.type === type.link) {
+        // ADD SOMETHING HERE
+      }
     }
   }
 
@@ -48,9 +50,13 @@ export class HierachyComponent implements OnInit, OnDestroy {
   fetchNewItems() {
     this.store.dispatch(new FetchItems());
   }
-  
+
   openMenu(event: MouseEvent) {
     event.stopPropagation();
   }
 
+  shouldDisableDropdown(): boolean {
+    console.log(this.path);
+    return !this.path || this.path.length < 1;
+  }
 }

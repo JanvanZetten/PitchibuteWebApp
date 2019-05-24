@@ -1,4 +1,22 @@
-.downloadfile:hover {
+.downloadfile:not(.disabled):hover {
   color: #28a745;
   cursor: pointer;
+}
+
+.downloadfile.disabled:hover {
+  cursor: not-allowed;
+}
+
+.downloadfile.fa-spin {
+  animation: fa-download-spin 2s infinite linear
+}
+
+@keyframes fa-download-spin {
+  0% {
+    transform: rotate(0deg) scaleX(-1);
+  }
+
+  to {
+    transform: rotate(-1turn) scaleX(-1);
+  }
 }
