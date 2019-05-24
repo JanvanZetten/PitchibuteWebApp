@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../authentication/authentication-service/authentication.service';
 import { async, TestBed } from '@angular/core/testing';
 
 import { HierachyServiceService } from './hierachy-service.service';
@@ -13,12 +14,12 @@ describe('HierachyServiceService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [HierachyServiceService],
+      providers: [HierachyServiceService, AuthenticationService],
       imports: [
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
         HttpClientModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
       ]
     });
   }));
