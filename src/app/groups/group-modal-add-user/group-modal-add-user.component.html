@@ -1,5 +1,5 @@
 <!-- The Modal -->
-<div *ngIf="getBoolean()" id="myModal" class="modal">
+<div *ngIf="getBoolean()" id="myModal" class="modalOverlay">
   <div class="modal-content">
     <span (click)="closeModal()" class="close">&times;</span>
     <div class="modal-header">
@@ -7,6 +7,8 @@
     </div>
     <form [formGroup]="addUserForm" (ngSubmit)="addUserToGroup(item)">
       <div class="modal-body">
+        <div *ngIf="loading" class="loader"></div>
+        <div *ngIf="loading" class="overlay"></div>
         <h6>Email to add:</h6>
         <label>
           <input type="text" formControlName="email">

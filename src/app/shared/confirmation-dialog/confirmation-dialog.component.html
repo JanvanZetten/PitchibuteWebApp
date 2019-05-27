@@ -1,11 +1,13 @@
 <!-- The Modal -->
-<div *ngIf="show" id="myModal" class="modal">
+<div *ngIf="show" id="myModal" class="modalOverlay">
   <div class="modal-content">
     <span (click)="closeModal()" class="close">&times;</span>
     <div class="modal-header">
       <h2>{{title}}</h2>
     </div>
     <div class="modal-body">
+      <div *ngIf="loading" class="loader"></div>
+      <div *ngIf="loading" class="overlay"></div>
       <a>{{body}}</a>
     </div>
     <div class="modal-footer">

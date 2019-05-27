@@ -3,7 +3,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {GroupModalDeleteComponent} from './group-modal-delete.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {GroupService} from '../../shared/groups/group-service/group.service';
-import {ModalModule} from 'ngx-bootstrap';
 
 describe('GroupModalDeleteComponent', () => {
   let component: GroupModalDeleteComponent;
@@ -13,7 +12,7 @@ describe('GroupModalDeleteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ModalModule.forRoot()],
+      imports: [],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA,
         NO_ERRORS_SCHEMA

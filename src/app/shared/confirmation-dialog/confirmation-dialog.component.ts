@@ -15,6 +15,7 @@ export class ConfirmationDialogComponent implements OnInit {
   @Input() body: string;
   @Input() show: Boolean;
   @Input() errorMessage: string;
+  @Input() loading: Boolean;
 
   // Is used to send a signal that user has pressed close
   @Output() closeSignal: EventEmitter<any> = new EventEmitter();
