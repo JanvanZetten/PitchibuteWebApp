@@ -3,6 +3,8 @@ import {GroupService} from '../../shared/groups/group-service/group.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Item} from '../../entities/item';
 import {ModalService} from '../../shared/modal-service/modal.service';
+import { Store } from '@ngxs/store';
+import { FetchItems } from 'src/app/store/actions/item.action';
 
 @Component({
   selector: 'app-group-modal-rename',
@@ -21,7 +23,7 @@ export class GroupModalRenameComponent implements OnInit {
   responseMessage: string;
   loading = false;
 
-  constructor(private groupService: GroupService, private modalService: ModalService) {
+  constructor(private groupService: GroupService, private modalService: ModalService, private store: Store) {
   }
 
   ngOnInit() {
@@ -49,6 +51,8 @@ export class GroupModalRenameComponent implements OnInit {
     this.groupService.renameItem(this.item, newName).then(response => {
       this.responseMessage = response;
       this.closeModal();
+
+      this.store.dispatch(new FetchItems());
     }).catch(error => {
       this.errorMessage = error.error;
     }).finally(() => {
