@@ -3,6 +3,7 @@
     <div class="textBottom">
         <span id="name">Pitchibute</span>
     </div>
+    <button *ngIf="router.url !== '/welcome'" id="logout" class="right-align" (click)="logout()">Logout</button>
 </div>
 
 <router-outlet></router-outlet>
