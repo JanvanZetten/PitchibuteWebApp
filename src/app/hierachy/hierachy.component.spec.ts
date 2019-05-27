@@ -32,9 +32,9 @@ describe('HierachyComponent', () => {
         { provide: FileUploadService, useClass: FileUploadCServiceStub }
       ],
       imports: [
-        [NgxDropzoneModule, NgxsModule.forRoot()],
+        NgxDropzoneModule,
+        NgxsModule.forRoot(),
         ReactiveFormsModule
-
       ]
     })
       .compileComponents();

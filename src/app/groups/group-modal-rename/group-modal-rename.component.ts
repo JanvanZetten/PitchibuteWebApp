@@ -49,6 +49,8 @@ export class GroupModalRenameComponent implements OnInit {
     this.groupService.renameItem(this.item, newName).then(response => {
       this.responseMessage = response;
       this.closeModal();
+
+      this.groupService.fetchItems();
     }).catch(error => {
       this.errorMessage = error.error;
     }).finally(() => {
