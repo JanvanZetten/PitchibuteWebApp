@@ -7,21 +7,16 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
+    redirectTo: 'home'
+  },
+  {
+    path: 'welcome',
     component: WelcomeComponent
   },
   {
     path: 'home',
     loadChildren: './home/home.module#HomeModule',
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'download',
-    loadChildren: './download/download.module#DownloadModule',
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'uploadfile',
-    loadChildren: './shared/file-upload/file-upload.module#FileUploadModule',
+    canLoad: [AuthGuard],
     canActivate: [AuthGuard]
   }
 ];

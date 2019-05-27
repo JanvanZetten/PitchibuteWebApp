@@ -3,7 +3,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {GroupModalAddUserComponent} from './group-modal-add-user.component';
 import {GroupService} from '../../shared/groups/group-service/group.service';
 import {ReactiveFormsModule} from '@angular/forms';
-import {BsModalService, ModalModule} from 'ngx-bootstrap';
 
 describe('GroupModalAddUserComponent', () => {
   let component: GroupModalAddUserComponent;
@@ -16,7 +15,7 @@ describe('GroupModalAddUserComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupModalAddUserComponent],
-      imports: [ReactiveFormsModule, ModalModule.forRoot(),],
+      imports: [ReactiveFormsModule],
       providers: [
         {provide: GroupService, useValue: groupServiceStub}]
     })
@@ -29,6 +28,8 @@ describe('GroupModalAddUserComponent', () => {
     catchStub = jasmine.createSpyObj('Catch', ['catch']);
     fixture = TestBed.createComponent(GroupModalAddUserComponent);
     component = fixture.componentInstance;
+    component.item = {id: '123', type: 0, name: '123'};
+    component.modalId = component.item + '123';
     fixture.detectChanges();
     service = TestBed.get(GroupService);
   });
