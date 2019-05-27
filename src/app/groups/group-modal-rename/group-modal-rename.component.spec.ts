@@ -3,9 +3,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {GroupModalRenameComponent} from './group-modal-rename.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {GroupService} from '../../shared/groups/group-service/group.service';
-import {BsModalService, ModalModule} from 'ngx-bootstrap';
-import {mod} from 'ngx-bootstrap/chronos/utils';
-import {Test} from 'tslint';
 
 describe('GroupModalRenameComponent', () => {
   let component: GroupModalRenameComponent;
@@ -16,7 +13,7 @@ describe('GroupModalRenameComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ModalModule.forRoot()],
+      imports: [],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA,
         NO_ERRORS_SCHEMA

@@ -7,7 +7,6 @@ import {GroupModalDeleteComponent} from '../group-modal-delete/group-modal-delet
 import {GroupModalRenameComponent} from '../group-modal-rename/group-modal-rename.component';
 import {ConfirmationDialogComponent} from '../../shared/confirmation-dialog/confirmation-dialog.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {BsDropdownModule, ModalModule} from 'ngx-bootstrap';
 
 
 describe('GroupManagerComponent', () => {
@@ -26,8 +25,6 @@ describe('GroupManagerComponent', () => {
         NO_ERRORS_SCHEMA
       ],
       imports: [
-        ModalModule.forRoot(),
-        BsDropdownModule.forRoot(),
         ReactiveFormsModule,
       ],
       declarations: [GroupManagerComponent,

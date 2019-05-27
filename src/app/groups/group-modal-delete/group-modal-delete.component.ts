@@ -16,6 +16,7 @@ export class GroupModalDeleteComponent implements OnInit {
   errorMessage: string;
   responseMessage: string;
   modalId: string;
+  loading = false;
 
   constructor(private groupService: GroupService, private modalService: ModalService) {
   }
@@ -42,12 +43,14 @@ export class GroupModalDeleteComponent implements OnInit {
 
 
   deleteItem() {
+    this.loading = true;
     this.groupService.deleteItem(this.item).then(response => {
       this.responseMessage = response;
       this.closeModal();
     }).catch(error => {
       this.errorMessage = error.error;
     }).finally(() => {
+      this.loading = false;
     });
   }
 

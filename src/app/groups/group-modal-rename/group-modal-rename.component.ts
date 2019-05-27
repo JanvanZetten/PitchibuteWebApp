@@ -19,6 +19,7 @@ export class GroupModalRenameComponent implements OnInit {
   });
   errorMessage: string;
   responseMessage: string;
+  loading = false;
 
   constructor(private groupService: GroupService, private modalService: ModalService) {
   }
@@ -43,6 +44,7 @@ export class GroupModalRenameComponent implements OnInit {
   }
 
   renameItem() {
+    this.loading = true;
     const newName = this.itemForm.get('newName').value;
     this.groupService.renameItem(this.item, newName).then(response => {
       this.responseMessage = response;
@@ -51,6 +53,7 @@ export class GroupModalRenameComponent implements OnInit {
       this.errorMessage = error.error;
     }).finally(() => {
       this.itemForm.get('newName').reset();
+      this.loading = false;
     });
   }
 }
