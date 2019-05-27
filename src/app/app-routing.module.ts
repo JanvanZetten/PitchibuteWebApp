@@ -7,11 +7,16 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
+    redirectTo: 'home'
+  },
+  {
+    path: 'welcome',
     component: WelcomeComponent
   },
   {
     path: 'home',
     loadChildren: './home/home.module#HomeModule',
+    canLoad: [AuthGuard],
     canActivate: [AuthGuard]
   }
 ];
