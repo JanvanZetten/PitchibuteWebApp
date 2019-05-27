@@ -27,16 +27,23 @@ export class DownloadfileComponent implements OnInit {
         // Append file id to path.
         let filePath = "files/" + this.fileId;
         this.isLoading = true;
+        const link = document.createElement('a');
+        let url;
 
         // Use download service to get file.
         this.downloadService.downloadFileFromFunctions(filePath).pipe(finalize(() => {
           this.isLoading = false;
+          setTimeout(function () {
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+          }, 100); 
         })).subscribe(
           data => {
             // Create element to download blob.
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(data.blob);
+            url = window.URL.createObjectURL(data.blob)
+            link.href = url;
             link.download = data.fileName;
+            document.body.appendChild(link);
             link.click();
           },
           err => {
