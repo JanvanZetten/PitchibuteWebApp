@@ -4,7 +4,6 @@ import { NgModule, Component, Input, Output, EventEmitter } from '@angular/core'
 import { By } from '@angular/platform-browser';
 
 import { FileUploadComponent } from './file-upload.component';
-import { IFile } from '../entities/file';
 import { FileUploadService } from '../shared/file-upload/file-upload-service/file-upload.service';
 
 describe('FileUploadComponent', () => {
@@ -21,8 +20,8 @@ describe('FileUploadComponent', () => {
             throw new Error('Test error');
           });
         }
-        const returnFile: IFile = { name: 'test', url: 'testURL', size: 7357, type: 4 };
-        return of(returnFile);
+        const returnNumb: number = 5;
+        return of(returnNumb);
       }
     };
 

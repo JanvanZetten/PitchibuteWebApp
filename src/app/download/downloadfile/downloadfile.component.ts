@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FileDownloadService } from '../../shared/file-download/file-download-service/file-download.service';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -28,7 +29,9 @@ export class DownloadfileComponent implements OnInit {
         this.isLoading = true;
 
         // Use download service to get file.
-        this.downloadService.downloadFileFromFunctions(filePath).subscribe(
+        this.downloadService.downloadFileFromFunctions(filePath).pipe(finalize(() => {
+          this.isLoading = false;
+        })).subscribe(
           data => {
             // Create element to download blob.
             const link = document.createElement('a');
@@ -39,9 +42,6 @@ export class DownloadfileComponent implements OnInit {
           err => {
             alert("Problem while downloading the file.");
             console.error(err);
-          },
-          () => {
-            this.isLoading = false;
           }
         );
       } else {

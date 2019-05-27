@@ -50,17 +50,17 @@ describe('AuthGuardService', () => {
     expect(result).toBe(false)
   })
 
-  it('should go to path / when not logged in', async () => {
+  it('should go to path /welcome when not logged in', async () => {
     const fireAuthMock = jasmine.createSpyObj('AngularFireAuth', ['authState'])
     fireAuthMock.authState = of(null)
     const router: Router = TestBed.get(Router);
-    spyOn(router, 'navigateByUrl');
+    spyOn(router, 'navigate');
     const service = new AuthGuardService(fireAuthMock, router)
 
     const result = await service.canActivate(null, null)
 
-    expect(router.navigateByUrl).
-      toHaveBeenCalledWith('/');
+    expect(router.navigate).
+      toHaveBeenCalledWith(['welcome']);
   })
 
   function getAllNullUser(): firebase.User {
