@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FileUploadServiceModule } from './file-upload-service.module';
-import { defer, Observable, throwError } from 'rxjs';
+import { defer, Observable, throwError, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -19,9 +19,10 @@ export class FileUploadService {
 
   constructor(private firestore: AngularFirestore,
     private firestorage: AngularFireStorage,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService) {
+  }
 
-  upload(parentStructure: Item[], file: File): Observable<IFile> {
+  upload(parentStructure: Item[], file: File): Observable<number> {
     let path: string;
     try {
       path = this.getParentPath(parentStructure);
@@ -32,9 +33,9 @@ export class FileUploadService {
     if (!path) {
       return throwError(new Error('Missing Path'));
     }
+
     return defer(() => this.authenticationService.getToken()).pipe(switchMap(token => {
-      return defer(() =>
-        this.firestorage.ref('files/' + uid)
+      return this.firestorage.ref('files/' + uid)
         .put(file,
           {
             customMetadata: {
@@ -42,14 +43,7 @@ export class FileUploadService {
               path: path,
               token: token,
             }
-          })
-        .then()
-      ).pipe(
-        map(fileRef => {
-          fileRef.id = uid
-          return fileRef
-        })
-      );
+          }).percentageChanges();
     }));
   }
 

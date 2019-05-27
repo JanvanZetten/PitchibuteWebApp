@@ -1,14 +1,16 @@
 import { Item, type } from '../../../entities/item';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick, flushMicrotasks } from '@angular/core/testing';
 
 import { FileUploadService } from './file-upload.service';
 import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorageModule, AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
+import { AngularFireStorageModule, AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { first } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { AuthenticationService } from '../../authentication/authentication-service/authentication.service';
+import { UploadTask } from '@angular/fire/storage/interfaces';
+import { AngularFireStorageStub } from 'src/app/download/downloadfile/downloadfile.component.spec';
 
 
 describe('FileUploadService', () => {
@@ -36,7 +38,7 @@ describe('FileUploadService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should make path with the item ids', () => {
+  it('should make path with the item ids', fakeAsync(() => {
     const itemArray: Item[] = [
       { id: 'outermostId', name: 'someName', type: type.group },
       { id: 'secondId', name: 'someName', type: type.event },
@@ -52,6 +54,8 @@ describe('FileUploadService', () => {
 
     const fireStorage = TestBed.get(AngularFireStorage)
     const firestore = TestBed.get(AngularFirestore)
+    const mockFireUploadTask = jasmine.createSpyObj('AngularFireUploadTask', ['percentageChanges']);
+    mockFireUploadTask.percentageChanges.and.returnValue(of(5));
     const fireStorageRefrence: AngularFireStorageReference =
     {
       getDownloadURL: null,
@@ -59,13 +63,13 @@ describe('FileUploadService', () => {
       delete: null,
       child: null,
       updateMetatdata: null,
-      put: (data, meteData) => { return null },
+      put: (data, meteData) => { return mockFireUploadTask },
       putString: null
     }
 
     spyOn(firestore, 'createId').and.returnValue(uniqueId)
     spyOn(fireStorage, 'ref').and.returnValue(fireStorageRefrence)
-    spyOn(fireStorageRefrence, 'put').and.returnValue(of({}).toPromise())
+    spyOn(fireStorageRefrence, 'put').and.returnValue(mockFireUploadTask)
 
     const meta = { originalName: fileName, path: exspectetPathOutput, token: testToken }
 
@@ -73,7 +77,9 @@ describe('FileUploadService', () => {
       expect(fireStorageRefrence.put).toHaveBeenCalledWith(theFile, { customMetadata: meta })
       observable.unsubscribe()
     })
-  })
+    tick(50);
+    flushMicrotasks();
+  }))
 
   it('should throw error if the path is not set',
     () => {
@@ -133,7 +139,7 @@ describe('FileUploadService', () => {
     });
   })
 
-  it('should call put on the firestorage refrence when a file should be uploaded', () => {
+  it('should call put on the firestorage refrence when a file should be uploaded', fakeAsync(() => {
     const itemArray: Item[] = [
       { id: 'outermostId', name: 'someName', type: type.group },
       { id: 'secondId', name: 'someName', type: type.event },
@@ -146,6 +152,8 @@ describe('FileUploadService', () => {
 
     const fireStorage = TestBed.get(AngularFireStorage)
     const firestore = TestBed.get(AngularFirestore)
+    const mockFireUploadTask = jasmine.createSpyObj('AngularFireUploadTask', ['percentageChanges']);
+    mockFireUploadTask.percentageChanges.and.returnValue(of(5));
     const fireStorageRefrence: AngularFireStorageReference =
     {
       getDownloadURL: null,
@@ -153,21 +161,23 @@ describe('FileUploadService', () => {
       delete: null,
       child: null,
       updateMetatdata: null,
-      put: (data, meteData) => { return null },
+      put: (data, meteData) => { return mockFireUploadTask },
       putString: null
     }
 
     spyOn(firestore, 'createId').and.returnValue('uniqueId')
     spyOn(fireStorage, 'ref').and.returnValue(fireStorageRefrence)
-    spyOn(fireStorageRefrence, 'put').and.returnValue(of({}).toPromise())
+    spyOn(fireStorageRefrence, 'put').and.returnValue(mockFireUploadTask)
 
     const observable = service.upload(itemArray, theFile).pipe(first()).subscribe(() => {
       expect(fireStorageRefrence.put).toHaveBeenCalledTimes(1)
       observable.unsubscribe()
     })
-  })
+    tick(50);
+    flushMicrotasks();
+  }))
 
-  it('should return a file refrence with an id', () => {
+  it('should return observable number for percentage loading', fakeAsync(() => {
     const itemArray: Item[] = [
       { id: 'outermostId', name: 'someName', type: type.group },
       { id: 'secondId', name: 'someName', type: type.event },
@@ -180,6 +190,8 @@ describe('FileUploadService', () => {
 
     const fireStorage = TestBed.get(AngularFireStorage)
     const firestore = TestBed.get(AngularFirestore)
+    const mockFireUploadTask = jasmine.createSpyObj('AngularFireUploadTask', ['percentageChanges']);
+    mockFireUploadTask.percentageChanges.and.returnValue(of(5));
     const fireStorageRefrence: AngularFireStorageReference =
     {
       getDownloadURL: null,
@@ -187,18 +199,19 @@ describe('FileUploadService', () => {
       delete: null,
       child: null,
       updateMetatdata: null,
-      put: (data, meteData) => { return null },
+      put: (data, meteData) => { return mockFireUploadTask },
       putString: null
     }
 
     spyOn(firestore, 'createId').and.returnValue(theId)
     spyOn(fireStorage, 'ref').and.returnValue(fireStorageRefrence)
-    spyOn(fireStorageRefrence, 'put').and.returnValue(of({}).toPromise())
+    spyOn(fireStorageRefrence, 'put').and.returnValue(mockFireUploadTask)
 
     const observable = service.upload(itemArray, theFile).pipe(first()).subscribe(output => {
       expect(output).toBeDefined()
-      expect(output.id).toBe(theId)
       observable.unsubscribe()
     })
-  })
+    tick(50);
+    flushMicrotasks();
+  }))
 });

@@ -30,7 +30,16 @@ ngx-dropzone:hover {
   border-style: solid;
 }
 
-.dropzone_fa {
+i.dropzone_el {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4
+}
+
+p.dropzone_el {
   pointer-events: none;
   position: absolute;
   top: 50%;
