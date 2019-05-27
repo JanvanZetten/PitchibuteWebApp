@@ -5,6 +5,7 @@ import {AuthenticationService} from '../../authentication/authentication-service
 import {Item} from '../../../entities/item';
 import {Store} from '@ngxs/store';
 import {ItemState} from 'src/app/store/state/item.state';
+import { FetchItems } from 'src/app/store/actions/item.action';
 
 
 @Injectable({
@@ -67,5 +68,9 @@ export class GroupService {
       collection: collection,
       doc: item.id
     }, {headers: this.httpOptions.headers, responseType: 'text'}).toPromise();
+  }
+
+  fetchItems() {
+    this.store.dispatch(new FetchItems());
   }
 }

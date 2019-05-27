@@ -17,7 +17,7 @@ describe('GroupService', () => {
   beforeEach(() => {
 
     authServiceStub = jasmine.createSpyObj('AuthService', ['getToken']);
-    storeStub = jasmine.createSpyObj('Store', ['select']);
+    storeStub = jasmine.createSpyObj('Store', ['select', 'dispatch']);
     subscribeStub = jasmine.createSpyObj('Subscribe', ['subscribe']);
     storeStub.select.and.returnValue(of([]));
 
@@ -73,6 +73,11 @@ describe('GroupService', () => {
     spyOn(service, 'getHttpOptions');
     service.deleteItem(item).then();
     expect(service.getHttpOptions).toHaveBeenCalled();
+  });
+
+  it('Should dispatch FetchItems on FetchItems method', () => {
+    service.fetchItems();
+    expect(store.dispatch).toHaveBeenCalled();
   });
 
 });
