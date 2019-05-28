@@ -1,5 +1,5 @@
 import { AuthenticationService } from './shared/authentication/authentication-service/authentication.service';
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick, flush } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -61,7 +61,7 @@ describe('AppComponent', () => {
     const spy = spyOn(router, 'navigateByUrl').and.callThrough();
 
     app.logout()
-    tick(50);
+    flush();
     
     expect(spy).toHaveBeenCalledWith('/welcome');
   }))
