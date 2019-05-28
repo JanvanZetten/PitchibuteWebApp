@@ -36,8 +36,8 @@ export class ItemState implements NgxsOnInit {
     }
 
     @Action(NavigateIntoItem)
-    navigateInto({ getState, patchState }: StateContext<ItemStateModel>, { payload }: NavigateIntoItem) {
-        const state = getState();
+    navigateInto(ctx: StateContext<ItemStateModel>, { payload }: NavigateIntoItem) {
+        const state = ctx.getState();
         const itemToNavigate = ItemService
             .getChildrenFromPathAndTree(state.path, state.itemTree)
             .find(i => i.id === payload.id)
@@ -48,17 +48,11 @@ export class ItemState implements NgxsOnInit {
 
         const newPath = [...state.path, itemToNavigate]
 
-        patchState({
+        ctx.patchState({
             path: newPath
         })
 
-        this.itemService.getChildItems(newPath)
-            .subscribe(children => {
-                const UpdatedTree = ItemService.updateTree(state.itemTree, newPath, children)
-                patchState({
-                    itemTree: UpdatedTree
-                });
-            })
+        ctx.dispatch(new FetchItems)
     }
 
     @Action(GoBack)
