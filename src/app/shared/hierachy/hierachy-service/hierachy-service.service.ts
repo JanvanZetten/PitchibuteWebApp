@@ -40,7 +40,7 @@ export class HierachyServiceService {
 
   async addItem(path: Item[], newItem: Item): Promise<string> {
     const token = await this.authService.getToken()
-
+    
     const options = {
       headers: new HttpHeaders({
         'authorization': 'bearer ' + token

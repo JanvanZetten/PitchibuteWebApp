@@ -126,7 +126,18 @@ describe('ItemService', () => {
         type: type.event,
         start: null,
         end: null,
-        resources: []
+        resources: [{
+          id: "ID5",
+          name: "folder1",
+          type: type.folder,
+          resources: [{
+            id: "ID6",
+            name: "file1",
+            type: type.file,
+            url: "www.theURL.com",
+            size: 1
+          } as IFile]
+        } as Folder]
       },
       {
         id: "ID4",

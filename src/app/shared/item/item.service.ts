@@ -5,6 +5,7 @@ import { Group } from './../../entities/group';
 import { Folder } from './../../entities/folder';
 import { Event } from './../../entities/event';
 import { Observable } from 'rxjs';
+import { first, filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +26,6 @@ export class ItemService {
       }
       const childToGo = children.find(c => c.id === i.id)
       children = this.getChildArray(childToGo)
-    })
-    children.forEach(c => {
-      if (c.type === type.group) {
-        (c as Group).items = []
-      } else if (c.type === type.event || c.type === type.folder) {
-        (c as Event | Folder).resources = []
-      }
     })
     return children
   }
