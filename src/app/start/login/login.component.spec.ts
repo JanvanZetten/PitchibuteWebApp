@@ -1,5 +1,5 @@
 import {ReactiveFormsModule} from '@angular/forms';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, flushMicrotasks} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush} from '@angular/core/testing';
 
 import {LoginComponent} from './login.component';
 import {By} from '@angular/platform-browser';
@@ -9,7 +9,6 @@ import {AngularFireAuthModule, AngularFireAuth} from '@angular/fire/auth';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from 'src/environments/environment';
 import {Router} from '@angular/router';
-import { Subject, ReplaySubject } from 'rxjs';
 import {AuthenticationService} from '../../shared/authentication/authentication-service/authentication.service';
 import { RecaptchaModule } from 'ng-recaptcha';
 
@@ -18,8 +17,6 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let mockAuth: MockAuthenticationService;
   let authService: AuthenticationService;
-
-  let promiseSubject = new Subject();
 
   beforeEach(async(() => {
     mockAuth = new MockAuthenticationService();
@@ -45,7 +42,6 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
 
     authService = TestBed.get(AuthenticationService);
-    promiseSubject = mockAuth.getSubject();
   });
 
   it('should create', () => {
@@ -105,19 +101,13 @@ describe('LoginComponent', () => {
   it('should route to /home when routeToHome() is called', fakeAsync(() => {
     const router: Router = TestBed.get(Router);
     
-    spyOn(router, 'navigateByUrl');
+    const spy = spyOn(router, 'navigateByUrl');
     component.routeToHome();
 
-    tick(50);
+    flush();
 
-    const subscription = promiseSubject.subscribe(() => {
-      expect(router.navigate).toHaveBeenCalledWith(router.createUrlTree(['home']),
-        { skipLocationChange: false });
-      subscription.unsubscribe();
-    });
-
-    tick(50);
-    flushMicrotasks();
+    expect(spy).toHaveBeenCalledWith(router.createUrlTree(['home']),
+      { skipLocationChange: false });
   }));
 
   it('should call signInWithEmailAndPassword when loginWithFormData is called', fakeAsync(() => {
@@ -125,11 +115,9 @@ describe('LoginComponent', () => {
 
     component.loginWithFormData();
 
-    tick(50);
+    flush();
 
     expect(authService.loginWithFormData).toHaveBeenCalledTimes(1);
-
-    flushMicrotasks();
   }));
 
   it('should call signInWithEmailAndPassword with the data form the form when loginWithFormData', fakeAsync(() => {
@@ -144,65 +132,47 @@ describe('LoginComponent', () => {
 
     component.loginWithFormData();
 
-    tick(50);
+    flush();
 
     expect(authService.loginWithFormData).toHaveBeenCalledWith(email, password);
-
-    flushMicrotasks();
   }));
   
   it('should call route to home when login with Google is succsessful', fakeAsync(() => {
     spyOn(component, 'routeToHome');
     component.loginWithGoogle();
 
-    tick(50);
-
-    const subscription = promiseSubject.subscribe(() => {
-      expect(component.routeToHome).toHaveBeenCalledTimes(1);
-      subscription.unsubscribe();
-    });
-
-    flushMicrotasks();
+    flush();
+    
+    expect(component.routeToHome).toHaveBeenCalledTimes(1);
   }));
   
   it('should not call route to home when login with google fails', fakeAsync(() => {
-    const spy = spyOn(mockAuth, 'loginWithGoogle').and.returnValue(new Promise((resolve, reject) => {
+    spyOn(mockAuth, 'loginWithGoogle').and.returnValue(new Promise((resolve, reject) => {
       reject();
-      promiseSubject.next();
     }));
     
-    spyOn(component, 'routeToHome');
+    const spy = spyOn(component, 'routeToHome');
     component.loginWithGoogle();
 
-    tick(50);
-
-    const subscription = promiseSubject.subscribe(() => {
-      expect(component.routeToHome).toHaveBeenCalledTimes(0);
-      subscription.unsubscribe();
-    });
-
-    flushMicrotasks();
+    flush();
+    
+    expect(spy).toHaveBeenCalledTimes(0);
   }));
 
   it('should make error message when login with google fails', fakeAsync(() => {
-    const spy = spyOn(mockAuth, 'loginWithGoogle').and.returnValue(new Promise((resolve, reject) => {
+    spyOn(mockAuth, 'loginWithGoogle').and.returnValue(new Promise((resolve, reject) => {
       reject();
-      promiseSubject.next();
     }));
 
     component.loginWithGoogle();
 
-    tick(50);
+    flush();
 
-    const subscription = promiseSubject.subscribe(() => {
-      const alert = fixture.debugElement.queryAll(By.css('.red-text'));
+    fixture.detectChanges();
+  
+    const alert = fixture.debugElement.queryAll(By.css('.red-text'));
 
-      expect(alert.length).toBe(1);
-      subscription.unsubscribe();
-    });
-
-    tick(50);
-    flushMicrotasks();
+    expect(alert.length).toBe(1);
   }));
 
   it('should route to home when login with email and password is successful', fakeAsync(() => {
@@ -210,13 +180,9 @@ describe('LoginComponent', () => {
 
     component.loginWithFormData();
 
-    const subscription = promiseSubject.subscribe(() => {
-      expect(component.routeToHome).toHaveBeenCalledTimes(1);
-      subscription.unsubscribe();
-    });
-
-    tick(50);
-    flushMicrotasks();
+    flush();
+    
+    expect(component.routeToHome).toHaveBeenCalledTimes(1);
   }));
 
   it('should make error message when login with email and password fails and lock the user out of trying again', fakeAsync(() => {
@@ -228,7 +194,7 @@ describe('LoginComponent', () => {
     for (let i = 0; i < 3; i++) {
       component.loginWithFormData();
 
-      tick(50);
+      flush();
     }
 
     fixture.detectChanges();
@@ -238,7 +204,6 @@ describe('LoginComponent', () => {
     expect(component.emailPasswordError).toBe('Email or password is invalid');
     expect(component.eligibleLogin).toBe(false);
     expect(component.failedLoginAttempts).toBe(0);
-    flushMicrotasks();
   }));
 
   it('should lock out the user when the captcha expires and unlock when it is completed again', () => {
@@ -252,9 +217,8 @@ describe('LoginComponent', () => {
   it('should not be possible to attempt to login while the form login button is disabled', fakeAsync(() => {
     component.captchaResolved(null);
     component.loginWithFormData();
-    tick(50);
+    flush();
     expect(component.emailPasswordError).toBe('Please check the captcha to continue');
-    flushMicrotasks();
   }));
 
   it('should handle actions on log out',
@@ -262,10 +226,9 @@ describe('LoginComponent', () => {
       const spy2 = spyOn(authService, 'signOut').and.callThrough();
       const spy = spyOn(console, 'log').and.callThrough();
       component.signOut();
-      tick(50);
+      flush();
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy2).toHaveBeenCalledTimes(1);
-      flushMicrotasks();
     }));
 
   function setInputValue(selector: string, value: string) {
@@ -277,10 +240,8 @@ describe('LoginComponent', () => {
 });
 
 class MockAuthenticationService {
-  promiseSubject = new Subject();
   promise = new Promise((resolve, reject) => {
     resolve();
-    this.promiseSubject.next();
   });
 
   loginWithGoogle() {
@@ -293,9 +254,5 @@ class MockAuthenticationService {
 
   signOut() {
     return this.promise;
-  }
-
-  getSubject() {
-    return this.promiseSubject;
   }
 }
