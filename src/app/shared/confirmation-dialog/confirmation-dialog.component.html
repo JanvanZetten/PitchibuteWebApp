@@ -1,14 +1,22 @@
-<ng-template #confirmTemp>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">{{title}}</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<!-- The Modal -->
+<div *ngIf="show" id="myModal" class="modalOverlay">
+  <div class="modal-content">
+    <span (click)="closeModal()" class="close">&times;</span>
+    <div class="modal-header">
+      <h2>{{title}}</h2>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="loading" class="loader"></div>
+      <div *ngIf="loading" class="overlay"></div>
+      <a>{{body}}</a>
+    </div>
+    <div class="modal-footer">
+      <button (click)="confirm()">Confirm</button>
+      <button (click)="closeModal()">Cancel</button>
+    </div>
+    <div class="modal-footer">
+      <a *ngIf="errorMessage">{{errorMessage}}</a>
+    </div>
   </div>
-  <div class="modal-body">
-    <a>{{body}}</a>
-    <br>
-    <button (click)="confirm()">Confirm</button>
-    <button (click)="modalRef.hide()">Cancel</button>
-  </div>
-</ng-template>
+</div>
+

@@ -1,1 +1,6 @@
-<i (click)="download()" class="fas fa-download downloadfile"></i>
+<button (click)="download()">
+  <i class="downloadfile fas" [ngClass]="{'fa-download': !isLoading,
+    'fa-sync-alt': isLoading,
+    'fa-spin': isLoading,
+    'disabled': isLoading}"></i> Download
+</button>

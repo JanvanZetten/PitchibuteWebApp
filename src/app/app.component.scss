@@ -1,0 +1,44 @@
+#logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+#navbar {
+    height: 60px;
+    padding: 0px 10px 5px 10px;
+    display: flex;
+}
+.text-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+#name {
+    font-size: 40px;
+}
+
+.right-align {
+    margin-left: auto;
+}
+
+#logout {
+    background-color:  rgb(180, 189, 202);
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    margin-top: 5px;
+    width: 120px;
+    height: auto;
+    border-radius: 4px;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+#logout:hover {
+    background-color: rgb(153, 161, 172);
+}

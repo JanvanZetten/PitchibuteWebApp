@@ -1,5 +1,5 @@
 import {ReactiveFormsModule} from '@angular/forms';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush} from '@angular/core/testing';
 
 import {LoginComponent} from './login.component';
 import {By} from '@angular/platform-browser';
@@ -9,47 +9,38 @@ import {AngularFireAuthModule, AngularFireAuth} from '@angular/fire/auth';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from 'src/environments/environment';
 import {Router} from '@angular/router';
-import {Subject} from 'rxjs';
 import {AuthenticationService} from '../../shared/authentication/authentication-service/authentication.service';
-import {RecaptchaModule} from 'ng-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authStub: any;
-  let thenStub: any;
-  let catchStub: any;
+  let mockAuth: MockAuthenticationService;
   let authService: AuthenticationService;
 
   beforeEach(async(() => {
+    mockAuth = new MockAuthenticationService();
     TestBed.configureTestingModule({
       declarations: [LoginComponent, RegistrerComponent],
       imports: [
         ReactiveFormsModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule.withRoutes([
+          { path: 'home', component: LoginComponent }
+        ]),
         AngularFireAuthModule,
         AngularFireModule.initializeApp(environment.firebase),
         RecaptchaModule.forRoot()
       ],
-      providers: [{provide: AuthenticationService, useValue: authStub}]
+      providers: [{ provide: AuthenticationService, useValue: mockAuth}]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    authStub = jasmine.createSpyObj('authenticationService',
-      ['loginWithGoogle', 'loginWithFormData', 'signOut', 'signInWithPopup']);
-    catchStub = jasmine.createSpyObj('Catch', ['catch']);
-    thenStub = jasmine.createSpyObj('Then', ['then']);
-
-    authStub.loginWithGoogle.and.returnValue(thenStub);
-    authStub.loginWithFormData.and.returnValue(thenStub);
-    authStub.signOut.and.returnValue(thenStub);
-    thenStub.then.and.returnValue(catchStub);
-
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
     authService = TestBed.get(AuthenticationService);
   });
 
@@ -107,23 +98,31 @@ describe('LoginComponent', () => {
     expect(component.googleloginError).toBe(null);
   });
 
-  it('should route to /home when routeToHome() is called', () => {
+  it('should route to /home when routeToHome() is called', fakeAsync(() => {
     const router: Router = TestBed.get(Router);
-    spyOn(router, 'navigateByUrl');
-
+    
+    const spy = spyOn(router, 'navigateByUrl');
     component.routeToHome();
 
-    expect(router.navigateByUrl).toHaveBeenCalledWith(router.createUrlTree([`home`]),
-      {skipLocationChange: false});
-  });
+    flush();
 
-  it('should call signInWithEmailAndPassword when loginWithFormData is called', () => {
+    expect(spy).toHaveBeenCalledWith(router.createUrlTree(['home']),
+      { skipLocationChange: false });
+  }));
+
+  it('should call signInWithEmailAndPassword when loginWithFormData is called', fakeAsync(() => {
+    const spy = spyOn(mockAuth, 'loginWithFormData').and.callThrough();
+
     component.loginWithFormData();
 
-    expect(authService.loginWithFormData).toHaveBeenCalledTimes(1);
-  });
+    flush();
 
-  it('should call signInWithEmailAndPassword with the data form the form when loginWithFormData', () => {
+    expect(authService.loginWithFormData).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should call signInWithEmailAndPassword with the data form the form when loginWithFormData', fakeAsync(() => {
+    const spy = spyOn(authService, 'loginWithFormData').and.callThrough();
+
     const email = 'test@mail.com';
     const password = 'SuperSecretPassword1234';
 
@@ -133,100 +132,79 @@ describe('LoginComponent', () => {
 
     component.loginWithFormData();
 
+    flush();
+
     expect(authService.loginWithFormData).toHaveBeenCalledWith(email, password);
-  });
-
-  it('should call route to home when login with Google is succsessful', () => {
-    const afAuth = TestBed.get(AngularFireAuth);
-    const sub = new Subject();
-    const promise = new Promise((resolve, reject) => {
-      resolve(null);
-      sub.next();
-    });
-
-    spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise);
-
-    spyOn(component, 'routeToHome');
-
-    component.loginWithGoogle();
-
-    const subscription = sub.subscribe(() => {
-      expect(component.routeToHome).toHaveBeenCalledTimes(1);
-      subscription.unsubscribe();
-    });
-  });
-
-  it('should not call route to home when login with google fails', () => {
+  }));
+  
+  it('should call route to home when login with Google is succsessful', fakeAsync(() => {
     spyOn(component, 'routeToHome');
     component.loginWithGoogle();
 
-    expect(component.routeToHome).toHaveBeenCalledTimes(0);
-  });
+    flush();
+    
+    expect(component.routeToHome).toHaveBeenCalledTimes(1);
+  }));
+  
+  it('should not call route to home when login with google fails', fakeAsync(() => {
+    spyOn(mockAuth, 'loginWithGoogle').and.returnValue(new Promise((resolve, reject) => {
+      reject();
+    }));
+    
+    const spy = spyOn(component, 'routeToHome');
+    component.loginWithGoogle();
 
-  it('should make error message when login with google fails', () => {
-    const afAuth = TestBed.get(AngularFireAuth);
-    const sub = new Subject();
-    const promise = new Promise((resolve, reject) => {
-      reject({});
-      sub.next();
-    });
+    flush();
+    
+    expect(spy).toHaveBeenCalledTimes(0);
+  }));
 
-    const spy = spyOn(afAuth.auth, 'signInWithPopup').and.returnValue(promise);
+  it('should make error message when login with google fails', fakeAsync(() => {
+    spyOn(mockAuth, 'loginWithGoogle').and.returnValue(new Promise((resolve, reject) => {
+      reject();
+    }));
 
     component.loginWithGoogle();
 
-    const subscription = sub.subscribe(() => {
-      const alert = fixture.debugElement.queryAll(By.css('.red-text'));
+    flush();
 
-      expect(alert.length).toBe(1);
-      subscription.unsubscribe();
-    });
-  });
+    fixture.detectChanges();
+  
+    const alert = fixture.debugElement.queryAll(By.css('.red-text'));
 
-  it('should route to home when login with email and password is successful', () => {
-    const afAuth = TestBed.get(AngularFireAuth);
-    const sub = new Subject();
-    const promise = new Promise((resolve, reject) => {
-      resolve(null);
-      sub.next();
-    });
+    expect(alert.length).toBe(1);
+  }));
 
-    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise);
-
+  it('should route to home when login with email and password is successful', fakeAsync(() => {
     spyOn(component, 'routeToHome');
 
     component.loginWithFormData();
 
-    const subscription = sub.subscribe(() => {
-      expect(component.routeToHome).toHaveBeenCalledTimes(1);
-      subscription.unsubscribe();
-    });
-  });
+    flush();
+    
+    expect(component.routeToHome).toHaveBeenCalledTimes(1);
+  }));
 
-  it('should make error message when login with email and password fails and lock the user out of trying again', () => {
-    const afAuth = TestBed.get(AngularFireAuth);
-    const sub = new Subject();
-    const promise = new Promise((resolve, reject) => {
-      reject({});
-      sub.next();
-    });
-
-    spyOn(afAuth.auth, 'signInWithEmailAndPassword').and.returnValue(promise);
-
+  it('should make error message when login with email and password fails and lock the user out of trying again', fakeAsync(() => {
+    const spy = spyOn(mockAuth, 'loginWithFormData').and.returnValue(new Promise((resolve, reject) => {
+      reject();
+    }));
     expect(component.eligibleLogin).toBe(true);
+
     for (let i = 0; i < 3; i++) {
       component.loginWithFormData();
+
+      flush();
     }
 
-    const subscription = sub.subscribe(() => {
-      const alert = fixture.debugElement.queryAll(By.css('.red-text'));
-      expect(alert.length).toBe(1);
-      expect(component.emailPasswordError).toBe('Email or password is invalid');
-      expect(component.eligibleLogin).toBe(false);
-      expect(component.failedLoginAttempts).toBe(0);
-      subscription.unsubscribe();
-    });
-  });
+    fixture.detectChanges();
+
+    const alert = fixture.debugElement.queryAll(By.css('.red-text'));
+    expect(alert.length).toBe(1);
+    expect(component.emailPasswordError).toBe('Email or password is invalid');
+    expect(component.eligibleLogin).toBe(false);
+    expect(component.failedLoginAttempts).toBe(0);
+  }));
 
   it('should lock out the user when the captcha expires and unlock when it is completed again', () => {
     expect(component.eligibleLogin).toBe(true);
@@ -236,11 +214,22 @@ describe('LoginComponent', () => {
     expect(component.eligibleLogin).toBe(true);
   });
 
-  it('should not be possible to attempt to login while the form login button is disabled', () => {
+  it('should not be possible to attempt to login while the form login button is disabled', fakeAsync(() => {
     component.captchaResolved(null);
     component.loginWithFormData();
+    flush();
     expect(component.emailPasswordError).toBe('Please check the captcha to continue');
-  });
+  }));
+
+  it('should handle actions on log out',
+    fakeAsync(() => {
+      const spy2 = spyOn(authService, 'signOut').and.callThrough();
+      const spy = spyOn(console, 'log').and.callThrough();
+      component.signOut();
+      flush();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy2).toHaveBeenCalledTimes(1);
+    }));
 
   function setInputValue(selector: string, value: string) {
     fixture.detectChanges();
@@ -249,3 +238,21 @@ describe('LoginComponent', () => {
     input.dispatchEvent(new Event('input'));
   }
 });
+
+class MockAuthenticationService {
+  promise = new Promise((resolve, reject) => {
+    resolve();
+  });
+
+  loginWithGoogle() {
+    return this.promise;
+  }
+
+  loginWithFormData() {
+    return this.promise;
+  }
+
+  signOut() {
+    return this.promise;
+  }
+}

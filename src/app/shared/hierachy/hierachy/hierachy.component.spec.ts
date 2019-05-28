@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {GroupManagerComponent} from '../../../groups/group-manager/group-manager.component';
 import {HierachyComponent} from './hierachy.component';
-import {FileUploadComponent} from '../../file-upload/file-upload/file-upload.component';
+import {FileUploadComponent} from '../../../file-upload/file-upload.component';
 import {FileUploadService} from '../../file-upload/file-upload-service/file-upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {Item, type} from '../../../entities/item';
