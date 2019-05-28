@@ -13,6 +13,10 @@ export class AppComponent {
   constructor(private authService: AuthenticationService, private router: Router) {
   }
 
+  isWelcomePage(): boolean {
+    return this.router.url !== '/welcome';
+  }
+
   logout() {
     this.authService.signOut().then(() => this.router.navigateByUrl('/welcome'))
   }
