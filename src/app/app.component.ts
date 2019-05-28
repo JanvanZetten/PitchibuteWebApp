@@ -14,6 +14,6 @@ export class AppComponent {
   }
 
   logout() {
-    this.authService.signOut().then(() => this.router.navigateByUrl('/'))
+    this.authService.signOut().then(() => this.router.navigateByUrl('/welcome'))
   }
 }

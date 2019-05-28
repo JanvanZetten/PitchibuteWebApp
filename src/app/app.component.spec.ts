@@ -1,6 +1,5 @@
-import { AuthenticationServiceModule } from './shared/authentication/authentication-service.module';
 import { AuthenticationService } from './shared/authentication/authentication-service/authentication.service';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -10,19 +9,29 @@ import { of, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
 describe('AppComponent', () => {
+  let mockAuth: MockAuthenticationService;
+  let authService: AuthenticationService;
+
   beforeEach(async(() => {
+    mockAuth = new MockAuthenticationService();
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
-        AuthenticationServiceModule,
+        RouterTestingModule.withRoutes([
+          { path: 'welcome', component: AppComponent }
+        ]),
         AngularFireAuthModule,
         AngularFireModule.initializeApp(environment.firebase)
       ],
       declarations: [
         AppComponent
       ],
+      providers: [{ provide: AuthenticationService, useValue: mockAuth }]
     }).compileComponents();
   }));
+
+  beforeEach(() => {
+    authService = TestBed.get(AuthenticationService);
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
@@ -39,29 +48,39 @@ describe('AppComponent', () => {
   it('should call the authService signout', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    const authService = TestBed.get(AuthenticationService)
     spyOn(authService, 'signOut').and.returnValue(of({}).toPromise())
     app.logout()
     expect(authService.signOut).toHaveBeenCalled()
   })
 
-  it('should navigate to the root/login site', async () => {
+  it('should navigate to the root/login site', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    const authService = TestBed.get(AuthenticationService)
-    const sub = new Subject()
-    const promise = new Promise((resolve, reject) => {
-      resolve(null);
-      sub.next();
-    });
-    spyOn(authService, 'signOut').and.returnValue(promise)
+
     const router: Router = TestBed.get(Router);
-    spyOn(router, 'navigateByUrl');
+    const spy = spyOn(router, 'navigateByUrl').and.callThrough();
+
     app.logout()
-    const subscription = sub.subscribe(() => {
-      expect(router.navigateByUrl).toHaveBeenCalledWith(router.createUrlTree(["/"]),
-        { skipLocationChange: false });
-      subscription.unsubscribe();
-    });
-  })
+    tick(50);
+    
+    expect(spy).toHaveBeenCalledWith('/welcome');
+  }))
 });
+
+class MockAuthenticationService {
+  promise = new Promise((resolve, reject) => {
+    resolve();
+  });
+
+  loginWithGoogle() {
+    return this.promise;
+  }
+
+  loginWithFormData() {
+    return this.promise;
+  }
+
+  signOut() {
+    return this.promise;
+  }
+}
