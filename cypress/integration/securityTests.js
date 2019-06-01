@@ -13,6 +13,10 @@ describe ('SecurityTests', () => {
   const mockEmail = chance.email();
   const mockPass = 'Password123';
 
+  beforeEach(function () {
+    cy.visit(url);
+  });
+
   it('should open the login page', () => {
     cy.visit(url);
     cy.contains('Login:');

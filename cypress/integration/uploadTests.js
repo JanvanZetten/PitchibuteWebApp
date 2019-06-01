@@ -11,6 +11,9 @@ describe ('UploadTests', () => {
 
   beforeEach(function () {
     cy.visit(url);
+	cy.get('#logout').click();
+      cy.wait(250);
+    cy.visit(url + '/welcome');
     cy.get('[data-cy=email]').type(Cypress.env("user"));
     cy.get('[data-cy=password]').type(mockPass);
     cy.get('[data-cy=submit]').click();

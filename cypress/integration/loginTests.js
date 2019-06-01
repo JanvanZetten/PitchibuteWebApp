@@ -15,6 +15,9 @@ describe ('LoginTests', () => {
 
   beforeEach(function () {
     cy.visit(url);
+	cy.get('#logout').click();
+      cy.wait(250);
+    cy.visit(url + '/welcome');
   });
 
   it('starts at the login page and be able to enter the mock email and password', () => {
