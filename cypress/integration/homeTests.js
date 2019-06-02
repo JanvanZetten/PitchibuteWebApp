@@ -11,6 +11,11 @@ describe ('HomeTests', () => {
 
   beforeEach(function () {
     cy.visit(url);
+    const logoutButton = '[data-cy=logout]';
+    if (Cypress.$(logoutButton)) {
+      cy.contains('Logout').click();
+    }
+    cy.wait(1000);
     cy.get('[data-cy=email]').type(Cypress.env('user'));
     cy.get('[data-cy=password]').type(mockPass);
     cy.get('[data-cy=submit]').click();
@@ -25,10 +30,7 @@ describe ('HomeTests', () => {
   });
 
   it('should properly navigate between items', () => {
-    cy.wait(5000);
-    cy.get('[data-cy=home]').click();
-    cy.get('[data-cy=home]').click();
-    cy.get('[data-cy=home]').click();
+    cy.wait(1000);
     cy.get('[data-cy=home]').click();
 
     /*
@@ -36,7 +38,7 @@ describe ('HomeTests', () => {
     cy.get('.fa-calendar-alt');
     */
 
-    cy.get('.fa-folder:nth(0)').click();
+    cy.get('[data-cy=mainTable]').click();
 
     /*
     cy.contains('.pdf');

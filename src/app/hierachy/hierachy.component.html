@@ -1,16 +1,16 @@
 <div id="button-bar">
-  <button class="btn" id="backButton" (click)="clickBack()">
+  <button class="btn" id="backButton" data-cy="back" (click)="clickBack()">
     <i class="fas fa-caret-left"></i>
     Back
   </button>
-  <button class="btn" id="homeButton" (click)="clickReturnToHome()">
+  <button class="btn" id="homeButton" data-cy="home" (click)="clickReturnToHome()">
     <i class="fas fa-home"></i>
     Home
   </button>
   <app-add-item></app-add-item>
 </div>
 
-<table id="itemTable">
+<table id="itemTable" data-cy="mainTable">
   <tr>
     <td class="icon" colspan="0">
     </td>
