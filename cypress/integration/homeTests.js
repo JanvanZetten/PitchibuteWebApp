@@ -40,7 +40,7 @@ describe ('HomeTests', () => {
     cy.get('.fa-calendar-alt');
     */
 
-    cy.get('.fa-folder:nth(0)').click();
+    cy.get('[data-cy=mainTable]').click();
 
     /*
     cy.contains('.pdf');
