@@ -10,6 +10,10 @@ describe ('HomeTests', () => {
   const mockPass = 'Password123';
 
   beforeEach(function () {
+
+  });
+
+  it('Should log in', () => {
     cy.visit(url);
     cy.get('[data-cy=email]').type(Cypress.env('user'));
     cy.get('[data-cy=password]').type(mockPass);

@@ -18,6 +18,7 @@ describe ('LoginTests', () => {
   });
 
   it('starts at the login page and be able to enter the mock email and password', () => {
+    cy.contains('Logout').click();
     cy.contains('Login:');
     cy.get('[data-cy=email]').type(mockEmail);
     cy.get('[data-cy=password]').type(mockPass);
