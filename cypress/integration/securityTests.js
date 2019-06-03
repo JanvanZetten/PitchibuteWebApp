@@ -13,6 +13,17 @@ describe ('SecurityTests', () => {
   const mockEmail = chance.email();
   const mockPass = 'Password123';
 
+  beforeEach(function () {
+    cy.visit(url);
+	cy.get('body').then((body) => { 
+		if (body.find('#logout').length > 0) { 
+			cy.get('#logout').click();
+			cy.wait(250);
+			cy.visit(url + '/welcome');
+		} 
+	});
+  });
+
   it('should open the login page', () => {
     cy.visit(url);
     cy.contains('Login:');
