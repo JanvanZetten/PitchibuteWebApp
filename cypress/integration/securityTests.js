@@ -15,6 +15,13 @@ describe ('SecurityTests', () => {
 
   beforeEach(function () {
     cy.visit(url);
+	cy.get('body').then((body) => { 
+		if (body.find('#logout').length > 0) { 
+			cy.get('#logout').click();
+			cy.wait(250);
+			cy.visit(url + '/welcome');
+		} 
+	});
   });
 
   it('should open the login page', () => {

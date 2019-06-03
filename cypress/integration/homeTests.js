@@ -11,13 +11,20 @@ describe ('HomeTests', () => {
 
   beforeEach(function () {
     cy.visit(url);
-	cy.get('#logout').click();
-      cy.wait(250);
-    cy.visit(url + '/welcome');
+	cy.get('body').then((body) => { 
+		if (body.find('#logout').length > 0) { 
+			cy.get('#logout').click();
+			cy.wait(250);
+			cy.visit(url + '/welcome');
+		} 
+	});
+	
     cy.get('[data-cy=email]').type(Cypress.env('user'));
     cy.get('[data-cy=password]').type(mockPass);
     cy.get('[data-cy=submit]').click();
     cy.url().should('be', 'http://localhost:4200/home');
+	
+    cy.wait(500);
   });
 
   it('should have loaded home correctly', () => {
